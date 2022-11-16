@@ -88,6 +88,6 @@ if (version != update_version_check) {
 }
 if (FileExist("version.txt")) {
     FileDelete, version.txt
-    MsgBox, 0x30, Success!, The macro was updated successfully to version %version%!
+    MsgBox, 0, Success!, The macro was updated successfully to version %version%!
 }
 ;=====================================
