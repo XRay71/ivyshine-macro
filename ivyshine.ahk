@@ -58,7 +58,7 @@ if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
 ;=====================================
 ; Check for updates (DO LATER)
 ;=====================================
-version := "001"
+version := "002"
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
 whr.Send()
@@ -78,7 +78,6 @@ if (version != update_version_check) {
             FileMoveDir, ivyshine-macro-main\lib, %A_WorkingDir%, 1
 
             FileRemoveDir, ivyshine-macro-main
-            FileDelete, version.txt
             FileDelete, ivyshine_macro_new.zip
             Run, "ivyshine.ahk"
             FileDelete, ivyshine_old.ahk
@@ -86,5 +85,9 @@ if (version != update_version_check) {
         else
             MsgBox, 0x10, Error, Tbh idk how you got here.
     }
+}
+if (FileExist("version.txt")) {
+    FileDelete, version.txt
+    MsgBox, 0x30, Success!, The macro was updated successfully to version %version%!
 }
 ;=====================================
