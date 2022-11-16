@@ -56,7 +56,7 @@ if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
     FileDelete, %zip_directory%
 }
 ;=====================================
-; Check for updates (DO LATER)
+; Check for updates
 ;=====================================
 version := "001"
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
@@ -92,3 +92,74 @@ if (FileExist("version.txt")) {
     MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
 }
 ;=====================================
+; INITIALISING
+;=====================================
+if (!FileExist("lib\init\config.ini")) {
+    FileCreateDir, lib\init
+    FileAppend,
+    (
+        [Important]
+        movespeed=28
+        numberofsprinkers=1
+        numberofbees=25
+        slotnumber=1
+        viplink=
+
+        [Keybinds]
+        Layout=qwerty
+        Forward=w
+        Backward=s
+        Left=a
+        Right=d
+        Jump=space
+        CameraRight=.
+        CameraLeft=,
+        CameraIn=i
+        CameraOut=o
+        CameraUp=PgUp
+        CameraDown=PgDn
+
+        [GUI]
+        GuiX=0
+        GuiY=0
+        GuiFollow=0
+    ), lib\init\config.ini
+    FileAppend,
+    (
+        [Game]
+        basemovespeed=28
+        oneflower=125
+        jumptime=600
+        viciousbeemultiplier=0.85
+
+        [Items]
+        spinklercooldown=1000
+        basicbuffduration=600000
+        boostduration=900000
+        superduration=1200000
+        stingerduration=30000
+        marshmallowbeeduration=1800000
+        smallconsumablecooldown=3000
+        beancooldown=30000
+        whirligigcooldown=300000
+
+        [Respawns]
+        ladybugrespawn=300000
+        rhinobeetlerespawn=300000
+        mantisrespawn=1200000
+        scorpionrespawn=1200000
+        spiderrespawn=1800000
+        cavemonsterrespawn=1800000
+        commandochickrespawn=1800000
+        werewolfrespawn=3600000
+        kingbeetlerespawn=86400000
+        tunnelbearrespawn=172800000
+        coconutcrabrespawn=129600000
+        stumpsnailrespawn=345600000
+
+        [Collectors]
+        wealthclockcooldown=360000
+        honeystormcooldown=14400000
+
+    ), lib\init\constants.ini
+}
