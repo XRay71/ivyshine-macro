@@ -76,7 +76,7 @@ if (version < update_version_check) {
             FileMove, ivyshine.ahk, ivyshine_old.ahk
             psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
             FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
-            Loop, %A_WorkingDir%\*, D
+            Loop, %A_WorkingDir%\ivyshine-macro-main\*, D
             {
                 FileMoveDir, %A_LoopFileFullPath%, %A_WorkingDir%, 1
             }
