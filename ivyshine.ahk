@@ -68,21 +68,23 @@ MsgBox, %update_version_check%
 if (version < update_version_check) {
     MsgBox, 4, New Version Found!, You are on version v%version%. Would you like to install the newest version: v%update_version_check%
     IfMsgBox Yes
-    UrlDownloadToFile, *0 https://github.com/XRay71/ivyshine-macro/archive/main.zip, ivyshine_macro_new.zip
-    if (ErrorLevel == "1")
-        MsgBox, 0x10, Error, There was an error in updating the macro. Nothing has been changed.
-    else if (ErrorLevel == "0") {
-        FileMove, ivyshine.ahk, ivyshine_old.ahk
-        psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
-        FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
-        FileRemoveDir, ivyshine-macro-main
-        FileDelete, version.txt
-        FileDelete, ivyshine_macro_new.zip
-        Run, "ivyshine.ahk"
-        FileDelete, %A_ScriptFullPath%
+    {
+        UrlDownloadToFile, *0 https://github.com/XRay71/ivyshine-macro/archive/main.zip, ivyshine_macro_new.zip
+        if (ErrorLevel == "1")
+            MsgBox, 0x10, Error, There was an error in updating the macro. Nothing has been changed.
+        else if (ErrorLevel == "0") {
+            FileMove, ivyshine.ahk, ivyshine_old.ahk
+            psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
+            FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
+            FileRemoveDir, ivyshine-macro-main
+            FileDelete, version.txt
+            FileDelete, ivyshine_macro_new.zip
+            Run, "ivyshine.ahk"
+            FileDelete, ivyshine_old.ahk
+        }
+        else
+            MsgBox, 0x10, Error, Tbh idk how you got here.
     }
-    else
-        MsgBox, 0x10, Error, Tbh idk how you got here.
 }
 ; https://www.autohotkey.com/boards/viewtopic.php?t=57994
 ;=====================================
