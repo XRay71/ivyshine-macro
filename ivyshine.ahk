@@ -58,13 +58,14 @@ if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
 ;=====================================
 ; Check for updates (DO LATER)
 ;=====================================
-version := "002"
+version := "001"
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
 whr.Send()
 whr.WaitForResponse()
 update_version_check := whr.ResponseText
 MsgBox, %update_version_check%
+MsgBox, % "002" < %update_version_check%
 if (version < update_version_check) {
     MsgBox, 4, New Version Found!, You are on version v%version%. Would you like to install the newest version: v%update_version_check%
     IfMsgBox Yes
