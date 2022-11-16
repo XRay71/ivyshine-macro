@@ -65,7 +65,7 @@ whr.Send()
 whr.WaitForResponse()
 update_version_check := whr.ResponseText
 MsgBox, %update_version_check%
-MsgBox, % "002" < %update_version_check%
+MsgBox, % "002" < update_version_check
 if (version < update_version_check) {
     MsgBox, 4, New Version Found!, You are on version v%version%. Would you like to install the newest version: v%update_version_check%
     IfMsgBox Yes
