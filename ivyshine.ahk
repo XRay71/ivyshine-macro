@@ -58,7 +58,7 @@ if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
 ;=====================================
 ; Check for updates (DO LATER)
 ;=====================================
-version := "002"
+version := "001"
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
 whr.Send()
@@ -89,6 +89,6 @@ if (version != update_version_check) {
 }
 if (FileExist("version.txt")) {
     FileDelete, version.txt
-    MsgBox, 0, Success!, The macro was updated successfully to version %version%!
+    MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
 }
 ;=====================================
