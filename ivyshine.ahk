@@ -72,8 +72,14 @@ if (version < update_version_check) {
     if (ErrorLevel == "1")
         MsgBox, 0x10, Error, There was an error in updating the macro. Nothing has been changed.
     else if (ErrorLevel == "0") {
-        FileMove, %A_ScriptFullPath%, %A_WorkingDir%\ivyshine_old.ahk
+        FileMove, ivyshine.ahk, ivyshine_old.ahk
         psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
+        FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
+        FileRemoveDir, ivyshine-macro-main
+        FileDelete, version.txt
+        FileDelete, ivyshine_macro_new.zip
+        Run, "ivyshine.ahk"
+        FileDelete, %A_ScriptFullPath%
     }
     else
         MsgBox, 0x10, Error, Tbh idk how you got here.
