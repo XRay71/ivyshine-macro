@@ -58,7 +58,7 @@ if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
 ;=====================================
 ; Check for updates (DO LATER)
 ;=====================================
-version := "001"
+version := "002"
 whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
 whr.Send()
