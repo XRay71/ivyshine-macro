@@ -126,13 +126,13 @@ if (!FileExist("lib\init\config.ini")) {
     ), lib\init\config.ini
     FileAppend,
     (
-        [Game]
+        ; Game
         basemovespeed=28
         oneflower=125
         jumptime=600
         viciousbeemultiplier=0.85
 
-        [Items]
+        ; Items
         spinklercooldown=1000
         basicbuffduration=600000
         boostduration=900000
@@ -143,7 +143,7 @@ if (!FileExist("lib\init\config.ini")) {
         beancooldown=30000
         whirligigcooldown=300000
 
-        [Respawns]
+        ; Respawns
         ladybugrespawn=300000
         rhinobeetlerespawn=300000
         mantisrespawn=1200000
@@ -157,9 +157,9 @@ if (!FileExist("lib\init\config.ini")) {
         coconutcrabrespawn=129600000
         stumpsnailrespawn=345600000
 
-        [Collectors]
+        ; Collectors
         wealthclockcooldown=360000
         honeystormcooldown=14400000
 
-    ), lib\init\constants.ini
+    ), lib\init\constants.ahk
 }
