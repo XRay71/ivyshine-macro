@@ -4,11 +4,17 @@ SetTitleMatchMode, 2
 CoordMode, Pixel, Screen
 
 #NoEnv
-#Include constants.ahk
-#Include, inireadwrite.ahk
+#Include lib\ahk\constants.ahk
+#Include lib\ahk\inireadwrite.ahk
 
 Sleep(duration) {
     DllCall("Sleep", UInt, duration)
+}
+
+TimeSince(time) {
+    dif := A_NowUTC
+    EnvSub, dif, time, Seconds
+    Return dif
 }
 
 PressM(keys, duration := 20) {
@@ -29,13 +35,13 @@ PressS(key, duration := 20) {
 
 Move(keys, duration := 100) {
     if (keys.Length() != "")
-        PressM(keys, duration * movespeed/basemovespeed)
+        PressM(keys, duration * movespeed/DefaultMovespeed)
     else
-        PressS(keys, duration * movespeed/basemovespeed)
+        PressS(keys, duration * movespeed/DefaultMovespeed)
 }
 
 MoveSquares(keys, blocks := 10) {
-    Move(keys, blocks * oneblockdistance)
+    Move(keys, blocks * OneBlockDistance)
 }
 
 Jump(duration := 200) {
@@ -61,9 +67,8 @@ MoveCamera(direction, num := 1) {
 PlaceSprinklers(){
     Loop, %numberofsprinklers%
     {
-        if (sprinklerhotbar !=0)
-        {
-            PressM(sprinklerhotbar)
+        if (SprinklerHotbar != 0){
+            PressM(SprinklerHotbar)
             Sleep, 600
             Jump()
             Sleep, 300
@@ -83,9 +88,9 @@ DeployGlider(midair := True) {
 Reset(num := 1, timesleep := 6500) {
     Loop, %num%
     {
-        PressM("esc")
-        PressM("r")
-        PressM("enter")
+        PressS("esc")
+        PressS("r")
+        PressS("enter")
         Sleep(%timesleep%)
     }
 }
@@ -123,7 +128,7 @@ SwitchToWindow(window := "Roblox", exclude := "-")
     return, true
 }
 
-KillProcessByExe(process := "RobloxPlayerBeta.exe") {
+KillProcessByExe(process := "RobloxPlayerBeta.exe"){
     Process, Exist, %process%
     PostMessage, 0x0112, 0xF060,,, ahk_pid %ErrorLevel%
     Sleep(100)

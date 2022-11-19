@@ -2,7 +2,7 @@
 
 ReadFromIni()
 
-ReadFromIni(path := "..\init\config.ini") {
+ReadFromIni(path := "lib\init\config.ini") {
     Global
     Local inicontent
     FileRead, inicontent, %path%
@@ -23,7 +23,7 @@ ReadFromIni(path := "..\init\config.ini") {
     }
 }
 
-WriteToIni(path := "..\init\config.ini") {
+WriteToIni(path := "lib\init\config.ini") {
     FileRead, inicontent, %path%
     if (ErrorLevel == 0) {
         Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%

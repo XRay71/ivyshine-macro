@@ -1,6 +1,7 @@
 #NoEnv
 #SingleInstance, Force
-#Include, %A_ScriptDir%
+#Include %A_ScriptDir%
+#Include lib\ahk\base.ahk
 
 SendMode, Input
 SetBatchLines, -1
@@ -99,11 +100,11 @@ if (!FileExist("lib\init\config.ini")) {
     FileAppend,
     (
         [Important]
-        movespeed=28
-        numberofsprinkers=1
-        numberofbees=25
-        slotnumber=1
-        viplink=
+        Movespeed=28
+        NumberOfSprinkers=1
+        NumberOfBees=25
+        SlotNumber=1
+        VIPLink=
         [Keybinds]
         Layout=qwerty
         Forward=w
