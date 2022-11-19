@@ -124,42 +124,4 @@ if (!FileExist("lib\init\config.ini")) {
         GuiY=0
         GuiFollow=0
     ), lib\init\config.ini
-    FileAppend,
-    (
-        ; Game
-        basemovespeed=28
-        oneflower=125
-        jumptime=600
-        viciousbeemultiplier=0.85
-
-        ; Items
-        spinklercooldown=1000
-        basicbuffduration=600000
-        boostduration=900000
-        superduration=1200000
-        stingerduration=30000
-        marshmallowbeeduration=1800000
-        smallconsumablecooldown=3000
-        beancooldown=30000
-        whirligigcooldown=300000
-
-        ; Respawns
-        ladybugrespawn=300000
-        rhinobeetlerespawn=300000
-        mantisrespawn=1200000
-        scorpionrespawn=1200000
-        spiderrespawn=1800000
-        cavemonsterrespawn=1800000
-        commandochickrespawn=1800000
-        werewolfrespawn=3600000
-        kingbeetlerespawn=86400000
-        tunnelbearrespawn=172800000
-        coconutcrabrespawn=129600000
-        stumpsnailrespawn=345600000
-
-        ; Collectors
-        wealthclockcooldown=360000
-        honeystormcooldown=14400000
-
-    ), lib\init\constants.ahk
 }
