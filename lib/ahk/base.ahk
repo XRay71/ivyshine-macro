@@ -35,9 +35,9 @@ PressS(key, duration := 20) {
 
 Move(keys, duration := 100) {
     if (keys.Length() != "")
-        PressM(keys, duration * movespeed/DefaultMovespeed)
+        PressM(keys, duration * Movespeed/DefaultMovespeed)
     else
-        PressS(keys, duration * movespeed/DefaultMovespeed)
+        PressS(keys, duration * Movespeed/DefaultMovespeed)
 }
 
 MoveSquares(keys, blocks := 10) {

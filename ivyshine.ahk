@@ -15,7 +15,7 @@ CoordMode, Pixel, Screen
 if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
     SplitPath, A_AhkPath,, ahk_directory
     if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
-        MsgBox, 0x10, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
+        MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
     }
     else if (A_Is64bitOS) {
         Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
@@ -45,11 +45,11 @@ if (zip_extension = "zip") {
         Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
     }
     else {
-        MsgBox, 0x10, Error, You have not unzipped the folder! Please do so.
+        MsgBox, 48, Error, You have not unzipped the folder! Please do so.
     }
     if (ErrorLevel = "ERROR") {
         FileRemoveDir, %macro_folder_directory%
-        MsgBox, 0x10, Error, You have not unzipped the folder! Please do so.
+        MsgBox, 48, Error, You have not unzipped the folder! Please do so.
     }
     ExitApp
 }
@@ -89,7 +89,7 @@ if (version != update_version_check) {
     }
 }
 if (FileExist("version.txt")) {
-    FileDelete, version.txt
+    ;FileDelete, version.txt
     MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
 }
 ;=====================================
@@ -105,6 +105,9 @@ if (!FileExist("lib\init\config.ini")) {
         NumberOfBees=25
         SlotNumber=1
         VIPLink=
+        MoveMethod=Cannon
+        ReturnMethod=Reset
+        DelayReconnect=60
         [Keybinds]
         Layout=qwerty
         Forward=w
@@ -119,10 +122,6 @@ if (!FileExist("lib\init\config.ini")) {
         CameraOut=o
         CameraUp=PgDn
         CameraDown=PgUp
-        [GUI]
-        GuiX=0
-        GuiY=0
-        GuiFollowToggle=0
         [Hotbar]
         SprinklerHotbar=1
         BlueExtractHotbar=0
@@ -136,7 +135,84 @@ if (!FileExist("lib\init\config.ini")) {
         StingerHotbar=0
         DiceHotbar=0
         GlitterHotbar=0
+        [GUI]
+        GuiX=0
+        GuiY=0
+        GuiFollowToggle=0
+        AlwaysOnTop=0
     ), lib\init\config.ini
 }
-
 ReadFromIni()
+SysGet, res, Monitor
+if (A_ScreenDPI != 96 || resRight != 1280 || resBottom != 720) {
+    scaling := Floor(A_ScreenDPI / 96 * 100)
+    MsgBox, 48, Warning!, The images of this macro have been created for 1280x720p resolution on 100`% scaling. You are currently on %resRight%x%resBottom%p with %scaling%`% scaling. Windows display settings will now be opened, please change the resolution accordingly.
+    Run, ms-settings:display
+    MsgBox, 49, Warning!, Press "OK" when you have changed your resolution to 1280x720p with 100`% scaling. Press "Cancel" to continue regardless.
+    IfMsgBox OK
+    Reload
+}
+
+Gui -MaximizeBox
+Gui Font, s11 Norm cBlack, Calibri
+Gui Add, Tab3, hWndhTab x0 y0 w550 h350 -Wrap +0x8 +Bottom, Settings|Fields|Boost|Mobs|Quests|Planters|Stats
+Gui Tab, 1
+Gui Font
+Gui Font, s8
+Gui Add, Edit, x88 y32 w40 h20, 28
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, Text, x16 y35 w69 h20, Movespeed
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, Text, x16 y59 w69 h20, Move Method
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, DropDownList, x88 y56 w61, Walk|Glider||Cannon
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Add, GroupBox, x8 y8 w150 h175, Basic Config
+Gui Font
+Gui Font, s7
+Gui Add, Text, x16 y83 w69 h20, # of Sprinklers
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, DropDownList, x88 y80 w61, 0|1||2|3|4
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Add, Text, x16 y27 w138 h2 +0x10
+Gui Font
+Gui Font, s7
+Gui Add, Text, x16 y107 w100 h20, Hiveslot (6-5-4-3-2-1)
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, DropDownList, x118 y104 w31, 1||2|3|4|5|6
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s7
+Gui Add, Text, x16 y132 w93 h20, Private Server Link
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Font
+Gui Font, s8
+Gui Add, Edit, x16 y157 w133 h20
+Gui Font
+Gui Font, s11 Norm cBlack, Calibri
+Gui Tab
+
+Gui Show, x2 y339 w550 h350, Ivyshine Macro
+
+GuiEscape:
+GuiClose:
+ExitApp
