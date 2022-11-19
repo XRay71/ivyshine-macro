@@ -1,6 +1,7 @@
-global globalnum := 1
-
 global movespeed := 28
-global basemovespeed := 28
-global blockdistance := 125
-global sprinklernum := 4
+global defaultmovespeed := 28
+global oneblockdistance := 125
+global numberofsprinklers := 4
+global sprinklerhotbar := 1
+
+#Include, inireadwrite.ahk

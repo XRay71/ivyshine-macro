@@ -104,7 +104,6 @@ if (!FileExist("lib\init\config.ini")) {
         numberofbees=25
         slotnumber=1
         viplink=
-
         [Keybinds]
         Layout=qwerty
         Forward=w
@@ -116,12 +115,24 @@ if (!FileExist("lib\init\config.ini")) {
         CameraLeft=,
         CameraIn=i
         CameraOut=o
-        CameraUp=PgUp
-        CameraDown=PgDn
-
+        CameraUp=PgDn
+        CameraDown=PgUp
         [GUI]
         GuiX=0
         GuiY=0
-        GuiFollow=0
+        GuiFollowToggle=0
+        [Hotbar]
+        SprinklerHotbar=1
+        BlueExtractHotbar=0
+        RedExtractHotbar=0
+        MicroConvertorHotbar=0
+        EnzymeHotbar=0
+        OilHotbar=0
+        GlueHotbar=0
+        GumdropsHotbar=0
+        WhirligigHotbar=0
+        StingerHotbar=0
+        DiceHotbar=0
+        GlitterHotbar=0
     ), lib\init\config.ini
 }

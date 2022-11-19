@@ -5,12 +5,7 @@ CoordMode, Pixel, Screen
 
 #NoEnv
 #Include constants.ahk
-
-MsgBox, %globalnum%
-localnum := 4
-MsgBox, %localnum%
-1::PressS(globalnum)
-2::Reload
+#Include, inireadwrite.ahk
 
 Sleep(duration) {
     DllCall("Sleep", UInt, duration)
@@ -40,23 +35,43 @@ Move(keys, duration := 100) {
 }
 
 MoveSquares(keys, blocks := 10) {
-    Move(keys, blocks * blockdistance)
+    Move(keys, blocks * oneblockdistance)
 }
 
 Jump(duration := 200) {
-    PressM("Space", duration)
+    PressS("Space", duration)
 }
 
 MoveCamera(direction, num := 1) {
+    if (direction == "around") {
+        Loop, 4
+        {
+            PressS(CameraRight)
+        }
+    }
+    else
+    {
+        Loop, %num%
+        {
+            PressS(Camera%direction%)
+        }
+    }
 }
 
 PlaceSprinklers(){
-    Loop, %sprinklernum%
+    Loop, %numberofsprinklers%
     {
-        PressM(sprinklerhotbar)
-        Sleep, 600
-        Jump()
-        Sleep, 300
+        if (sprinklerhotbar !=0)
+        {
+            PressM(sprinklerhotbar)
+            Sleep, 600
+            Jump()
+            Sleep, 300
+        }
+        else
+        {
+
+        }
     }
 }
 
@@ -68,9 +83,9 @@ DeployGlider(midair := True) {
 Reset(num := 1, timesleep := 6500) {
     Loop, %num%
     {
-        PressM(["esc"])
-        PressM(["r"])
-        PressM(["enter"])
+        PressM("esc")
+        PressM("r")
+        PressM("enter")
         Sleep(%timesleep%)
     }
 }
@@ -108,23 +123,14 @@ SwitchToWindow(window := "Roblox", exclude := "-")
     return, true
 }
 
-KillJitBit(){
-    Process, Exist, MacroRecorder.exe
-    a := ErrorLevel
-    PostMessage, 0x0112, 0xF060,,, ahk_pid %a%
+KillProcessByExe(process := "RobloxPlayerBeta.exe") {
+    Process, Exist, %process%
+    PostMessage, 0x0112, 0xF060,,, ahk_pid %ErrorLevel%
     Sleep(100)
-    PostMessage, 0x0112, 0xF060,,, ahk_pid %a%
+    PostMessage, 0x0112, 0xF060,,, ahk_pid %ErrorLevel%
 }
 
-KillRoblox(){
-    Process, Exist, RobloxPlayerBeta.exe
-    a := ErrorLevel
-    PostMessage, 0x0112, 0xF060,,, ahk_pid %a%
-    Sleep(100)
-    PostMessage, 0x0112, 0xF060,,, ahk_pid %a%
-}
-
-CloseRobloxTab()
+CloseRobloxTabs()
 {
     while(WinExist("Bee Swarm Simulator"))
     {
