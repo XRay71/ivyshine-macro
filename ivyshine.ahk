@@ -137,3 +137,5 @@ if (!FileExist("lib\init\config.ini")) {
         GlitterHotbar=0
     ), lib\init\config.ini
 }
+
+ReadFromIni()

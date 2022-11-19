@@ -1,7 +1,5 @@
 #NoEnv
 
-ReadFromIni()
-
 ReadFromIni(path := "lib\init\config.ini") {
     Global
     Local inicontent
