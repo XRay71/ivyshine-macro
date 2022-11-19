@@ -111,6 +111,7 @@ if (!FileExist("lib\init\config.ini")) {
         Backward=s
         Left=a
         Right=d
+        Interact=e
         Jump=space
         CameraRight=.
         CameraLeft=,
