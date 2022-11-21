@@ -12,7 +12,7 @@ CoordMode, Pixel, Screen
 ;=====================================
 ; AHK version swapping
 ;=====================================
-RunWith()
+;RunWith()
 RunWith() {
     if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
         SplitPath, A_AhkPath,, ahk_directory
@@ -29,7 +29,7 @@ RunWith() {
 ;=====================================
 ; Check if zipped
 ;=====================================
-Unzip()
+;Unzip()
 Unzip() {
     psh := ComObjCreate("Shell.Application")
     SplitPath, A_ScriptFullPath,, zip_folder
@@ -61,7 +61,7 @@ Unzip() {
 ;=====================================
 ; Check for updates
 ;=====================================
-CheckForUpdates()
+;CheckForUpdates()
 CheckForUpdates() {
     version := "001"
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
@@ -99,15 +99,18 @@ CheckForUpdates() {
 ;=====================================
 ; Check Resolution
 ;=====================================
-;SysGet, res, Monitor
-;if (A_ScreenDPI != 96 || resRight != 1280 || resBottom != 720) {
-;scaling := Floor(A_ScreenDPI / 96 * 100)
-;MsgBox, 48, Warning!, The images of this macro have been created for 1280x720p resolution on 100`% scaling. You are currently on %resRight%x%resBottom%p with %scaling%`% scaling. Windows display settings will now be opened, please change the resolution accordingly.
-;Run, ms-settings:display
-;MsgBox, 49, Warning!, Press "OK" when you have changed your resolution to 1280x720p with 100`% scaling. Press "Cancel" to continue regardless.
-;IfMsgBox OK
-;Reload
-;}
+;CheckResolution()
+CheckResolution() {
+    SysGet, res, Monitor
+    if (A_ScreenDPI != 96 || resRight != 1280 || resBottom != 720) {
+        scaling := Floor(A_ScreenDPI / 96 * 100)
+        MsgBox, 48, Warning!, The images of this macro have been created for 1280x720p resolution on 100`% scaling. You are currently on %resRight%x%resBottom%p with %scaling%`% scaling. Windows display settings will now be opened, please change the resolution accordingly.
+        Run, ms-settings:display
+        MsgBox, 49, Warning!, Press "OK" when you have changed your resolution to 1280x720p with 100`% scaling. Press "Cancel" to continue regardless.
+        IfMsgBox OK
+        Reload
+    }
+}
 ;=====================================
 ; Initialising
 ;=====================================
@@ -198,7 +201,7 @@ Gui Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToIni, % NumberOfSpri
 Gui Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
 Gui Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToIni, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
 Gui Add, Text, x16 y132, Private Server Link
-Gui Add, Edit, x16 y150 w133 h25 vVIPLink gGuiToIni, %VIPLink%
+Gui Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
 
 Gui Font, s11 Norm cBlack, Calibri
 Gui Add, GroupBox, x8 y184 w150 h130, Unlocks
@@ -212,7 +215,7 @@ Gui Add, CheckBox, x96 y232 w20 h20 vHasParachute gGuiToIni +Checked%HasParachut
 Gui Add, Text, x16 y259 h20, Mountain Glider
 Gui Add, CheckBox, x96 y256 w20 h20 vHasGlider gGuiToIni +Checked%HasGlider%
 Gui Add, Text, x16 y283 w69 h20, My hive has
-Gui Add, Edit, x88 y280 w30 h20 vNumberOfBees gGuiToIni -VScroll +Number, %NumberOfBees%
+Gui Add, Edit, x88 y280 w30 h20 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
 Gui Add, Text, x125 y283 w31 h20, bees.
 
 Gui Font, s11 Norm cBlack, Calibri
@@ -241,25 +244,25 @@ Gui Add, Text, x430 y203 w75 h20, Zoom In
 Gui Add, Text, x430 y227 w75 h20, Zoom Out
 Gui Add, Text, x430 y251 w60 h20, Key Delay
 if (Layout == "custom") {
-    Gui Add, Edit, x512 y56 w20 h20 vForwardKey gKeybindsUpdated, %ForwardKey%
-    Gui Add, Edit, x512 y80 w20 h20 vLeftKey gKeybindsUpdated, %LeftKey%
-    Gui Add, Edit, x512 y104 w20 h20 vBackwardKey gKeybindsUpdated, %BackwardKey%
-    Gui Add, Edit, x512 y128 w20 h20 vRightKey gKeybindsUpdated, %RightKey%
-    Gui Add, Edit, x512 y152 w20 h20 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
-    Gui Add, Edit, x512 y176 w20 h20 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
-    Gui Add, Edit, x512 y200 w20 h20 vCameraInKey gKeybindsUpdated, %CameraInKey%
-    Gui Add, Edit, x512 y224 w20 h20 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
+    Gui Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated, %ForwardKey%
+    Gui Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated, %LeftKey%
+    Gui Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated, %BackwardKey%
+    Gui Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated, %RightKey%
+    Gui Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
+    Gui Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
+    Gui Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated, %CameraInKey%
+    Gui Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
 } else {
-    Gui Add, Edit, x512 y56 w20 h20 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
-    Gui Add, Edit, x512 y80 w20 h20 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
-    Gui Add, Edit, x512 y104 w20 h20 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
-    Gui Add, Edit, x512 y128 w20 h20 vRightKey gKeybindsUpdated +Disabled, %RightKey%
-    Gui Add, Edit, x512 y152 w20 h20 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
-    Gui Add, Edit, x512 y176 w20 h20 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
-    Gui Add, Edit, x512 y200 w20 h20 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
-    Gui Add, Edit, x512 y224 w20 h20 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
+    Gui Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
+    Gui Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
+    Gui Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
+    Gui Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated +Disabled, %RightKey%
+    Gui Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
+    Gui Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
+    Gui Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
+    Gui Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
 }
-Gui Add, Edit, x502 y248 w30 h21 vKeyDelay gGuiToIni, %KeyDelay%
+Gui Add, Edit, x502 y248 w30 h21 limit3 vKeyDelay gGuiToIni, %KeyDelay%
 
 Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
 
@@ -280,7 +283,34 @@ MovespeedUpdated() {
             Return
         }
     }
-    GuiControl, Text, MovespeedVar, %Movespeed%
+    GuiControl, Text, Movespeed, %Movespeed%
+}
+
+NumberOfBeesUpdated() {
+    global NumberOfBees
+    GuiControlGet, NumberOfBeesTemp,, NumberOfBees
+    if NumberOfBeesTemp is number
+    {
+        if (NumberOfBeesTemp > 0 && NumberOfBeesTemp < 51){
+            IniWrite, %NumberOfBeesTemp%, %configpath%, Important, NumberOfBeesTemp
+            NumberOfBees := NumberOfBeesTemp
+            Return
+        }
+    }
+    GuiControl, Text, NumberOfBees, %NumberOfBees%
+}
+
+VIPLinkUpdated() {
+    global VIPLink
+    GuiControlGet, VIPLinkTemp,, VIPLink
+    if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=\d{32}(\&[^\/]*)*$"))
+    {
+        Trim(VIPLinkTemp)
+        IniWrite, %VIPLinkTemp%, %configpath%, Important, VIPLink
+        VIPLink := VIPLinkTemp
+    } else if (VIPLinkTemp != "") {
+        MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
+    }
 }
 
 KeybindsUpdated() {
