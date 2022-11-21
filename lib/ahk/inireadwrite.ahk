@@ -43,7 +43,8 @@ WriteToIni(path := "lib\init\config.ini") {
     }
 }
 
-GuiToIni(path := "lib\init\config.ini") {
+GuiToIni() {
+    path := "lib\init\config.ini"
     FileRead, inicontent, %path%
     if (ErrorLevel == 0) {
         Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%

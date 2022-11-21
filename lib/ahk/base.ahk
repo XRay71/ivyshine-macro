@@ -35,9 +35,9 @@ PressS(key, duration := 20) {
 
 Move(keys, duration := 100) {
     if (keys.Length() != "")
-        PressM(keys, duration * Movespeed/DefaultMovespeed)
+        PressM(keys, duration * DefaultMovespeed/Movespeed)
     else
-        PressS(keys, duration * Movespeed/DefaultMovespeed)
+        PressS(keys, duration * DefaultMovespeed/Movespeed)
 }
 
 MoveSquares(keys, blocks := 10) {
@@ -114,22 +114,27 @@ ResetKeys(keys := "") {
     Send, {Control up}
 }
 
+SwitchToWindowByExe(process := "RobloxPlayerBeta.exe") {
+    Process, Exist, %process%
+    if (ErrorLevel == 0)
+        return false
+    WinActivate, ahk_pid %ErrorLevel%
+    WinWaitActive, ahk_pid %ErrorLevel%,,30
+    if (ErrorLevel == 1)
+        SwitchToWindowByExe(process)
+    return true
+}
+
 SwitchToWindow(window := "Roblox", exclude := "-")
 {
     if (!WinExist(window,,exclude))
-    {
-        return, false
-    }
+        return false
     while(!WinActive(window,,exclude))
-    {
         WinActivate, %window%,,%exclude%
-    }
     WinWaitActive, %window%,,30,%exclude%
-    if (ErrorLevel=1)
-    {
+    if (ErrorLevel == 1)
         SwitchToWindow(window, exclude)
-    }
-    return, true
+    return true
 }
 
 KillProcessByExe(process := "RobloxPlayerBeta.exe"){
@@ -145,12 +150,12 @@ CloseRobloxTabs()
     {
         SwitchToWindow("Bee Swarm Simulator", "")
         Send, ^w
-        Sleep, 200
+        Sleep(200)
     }
     while(WinExist("BSS Rejoin"))
     {
         SwitchToWindow("BSS Rejoin", "")
         Send, ^w
-        Sleep, 200
+        Sleep(200)
     }
 }
