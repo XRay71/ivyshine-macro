@@ -96,10 +96,10 @@ CheckForUpdates(){
             ExitApp
         }
     }
-    if (FileExist("version.txt")) {
-        ;FileDelete, version.txt
-        MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
-    }
+    ;if (FileExist("version.txt")) {
+    ;FileDelete, version.txt
+    ;MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
+    ;}
 }
 ;=====================================
 ; Check Resolution
@@ -117,29 +117,38 @@ if (A_ScreenDPI != 96 || resRight != 1280 || resBottom != 720) {
 ; Initialising
 ;=====================================
 CreateInit() {
+    if (FileExist("lib\init")){
+        FileRemoveDir, lib\init, 1
+    }
     FileCreateDir, lib\init
     FileAppend,
     (
         [Important]
         Movespeed=28
-        NumberOfSprinkers=1
+        NumberOfSprinklers=1
         NumberOfBees=25
         SlotNumber=1
         VIPLink=
         MoveMethod=Cannon
-        ReturnMethod=Reset
+        [Unlocks]
+        HasRedCannon=1
+        HasParachute=1
+        HasGlider=1
+        HasBearBee=1
+        HasGiftedVicious=1
         [Keybinds]
         Layout=qwerty
-        Forward=w
-        Backward=s
-        Left=a
-        Right=d
-        CameraRight=.
-        CameraLeft=,
-        CameraIn=i
-        CameraOut=o
-        CameraUp=PgDn
-        CameraDown=PgUp
+        ForwardKey=w
+        BackwardKey=s
+        LeftKey=a
+        RightKey=d
+        CameraRightKey=.
+        CameraLeftKey=,
+        CameraInKey=i
+        CameraOutKey=o
+        CameraUpKey=PgDn
+        CameraDownKey=PgUp
+        KeyDelay=0
         [Hotbar]
         SprinklerHotbar=1
         BlueExtractHotbar=0
@@ -160,7 +169,7 @@ CreateInit() {
         AlwaysOnTop=0
     ), lib\init\config.ini
 }
-if (!FileExist("lib\init\config.ini")) {
+if (!FileExist("lib\init\")) {
     CreateInit()
 }
 ReadFromIni()
@@ -195,13 +204,13 @@ Gui Add, Text, x14 y203 w138 h2 0x10
 Gui Font
 Gui Font, s8
 Gui Add, Text, x16 y210 w69 h20, Red Cannon
-Gui Add, CheckBox, x96 y208 w20 h20 +Checked
+Gui Add, CheckBox, x96 y208 w20 h20 vHasRedCannon +Checked%HasRedCannon%
 Gui Add, Text, x16 y235 w69 h20, Parachute
-Gui Add, CheckBox, x96 y232 w20 h20 +Checked
+Gui Add, CheckBox, x96 y232 w20 h20 vHasParachute +Checked%HasParachute%
 Gui Add, Text, x16 y259 h20, Mountain Glider
-Gui Add, CheckBox, x96 y256 w20 h20 +Checked
+Gui Add, CheckBox, x96 y256 w20 h20 vHasGlider +Checked%HasGlider%
 Gui Add, Text, x16 y283 w69 h20, My hive has
-Gui Add, Edit, x88 y280 w30 h20 -VScroll +Number, 50
+Gui Add, Edit, x88 y280 w30 h20 vNumberOfBees -VScroll +Number, %NumberOfBees%
 Gui Add, Text, x125 y283 w31 h20, bees.
 
 Gui Font, s11 Norm cBlack, Calibri
@@ -210,16 +219,16 @@ Gui Add, Text, x174 y27 w105 h2 0x10
 Gui Font
 Gui Font, s8
 Gui Add, Text, x176 y35 w75 h20, Bear Bee
-Gui Add, CheckBox, x256 y32 w20 h20 +Checked
+Gui Add, CheckBox, x256 y32 w20 h20 vHasBearBee +Checked%HasBearBee%
 Gui Add, Text, x176 y59 w75 h20, Gifted Vicious
-Gui Add, CheckBox, x256 y56 w20 h20 +Checked
+Gui Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious +Checked%HasGiftedVicious%
 
 Gui Font, s11 Norm cBlack, Calibri
 Gui Add, GroupBox, x424 y8 w117 h266, Keybinds
 Gui Add, Text, x430 y27 w105 h2 0x10
 Gui Font
 Gui Font, s8
-Gui Add, DropDownList, x430 y32 w98, qwerty||azerty|custom
+Gui Add, DropDownList, x430 y32 w98 vLayout, % Layout != "custom" ? StrSplit("qwerty|azerty|custom", Layout)[1] Layout "|" StrSplit("qwerty|azerty|custom", Layout)[2] : "qwerty|azerty|custom||"
 Gui Add, Text, x430 y59 w79 h20, Move Forward
 Gui Add, Text, x430 y107 w75 h20, Move Back
 Gui Add, Text, x430 y83 w75 h20, Move Left
@@ -229,15 +238,28 @@ Gui Add, Text, x430 y179 w75 h20, Camera Right
 Gui Add, Text, x430 y203 w75 h20, Zoom In
 Gui Add, Text, x430 y227 w75 h20, Zoom Out
 Gui Add, Text, x430 y251 w60 h20, Key Delay
-Gui Add, Edit, x512 y56 w20 h20 +Disabled, w
-Gui Add, Edit, x512 y80 w20 h20 +Disabled, a
-Gui Add, Edit, x512 y104 w20 h20 +Disabled, s
-Gui Add, Edit, x512 y128 w20 h20 +Disabled, d
-Gui Add, Edit, x512 y152 w20 h20 +Disabled, ,
-Gui Add, Edit, x512 y176 w20 h20 +Disabled, .
-Gui Add, Edit, x512 y200 w20 h20 +Disabled, i
-Gui Add, Edit, x512 y224 w20 h20 +Disabled, o
-Gui Add, Edit, x502 y248 w30 h21, 20
+if (Layout == "custom"){
+    Gui Add, Edit, x512 y56 w20 h20 vForwardKey, %ForwardKey%
+    Gui Add, Edit, x512 y80 w20 h20 vLeftKey, %LeftKey%
+    Gui Add, Edit, x512 y104 w20 h20 vBackwardKey, %BackwardKey%
+    Gui Add, Edit, x512 y128 w20 h20 vRightKey, %RightKey%
+    Gui Add, Edit, x512 y152 w20 h20 vCameraLeftKey, %CameraLeftKey%
+    Gui Add, Edit, x512 y176 w20 h20 vCameraRightKey, %CameraRightKey%
+    Gui Add, Edit, x512 y200 w20 h20 vCameraInKey, %CameraInKey%
+    Gui Add, Edit, x512 y224 w20 h20 vCameraOutKey, %CameraOutKey%
+}
+else
+{
+    Gui Add, Edit, x512 y56 w20 h20 vForwardKey +Disabled, %ForwardKey%
+    Gui Add, Edit, x512 y80 w20 h20 vLeftKey +Disabled, %LeftKey%
+    Gui Add, Edit, x512 y104 w20 h20 vBackwardKey +Disabled, %BackwardKey%
+    Gui Add, Edit, x512 y128 w20 h20 vRightKey +Disabled, %RightKey%
+    Gui Add, Edit, x512 y152 w20 h20 vCameraLeftKey +Disabled, %CameraLeftKey%
+    Gui Add, Edit, x512 y176 w20 h20 vCameraRightKey +Disabled, %CameraRightKey%
+    Gui Add, Edit, x512 y200 w20 h20 vCameraInKey +Disabled, %CameraInKey%
+    Gui Add, Edit, x512 y224 w20 h20 vCameraOutKey +Disabled, %CameraOutKey%
+}
+Gui Add, Edit, x502 y248 w30 h21 vKeyDelay, %KeyDelay%
 
 Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34, Restore Defaults
 
@@ -249,3 +271,5 @@ Return
 GuiEscape:
 GuiClose:
 ExitApp
+
+^r::Reload

@@ -52,20 +52,20 @@ MoveCamera(direction, num := 1) {
     if (direction == "around") {
         Loop, 4
         {
-            PressS(CameraRight)
+            PressS(CameraRightKey)
         }
     }
     else
     {
         Loop, %num%
         {
-            PressS(Camera%direction%)
+            PressS(Camera%direction%Key)
         }
     }
 }
 
 PlaceSprinklers(){
-    Loop, %numberofsprinklers%
+    Loop, %NumberOfSprinklers%
     {
         if (SprinklerHotbar != 0){
             PressM(SprinklerHotbar)
@@ -88,9 +88,9 @@ DeployGlider(midair := True) {
 Reset(num := 1, timesleep := 6500) {
     Loop, %num%
     {
-        PressS("esc")
-        PressS("r")
-        PressS("enter")
+        PressS("esc", 50)
+        PressS("r", 50)
+        PressS("enter", 50)
         Sleep(%timesleep%)
     }
 }
@@ -99,10 +99,14 @@ ResetKeys(keys := "") {
     for i, key in keys
         Send {%key% Up}
     Click, Up
-    Send, {w up}
-    Send, {a up}
-    Send, {s up}
-    Send, {d up}
+    Send, {%ForwardKey% up}
+    Send, {%LeftKey% up}
+    Send, {%RightKey% up}
+    Send, {%BackwardKey% up}
+    Send, {%CameraLeftKey% up}
+    Send, {%CameraRightKey% up}
+    Send, {%CameraInKey% up}
+    Send, {%CameraOutKey% up}
     Send, {Alt up}
     Send, {Space up}
     Send, {Shift up}
