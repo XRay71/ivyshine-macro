@@ -12,18 +12,32 @@ CoordMode, Pixel, Screen
 ;=====================================
 ; AHK version swapping
 ;=====================================
-;RunWith()
-RunWith() {
-    if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
-        SplitPath, A_AhkPath,, ahk_directory
-        if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
-            MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
-        } else if (A_Is64bitOS) {
-            Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
-        } else {
-            Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
+; RunWith(32)
+RunWith(version := 0) {
+    if (version == 0) {
+        if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
+            SplitPath, A_AhkPath,, ahk_directory
+            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
+                MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
+            } else if (A_Is64bitOS) {
+                Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
+            } else {
+                Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
+            }
+            ExitApp
         }
-        ExitApp
+    } else {
+        if (A_PtrSize != (version == 32 ? 4 : 8)) {
+            SplitPath, A_AhkPath,, ahk_directory
+            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
+                MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
+            } else if (version == 32){
+                Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
+            } else {
+                Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
+            }
+            ExitApp
+        }
     }
 }
 ;=====================================
