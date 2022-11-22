@@ -352,7 +352,6 @@ KeybindsUpdated() {
             GuiControl,,CameraInKey, i
             GuiControl,,CameraOutKey, o
         }
-
     }
     GuiToIni()
 }
