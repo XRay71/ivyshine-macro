@@ -114,7 +114,7 @@ CheckForUpdates() {
 ;=====================================
 ; Check Resolution
 ;=====================================
-;CheckResolution()
+; CheckResolution()
 CheckResolution() {
     SysGet, res, Monitor
     if (A_ScreenDPI != 96 || resRight != 1280 || resBottom != 720) {
@@ -122,8 +122,9 @@ CheckResolution() {
         MsgBox, 48, Warning!, The images of this macro have been created for 1280x720p resolution on 100`% scaling. You are currently on %resRight%x%resBottom%p with %scaling%`% scaling. Windows display settings will now be opened, please change the resolution accordingly.
         Run, ms-settings:display
         MsgBox, 49, Warning!, Press "OK" when you have changed your resolution to 1280x720p with 100`% scaling. Press "Cancel" to continue regardless.
-        IfMsgBox OK
+        IfMsgBox Ok
         Reload
+        WinClose, Settings
     }
 }
 ;=====================================
@@ -198,10 +199,10 @@ CreateFields() {
     }
     FileAppend,
     (
-        [Settings]
+        [Config]
         FieldRotationList=Pine Tree|
         CurrentlySelectedField=Pine Tree
-        NonRotationList=Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower
+        NonRotationList=Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower|
 
     ), lib\init\fields.ini
 }
@@ -314,12 +315,10 @@ Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, R
 Gui Tab, 2
 
 Gui Add, DropDownList, x0 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui Add, DropDownList, x100 y0 vAddToRotation, %NonRotationList%
+Gui Add, DropDownList, x100 y0 vAddToRotation gAddToRotationUpdated, %NonRotationList%
 Gui Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
 
 Gui Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
-
-global configpath := "lib\init\config.ini"
 
 MovespeedUpdated() {
     global Movespeed
@@ -327,7 +326,7 @@ MovespeedUpdated() {
     if MovespeedTemp is number
     {
         if (MovespeedTemp > 0 && MovespeedTemp < 42){
-            IniWrite, %MovespeedTemp%, %configpath%, Important, Movespeed
+            IniWrite, %MovespeedTemp%, % IniPaths[1], Important, Movespeed
             Movespeed := MovespeedTemp
             Return
         }
@@ -341,7 +340,7 @@ NumberOfBeesUpdated() {
     if NumberOfBeesTemp is number
     {
         if (NumberOfBeesTemp > 0 && NumberOfBeesTemp < 51){
-            IniWrite, %NumberOfBeesTemp%, %configpath%, Important, NumberOfBeesTemp
+            IniWrite, %NumberOfBeesTemp%, % IniPaths[1], Important, NumberOfBeesTemp
             NumberOfBees := NumberOfBeesTemp
             Return
         }
@@ -355,7 +354,7 @@ VIPLinkUpdated() {
     if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=\d{32}(\&[^\/]*)*$"))
     {
         Trim(VIPLinkTemp)
-        IniWrite, %VIPLinkTemp%, %configpath%, Important, VIPLink
+        IniWrite, %VIPLinkTemp%, % IniPaths[1], Important, VIPLink
         VIPLink := VIPLinkTemp
     } else if (VIPLinkTemp != "") {
         MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
@@ -363,6 +362,8 @@ VIPLinkUpdated() {
 }
 
 GUIUpdated() {
+    global GlitterHotbar
+    MsgBox, %GlitterHotbar%
     GuiToAllInis()
 }
 
@@ -415,6 +416,25 @@ FieldSelectionUpdated() {
     GuiToAllInis()
 }
 
+AddToRotationUpdated() {
+    Global AddToRotation
+    GuiControlGet, AddToRotation
+}
+
+AddFieldRotation() {
+    Global FieldRotationList
+    Global AddToRotation
+    Global NonRotationList
+    if (AddToRotation != "") {
+        FieldRotationList .= AddToRotation "|"
+        CurrentlySelectedField := AddToRotation
+        NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
+        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
+        IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
+    }
+}
+
 ResetAllDefaults() {
     MsgBox, 305, Warning!, This will reset the entire macro to its default settings`, excluding stats.
     IfMsgBox, OK
@@ -428,8 +448,8 @@ ResetAllDefaults() {
 GuiClosed() {
     GuiToAllInis()
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
-    IniWrite, %windowX%, %configpath%, GUI, GuiX
-    IniWrite, %windowY%, %configpath%, GUI, GuiY
+    IniWrite, %windowX%, % IniPaths[1], GUI, GuiX
+    IniWrite, %windowY%, % IniPaths[1], GUI, GuiY
 }
 
 f1::

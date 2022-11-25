@@ -9,20 +9,22 @@ ReadFromAllInis() {
 
 ReadFromIni(path := "lib\init\config.ini") {
     Global
-    Local inicontent
-    FileRead, inicontent, %path%
-    if (ErrorLevel == 0) {
-        Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%
-        {
-            if (SubStr(A_LoopField, 1, 1) == "[" || A_LoopField == "")
+    {
+        Local inicontent
+        FileRead, inicontent, %path%
+        if (ErrorLevel == 0) {
+            Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%
             {
-            }
-            else
-            {
-                Local temparray := StrSplit(A_LoopField, "=")
-                Local varname := temparray[1]
-                Local varvalue := temparray[2]
-                %varname% := varvalue
+                if (SubStr(A_LoopField, 1, 1) == "[" || A_LoopField == "")
+                {
+                }
+                else
+                {
+                    Local temparray := StrSplit(A_LoopField, "=")
+                    Local varname := temparray[1]
+                    Local varvalue := temparray[2]
+                    %varname% := varvalue
+                }
             }
         }
     }
