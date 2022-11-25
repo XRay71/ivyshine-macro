@@ -1,5 +1,12 @@
 #NoEnv
 
+Global IniPaths := ["lib\init\config.ini", "lib\init\fields.ini"]
+
+ReadFromAllInis() {
+    for i, path in IniPaths
+        ReadFromIni(path)
+}
+
 ReadFromIni(path := "lib\init\config.ini") {
     Global
     Local inicontent
@@ -43,8 +50,12 @@ WriteToIni(path := "lib\init\config.ini") {
     }
 }
 
-GuiToIni() {
-    path := "lib\init\config.ini"
+GuiToAllInis() {
+    for i, path in IniPaths
+        GuiToIni(path)
+}
+
+GuiToIni(path := "lib\init\config.ini") {
     FileRead, inicontent, %path%
     if (ErrorLevel == 0) {
         Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%
@@ -67,3 +78,4 @@ GuiToIni() {
         }
     }
 }
+

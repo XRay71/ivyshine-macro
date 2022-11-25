@@ -2,6 +2,7 @@
 #SingleInstance, Force
 #Include %A_ScriptDir%
 #Include lib\ahk\base.ahk
+#UseHook
 
 SendMode, Input
 SetBatchLines, -1
@@ -134,6 +135,7 @@ CreateInit() {
     }
     FileCreateDir, lib\init
     CreateConfig()
+    CreateFields()
 }
 
 CreateConfig() {
@@ -188,10 +190,25 @@ CreateConfig() {
         AlwaysOnTop=0
     ), lib\init\config.ini
 }
+
+CreateFields() {
+    if (FileExist("lib\init\fields.ini")) {
+        FileDelete, lib\init\fields.ini
+    }
+    FileAppend,
+    (
+        [Settings]
+        FieldRotationList=PineTree|
+        CurrentlySelectedField=PineTree
+
+    ), lib\init\fields.ini
+}
+
 if (!FileExist("lib\init\")) {
     CreateInit()
 }
-ReadFromIni()
+
+ReadFromAllInis()
 ;=====================================
 ; Creating GUI
 ;=====================================
@@ -209,11 +226,11 @@ Gui Font, s8
 Gui Add, Text, x16 y35, Movespeed
 Gui Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
 Gui Add, Text, x16 y59, Move Method
-Gui Add, DropDownList, x88 y56 w61 vMoveMethod gGuiToIni, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
+Gui Add, DropDownList, x88 y56 w61 vMoveMethod gGUIUpdated, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
 Gui Add, Text, x16 y83, # of Sprinklers
-Gui Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToIni, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
+Gui Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGUIUpdated, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
 Gui Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
-Gui Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToIni, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
+Gui Add, DropDownList, x118 y104 w31 vSlotNumber gGUIUpdated, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
 Gui Add, Text, x16 y132, Private Server Link
 Gui Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
 
@@ -223,11 +240,11 @@ Gui Add, Text, x14 y203 w138 h2 0x10
 Gui Font
 Gui Font, s8
 Gui Add, Text, x16 y210 w69 h20, Red Cannon
-Gui Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGuiToIni +Checked%HasRedCannon%
+Gui Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGUIUpdated +Checked%HasRedCannon%
 Gui Add, Text, x16 y235 w69 h20, Parachute
-Gui Add, CheckBox, x96 y232 w20 h20 vHasParachute gGuiToIni +Checked%HasParachute%
+Gui Add, CheckBox, x96 y232 w20 h20 vHasParachute gGUIUpdated +Checked%HasParachute%
 Gui Add, Text, x16 y259 h20, Mountain Glider
-Gui Add, CheckBox, x96 y256 w20 h20 vHasGlider gGuiToIni +Checked%HasGlider%
+Gui Add, CheckBox, x96 y256 w20 h20 vHasGlider gGUIUpdated +Checked%HasGlider%
 Gui Add, Text, x16 y283 w69 h20, My hive has
 Gui Add, Edit, x88 y280 w30 h20 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
 Gui Add, Text, x125 y283 w31 h20, bees.
@@ -238,9 +255,9 @@ Gui Add, Text, x174 y27 w105 h2 0x10
 Gui Font
 Gui Font, s8
 Gui Add, Text, x176 y35 w75 h20, Bear Bee
-Gui Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGuiToIni +Checked%HasBearBee%
+Gui Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGUIUpdated +Checked%HasBearBee%
 Gui Add, Text, x176 y59 w75 h20, Gifted Vicious
-Gui Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGuiToIni +Checked%HasGiftedVicious%
+Gui Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
 
 Gui Font, s11 Norm cBlack, Calibri
 Gui Add, GroupBox, x424 y8 w117 h266, Keybinds
@@ -276,11 +293,14 @@ if (Layout == "custom") {
     Gui Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
     Gui Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
 }
-Gui Add, Edit, x502 y248 w30 h21 limit3 vKeyDelay gGuiToIni, %KeyDelay%
+Gui Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGUIUpdated, %KeyDelay%
 
 Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
 
-Gui Tab
+; Tab: Fields
+Gui Tab, 2
+
+Gui Add, DropDownList, x0 y0 vCurrentlySelectedField, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
 
 Gui Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
@@ -325,6 +345,10 @@ VIPLinkUpdated() {
     } else if (VIPLinkTemp != "") {
         MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
     }
+}
+
+GUIUpdated() {
+    GuiToIni()
 }
 
 KeybindsUpdated() {
