@@ -136,6 +136,7 @@ CreateInit() {
     FileCreateDir, lib\init
     CreateConfig()
     CreateFields()
+    CreateStats()
 }
 
 CreateConfig() {
@@ -198,10 +199,22 @@ CreateFields() {
     FileAppend,
     (
         [Settings]
-        FieldRotationList=PineTree|
-        CurrentlySelectedField=PineTree
+        FieldRotationList=Pine Tree|
+        CurrentlySelectedField=Pine Tree
+        NonRotationList=Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower
 
     ), lib\init\fields.ini
+}
+
+CreateStats() {
+    if (FileExist("lib\stats.ini")) {
+        FileDelete, lib\stats.ini
+    }
+    FileAppend,
+    (
+        [TEMP]
+    ), lib\stats.ini
+
 }
 
 if (!FileExist("lib\init\")) {
@@ -300,7 +313,9 @@ Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, R
 ; Tab: Fields
 Gui Tab, 2
 
-Gui Add, DropDownList, x0 y0 vCurrentlySelectedField, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui Add, DropDownList, x0 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui Add, DropDownList, x100 y0 vAddToRotation, %NonRotationList%
+Gui Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
 
 Gui Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
@@ -348,7 +363,7 @@ VIPLinkUpdated() {
 }
 
 GUIUpdated() {
-    GuiToIni()
+    GuiToAllInis()
 }
 
 KeybindsUpdated() {
@@ -391,20 +406,27 @@ KeybindsUpdated() {
             GuiControl,,CameraOutKey, o
         }
     }
-    GuiToIni()
+    GuiToAllInis()
+}
+
+FieldSelectionUpdated() {
+    Global CurrentlySelectedField
+    CurrentlySelectedField := StrReplace(CurrentlySelectedField, A_Space)
+    GuiToAllInis()
 }
 
 ResetAllDefaults() {
     MsgBox, 305, Warning!, This will reset the entire macro to its default settings`, excluding stats.
     IfMsgBox, OK
     {
-        CreateConfig()()
+        CreateConfig()
+        CreateFields()
         Reload
     }
 }
 
 GuiClosed() {
-    GuiToIni()
+    GuiToAllInis()
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
     IniWrite, %windowX%, %configpath%, GUI, GuiX
     IniWrite, %windowY%, %configpath%, GUI, GuiY

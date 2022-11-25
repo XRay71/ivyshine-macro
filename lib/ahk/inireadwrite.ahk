@@ -1,6 +1,6 @@
 #NoEnv
 
-Global IniPaths := ["lib\init\config.ini", "lib\init\fields.ini"]
+Global IniPaths := ["lib\init\config.ini", "lib\init\fields.ini", "lib\stats.ini"]
 
 ReadFromAllInis() {
     for i, path in IniPaths
@@ -72,8 +72,9 @@ GuiToIni(path := "lib\init\config.ini") {
                 temparray := StrSplit(A_LoopField, "=")
                 varname := temparray[1]
                 GuiControlGet, %varname%
-                if (%varname% != "")
-                    IniWrite, % %varname%, %path%, %sectionname%, %varname%
+                varvalue := % %varname%
+                if (%varname% != "" && varvalue != "")
+                    IniWrite, %varvalue%, %path%, %sectionname%, %varname%
             }
         }
     }
