@@ -149,10 +149,10 @@ CreateConfig() {
         [Important]
         Movespeed=28
         NumberOfSprinklers=1
-        NumberOfBees=25
+        NumberOfBees=40
         SlotNumber=1
         VIPLink=
-        MoveMethod=Cannon
+        MoveMethod=Glider
         [Unlocks]
         HasRedCannon=1
         HasParachute=1
@@ -229,140 +229,234 @@ ReadFromAllInis()
 ;=====================================
 ; Creating GUI
 ;=====================================
-Gui -MaximizeBox
-Gui Add, Button, x430 y329 w30 h20, %StartHotkey%
-Gui Add, Button, x460 y329 w30 h20, %PauseHotkey%
-Gui Add, Button, x490 y329 w30 h20, %StopHotkey%
-Gui Add, Text, x525 y335 h20, % "v" MacroVersion
 
-Gui Font, s11 Norm cBlack, Calibri
-Gui Add, Tab3, hWndhTab x0 y0 w550 h350 -Wrap +0x8 +Bottom, Settings|Fields|Boost|Mobs|Quests|Planters|Stats
+Gui, Main:-MaximizeBox
+Gui, Main:+Border
+
+if (StrLen(StartHotkey) < 5)
+    Gui, Main:Font
+else
+    Gui, Main:Font, s6
+Gui, Main:Add, Button, x430 y329 w30 h20 vStartHotkeyButtonMain gStartMacro, %StartHotkey%
+if (StrLen(PauseHotkey) < 5)
+    Gui, Main:Font
+else
+    Gui, Main:Font, s6
+Gui, Main:Add, Button, x460 y329 w30 h20 vPauseHotkeyButtonMain gPauseMacro, %PauseHotkey%
+if (StrLen(StopHotkey) < 5)
+    Gui, Main:Font
+else
+    Gui, Main:Font, s6
+Gui, Main:Add, Button, x490 y329 w30 h20 vStopHotkeyButtonMain gStopMacro, %StopHotkey%
+Gui, Main:Font
+Gui, Main:Add, Text, x525 y335 h20, % "v" MacroVersion
+
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 -Wrap +0x8 +Bottom, Settings|Fields|Boost|Mobs|Quests|Planters|Stats
 
 ; Tab: Settings
-Gui Tab, 1
+Gui, Main:Tab, 1
 
-Gui Add, GroupBox, x8 y8 w150 h175, Basic Config
-Gui Add, Text, x14 y27 w138 h2 0x10
-Gui Font
-Gui Font, s8
-Gui Add, Text, x16 y35, Movespeed
-Gui Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
-Gui Add, Text, x16 y59, Move Method
-Gui Add, DropDownList, x88 y56 w61 vMoveMethod gGUIUpdated, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
-Gui Add, Text, x16 y83, # of Sprinklers
-Gui Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGUIUpdated, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
-Gui Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
-Gui Add, DropDownList, x118 y104 w31 vSlotNumber gGUIUpdated, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
-Gui Add, Text, x16 y132, Private Server Link
-Gui Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
+Gui, Main:Add, GroupBox, x8 y8 w150 h175, Basic Config
+Gui, Main:Add, Text, x14 y27 w138 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui, Main:Add, Text, x16 y35, Movespeed
+Gui, Main:Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
+Gui, Main:Add, Text, x16 y59, Move Method
+Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGUIUpdated, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
+Gui, Main:Add, Text, x16 y83, # of Sprinklers
+Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGUIUpdated, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
+Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGUIUpdated, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, Text, x16 y132, Private Server Link
+Gui, Main:Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
 
-Gui Font, s11 Norm cBlack, Calibri
-Gui Add, GroupBox, x8 y184 w150 h130, Unlocks
-Gui Add, Text, x14 y203 w138 h2 0x10
-Gui Font
-Gui Font, s8
-Gui Add, Text, x16 y210 w69 h20, Red Cannon
-Gui Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGUIUpdated +Checked%HasRedCannon%
-Gui Add, Text, x16 y235 w69 h20, Parachute
-Gui Add, CheckBox, x96 y232 w20 h20 vHasParachute gGUIUpdated +Checked%HasParachute%
-Gui Add, Text, x16 y259 h20, Mountain Glider
-Gui Add, CheckBox, x96 y256 w20 h20 vHasGlider gGUIUpdated +Checked%HasGlider%
-Gui Add, Text, x16 y283 w69 h20, My hive has
-Gui Add, Edit, x88 y280 w30 h20 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
-Gui Add, Text, x125 y283 w31 h20, bees.
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, GroupBox, x8 y184 w150 h130, Unlocks
+Gui, Main:Add, Text, x14 y203 w138 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui, Main:Add, Text, x16 y210 w69 h20, Red Cannon
+Gui, Main:Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGUIUpdated +Checked%HasRedCannon%
+Gui, Main:Add, Text, x16 y235 w69 h20, Parachute
+Gui, Main:Add, CheckBox, x96 y232 w20 h20 vHasParachute gHasParachuteUpdated +Checked%HasParachute%
+Gui, Main:Add, Text, x16 y259 h20, Mountain Glider
+Gui, Main:Add, CheckBox, x96 y256 w20 h20 vHasGlider gHasGliderUpdated +Checked%HasGlider%
+Gui, Main:Add, Text, x16 y283 w69 h20, My hive has
+Gui, Main:Add, Edit, x88 y280 w30 h20 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
+Gui, Main:Add, Text, x125 y283 w31 h20, bees.
 
-Gui Font, s11 Norm cBlack, Calibri
-Gui Add, GroupBox, x168 y8 w117 h75, Bees
-Gui Add, Text, x174 y27 w105 h2 0x10
-Gui Font
-Gui Font, s8
-Gui Add, Text, x176 y35 w75 h20, Bear Bee
-Gui Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGUIUpdated +Checked%HasBearBee%
-Gui Add, Text, x176 y59 w75 h20, Gifted Vicious
-Gui Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, GroupBox, x168 y8 w117 h75, Bees
+Gui, Main:Add, Text, x174 y27 w105 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui, Main:Add, Text, x176 y35 w75 h20, Bear Bee
+Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGUIUpdated +Checked%HasBearBee%
+Gui, Main:Add, Text, x176 y59 w75 h20, Gifted Vicious
+Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
 
-Gui Font, s11 Norm cBlack, Calibri
-Gui Add, GroupBox, x296 y8 w117 h101, Hotkeys
-Gui Add, Text, x302 y27 w105 h2 0x10
-Gui Font
-Gui Font, s8
-Gui Add, Button, x304 y35 w50 h20, Start
-Gui Add, Button, x360 y35 w40 h20 limit4 vStartHotkey gStartHotkeyUpdated, %StartHotkey%
-Gui Add, Button, x304 y59 w50 h20, Pause
-Gui Add, Button, x360 y59 w40 h20 limit4 vPauseHotkey gPauseHotkeyUpdated, %PauseHotkey%
-Gui Add, Button, x304 y83 w50 h20, Stop
-Gui Add, Button, x360 y83 w40 h20 limit4 vStopHotkey gStopHotkeyUpdated, %StopHotkey%
+Hotkey, %StartHotkey%, StartMacro, On
+Hotkey, %PauseHotkey%, PauseMacro, On
+Hotkey, %StopHotkey%, StopMacro, On
 
-Hotkey, F1, Off
-Hotkey, %StartHotkey%, F1, On
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, GroupBox, x296 y8 w117 h125, Hotkeys
+Gui, Main:Add, Text, x302 y27 w105 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui, Main:Add, Button, x302 y35 w101 h20 vStartHotkeyButtonSettings gStartMacro, Start (%StartHotkey%)
+Gui, Main:Add, Button, x302 y59 w101 h20 vPauseHotkeyButtonSettings gPauseMacro, Pause (%PauseHotkey%)
+Gui, Main:Add, Button, x302 y83 w101 h20 vStopHotkeyButtonSettings gStopMacro, Stop (%StopHotkey%)
+Gui, Main:Add, Button, x302 y107 w101 h20 gEditHotkeys, Edit Hotkeys
 
-Gui Font, s11 Norm cBlack, Calibri
-Gui Add, GroupBox, x424 y8 w117 h266, Keybinds
-Gui Add, Text, x430 y27 w105 h2 0x10
-Gui Font
-Gui Font, s8
-Gui Add, DropDownList, x430 y32 w98 vLayout gKeybindsUpdated, % Layout != "custom" ? StrSplit("qwerty|azerty|custom", Layout)[1] Layout "|" StrSplit("qwerty|azerty|custom", Layout)[2] : "qwerty|azerty|custom||"
-Gui Add, Text, x430 y59 w79 h20, Move Forward
-Gui Add, Text, x430 y107 w75 h20, Move Back
-Gui Add, Text, x430 y83 w75 h20, Move Left
-Gui Add, Text, x430 y131 w75 h20, Move Right
-Gui Add, Text, x430 y155 w75 h20, Camera Left
-Gui Add, Text, x430 y179 w75 h20, Camera Right
-Gui Add, Text, x430 y203 w75 h20, Zoom In
-Gui Add, Text, x430 y227 w75 h20, Zoom Out
-Gui Add, Text, x430 y251 w60 h20, Key Delay
+Gui, EditHotkeys:+ownerMain
+Gui, EditHotkeys:+ToolWindow
+Gui, EditHotkeys:Add, Text, x4 y7, Start
+Gui, EditHotkeys:Add, Hotkey, x40 y4 vStartHotkeyTemp, % StartHotkey == StrReplace(StartHotkey, "#") ? StartHotkey : SubStr(StartHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 y7 vStartWinKey, WinKey
+GuiControl, EditHotkeys:, StartWinKey, % StartHotkey != StrReplace(StartHotkey, "#")
+Gui, EditHotkeys:Add, Text, x4 y33, Pause
+Gui, EditHotkeys:Add, Hotkey, x40 y30 vPauseHotkeyTemp, % PauseHotkey == StrReplace(PauseHotkey, "#") ? PauseHotkey : SubStr(PauseHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 y33 vPauseWinKey, WinKey
+GuiControl, EditHotkeys:, PauseWinKey, % PauseHotkey != StrReplace(PauseHotkey, "#")
+Gui, EditHotkeys:Add, Text, x4 y59, Stop
+Gui, EditHotkeys:Add, Hotkey, x40 y56 vStopHotkeyTemp, % StopHotkey == StrReplace(StopHotkey, "#") ? StopHotkey : SubStr(StopHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 y59 vStopWinKey, WinKey
+GuiControl, EditHotkeys:, StopWinKey, % Stophotkey != StrReplace(Stophotkey, "#")
+Gui, EditHotkeys:Add, Button, x10 y85 w215 gSaveEditedHotkeys, Save
+
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, GroupBox, x424 y8 w117 h266, Keybinds
+Gui, Main:Add, Text, x430 y27 w105 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui, Main:Add, DropDownList, x430 y32 w98 vLayout gKeybindsUpdated, % Layout != "custom" ? StrSplit("qwerty|azerty|custom", Layout)[1] Layout "|" StrSplit("qwerty|azerty|custom", Layout)[2] : "qwerty|azerty|custom||"
+Gui, Main:Add, Text, x430 y59 w79 h20, Move Forward
+Gui, Main:Add, Text, x430 y107 w75 h20, Move Back
+Gui, Main:Add, Text, x430 y83 w75 h20, Move Left
+Gui, Main:Add, Text, x430 y131 w75 h20, Move Right
+Gui, Main:Add, Text, x430 y155 w75 h20, Camera Left
+Gui, Main:Add, Text, x430 y179 w75 h20, Camera Right
+Gui, Main:Add, Text, x430 y203 w75 h20, Zoom In
+Gui, Main:Add, Text, x430 y227 w75 h20, Zoom Out
+Gui, Main:Add, Text, x430 y251 w60 h20, Key Delay
 if (Layout == "custom") {
-    Gui Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated, %ForwardKey%
-    Gui Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated, %LeftKey%
-    Gui Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated, %BackwardKey%
-    Gui Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated, %RightKey%
-    Gui Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
-    Gui Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
-    Gui Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated, %CameraInKey%
-    Gui Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
+    Gui, Main:Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated, %ForwardKey%
+    Gui, Main:Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated, %LeftKey%
+    Gui, Main:Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated, %BackwardKey%
+    Gui, Main:Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated, %RightKey%
+    Gui, Main:Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
+    Gui, Main:Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
+    Gui, Main:Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated, %CameraInKey%
+    Gui, Main:Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
 } else {
-    Gui Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
-    Gui Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
-    Gui Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
-    Gui Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated +Disabled, %RightKey%
-    Gui Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
-    Gui Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
-    Gui Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
-    Gui Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
+    Gui, Main:Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
+    Gui, Main:Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
+    Gui, Main:Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
+    Gui, Main:Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated +Disabled, %RightKey%
+    Gui, Main:Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
+    Gui, Main:Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
+    Gui, Main:Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
+    Gui, Main:Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
 }
-Gui Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGUIUpdated, %KeyDelay%
+Gui, Main:Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGUIUpdated, %KeyDelay%
 
-Gui Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
+Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
 
 ; Tab: Fields
-Gui Tab, 2
+Gui, Main:Tab, 2
 
-Gui Add, DropDownList, x0 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui Add, DropDownList, x100 y0 vAddToRotation gAddToRotationUpdated, %NonRotationList%
-Gui Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
+Gui, Main:Add, DropDownList, x0 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui, Main:Add, DropDownList, x100 y0 vAddToRotation gAddToRotationUpdated, %NonRotationList%
+Gui, Main:Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
 
-Gui Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
+Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
-StartHotkeyUpdated() {
-    ; https://www.autohotkey.com/docs/commands/GuiControls.htm#Hotkey
-    While (StartInputHook.InProgress)
-    {
-        ToolTip, % "Current = " StartInputHook.Input
+EditHotkeys() {
+    Gui, EditHotkeys:Show,, Edit Hotkeys
+}
+
+SaveEditedHotkeys() {
+    Global StartHotkey
+    Global PauseHotkey
+    Global StopHotkey
+
+    Hotkey, %StartHotkey%, Off
+    Hotkey, %PauseHotkey%, Off
+    Hotkey, %StopHotkey%, Off
+
+    GuiControlGet, StartHotkeyTemp
+    GuiControlGet, PauseHotkeyTemp
+    GuiControlGet, StopHotkeyTemp
+
+    GuiControlGet, StartWinKey
+    GuiControlGet, PauseWinKey
+    GuiControlGet, StopWinKey
+
+    if (StartHotkeyTemp == "" || PauseHotkeyTemp == "" || StopHotkeyTemp == ""){
+        MsgBox, 4112, Error, Hotkeys cannot be blank!
+        Return
     }
-    ToolTip, % "Current = " StartInputHook.Input
-    ToolTip, % StartInputHook.Input
-}
 
-PauseHotkeyUpdated() {
+    if (StartWinKey)
+        StartHotkeyTemp := "#" StartHotkeyTemp
+    if (PauseWinKey)
+        PauseHotkeyTemp := "#" PauseHotkeyTemp
+    if (StopWinKey)
+        StopHotkeyTemp := "#" StopHotkeyTemp
 
-}
+    if (StrLen(StartHotkeyTemp) == 1)
+        StartHotkeyTemp := "~" StartHotkeyTemp
+    if (StrLen(PauseHotkeyTemp) == 1)
+        PauseHotkeyTemp := "~" PauseHotkeyTemp
+    if (StrLen(StopHotkeyTemp) == 1)
+        StopHotkeyTemp := "~" StopHotkeyTemp
 
-StopHotkeyUpdated() {
+    Hotkey, %StartHotkeyTemp%, StartMacro, On
+    Hotkey, %PauseHotkeyTemp%, PauseMacro, On
+    Hotkey, %StopHotkeyTemp%, StopMacro, On
 
+    IniWrite, %StartHotkeyTemp%, % IniPaths[1], Keybinds, StartHotkey
+    IniWrite, %PauseHotkeyTemp%, % IniPaths[1], Keybinds, PauseHotkey
+    IniWrite, %StopHotkeyTemp%, % IniPaths[1], Keybinds, StopHotkey
+
+    if (StrLen(StartHotkeyTemp) < 5)
+        Gui, Main:Font
+    else
+        Gui, Main:Font, s6
+    GuiControl, Main:Font, StartHotkeyButtonMain
+
+    if (StrLen(PauseHotkeyTemp) < 5)
+        Gui, Main:Font
+    else
+        Gui, Main:Font, s6
+    GuiControl, Main:Font, PauseHotkeyButtonMain
+
+    if (StrLen(StopHotkeyTemp) < 5)
+        Gui, Main:Font
+    else
+        Gui, Main:Font, s6
+    GuiControl, Main:Font, StopHotkeyButtonMain
+
+    GuiControl, Main:Text, StartHotkeyButtonMain, %StartHotkeyTemp%
+    GuiControl, Main:Text, PauseHotkeyButtonMain, %PauseHotkeyTemp%
+    GuiControl, Main:Text, StopHotkeyButtonMain, %StopHotkeyTemp%
+
+    GuiControl, Main:Text, StartHotkeyButtonSettings, Start (%StartHotkeyTemp%)
+    GuiControl, Main:Text, PauseHotkeyButtonSettings, Pause (%PauseHotkeyTemp%)
+    GuiControl, Main:Text, StopHotkeyButtonSettings, Stop (%StopHotkeyTemp%)
+
+    StartHotkey := StartHotkeyTemp
+    PauseHotkey := PauseHotkeyTemp
+    StopHotkey := StopHotkeyTemp
+
+    Gui, EditHotkeys:Hide
 }
 
 MovespeedUpdated() {
-    global Movespeed
+    Global Movespeed
     GuiControlGet, MovespeedTemp,, Movespeed
     if MovespeedTemp is number
     {
@@ -376,35 +470,50 @@ MovespeedUpdated() {
 }
 
 NumberOfBeesUpdated() {
-    global NumberOfBees
+    Global NumberOfBees
     GuiControlGet, NumberOfBeesTemp,, NumberOfBees
     if NumberOfBeesTemp is number
-    {
         if (NumberOfBeesTemp > 0 && NumberOfBeesTemp < 51){
             IniWrite, %NumberOfBeesTemp%, % IniPaths[1], Important, NumberOfBeesTemp
             NumberOfBees := NumberOfBeesTemp
             Return
         }
-    }
     GuiControl, Text, NumberOfBees, %NumberOfBees%
 }
 
 VIPLinkUpdated() {
-    global VIPLink
+    Global VIPLink
     GuiControlGet, VIPLinkTemp,, VIPLink
     if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=\d{32}(\&[^\/]*)*$"))
     {
         Trim(VIPLinkTemp)
         IniWrite, %VIPLinkTemp%, % IniPaths[1], Important, VIPLink
         VIPLink := VIPLinkTemp
-    } else if (VIPLinkTemp != "") {
+    } else if (VIPLinkTemp != "")
         MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
-    }
 }
 
 GUIUpdated() {
-    global GlitterHotbar
-    MsgBox, %GlitterHotbar%
+    GuiToAllInis()
+}
+
+HasParachuteUpdated() {
+    Global HasParachute
+    GuiControlGet, HasParachute
+    if (!HasParachute) {
+        HasGlider := 0
+        GuiControl,, HasGlider, 0
+    }
+    GuiToAllInis()
+}
+
+HasGliderUpdated() {
+    Global HasGlider
+    GuiControlGet, HasGlider
+    if (HasGlider) {
+        HasParachute := 1
+        GuiControl,, HasParachute, 1
+    }
     GuiToAllInis()
 }
 
@@ -496,11 +605,35 @@ GuiClosed() {
     IniWrite, %windowY%, % IniPaths[1], GUI, GuiY
 }
 
-f1::
+StartMacro() {
+    Return
+}
 
-GuiEscape:
-GuiClose:
+PauseMacro() {
+    Return
+}
+
+StopMacro() {
+    Return
+}
+
+MainGuiClose() {
     GuiClosed()
-ExitApp
+    ExitApp
+}
+
+EditHotkeysGuiClose() {
+    Global StartHotkey
+    Global PauseHotkey
+    Global StopHotkey
+
+    GuiControl, EditHotkeys:Text, StartHotkeyTemp, %StartHotkey%
+    GuiControl, EditHotkeys:Text, PauseHotkeyTemp, %PauseHotkey%
+    GuiControl, EditHotkeys:Text, StopHotkeyTemp, %StopHotkey%
+
+    Hotkey, %StartHotkey%, StartMacro, On
+    Hotkey, %PauseHotkey%, PauseMacro, On
+    Hotkey, %StopHotkey%, StopMacro, On
+}
 
 ^r::Reload
