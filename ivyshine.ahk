@@ -77,15 +77,15 @@ Unzip() {
 ; Check for updates
 ;=====================================
 ;CheckForUpdates()
+MacroVersion := "001"
 CheckForUpdates() {
-    version := "001"
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
     whr.Send()
     whr.WaitForResponse()
-    update_version_check := RegExReplace(Trim(whr.ResponseText), "\.? *(\n|\r)+","")
-    if (version != update_version_check) {
-        MsgBox, 4, New Version Found!, You are on version v%version%. Would you like to install the newest version: v%update_version_check%?
+    UpdateVersionCheck := RegExReplace(Trim(whr.ResponseText), "\.? *(\n|\r)+","")
+    if (MacroVersion != UpdateVersionCheck) {
+        MsgBox, 4, New Version Found!, You are on version v%MacroVersion%. Would you like to install the newest version: v%UpdateVersionCheck%?
         IfMsgBox Yes
         {
             UrlDownloadToFile, *0 https://github.com/XRay71/ivyshine-macro/archive/main.zip, ivyshine_macro_new.zip
@@ -108,7 +108,7 @@ CheckForUpdates() {
     }
     ;if (FileExist("version.txt")) {
     ;FileDelete, version.txt
-    ;MsgBox, 0, Success!, The macro was updated successfully to version v%version%!
+    ;MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     ;}
 }
 ;=====================================
@@ -160,6 +160,9 @@ CreateConfig() {
         HasBearBee=1
         HasGiftedVicious=1
         [Keybinds]
+        StartHotkey=F1
+        PauseHotkey=F2
+        StopHotkey=F3
         Layout=qwerty
         ForwardKey=w
         BackwardKey=s
@@ -227,6 +230,11 @@ ReadFromAllInis()
 ; Creating GUI
 ;=====================================
 Gui -MaximizeBox
+Gui Add, Button, x430 y329 w30 h20, %StartHotkey%
+Gui Add, Button, x460 y329 w30 h20, %PauseHotkey%
+Gui Add, Button, x490 y329 w30 h20, %StopHotkey%
+Gui Add, Text, x525 y335 h20, % "v" MacroVersion
+
 Gui Font, s11 Norm cBlack, Calibri
 Gui Add, Tab3, hWndhTab x0 y0 w550 h350 -Wrap +0x8 +Bottom, Settings|Fields|Boost|Mobs|Quests|Planters|Stats
 
@@ -274,6 +282,21 @@ Gui Add, Text, x176 y59 w75 h20, Gifted Vicious
 Gui Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
 
 Gui Font, s11 Norm cBlack, Calibri
+Gui Add, GroupBox, x296 y8 w117 h101, Hotkeys
+Gui Add, Text, x302 y27 w105 h2 0x10
+Gui Font
+Gui Font, s8
+Gui Add, Button, x304 y35 w50 h20, Start
+Gui Add, Button, x360 y35 w40 h20 limit4 vStartHotkey gStartHotkeyUpdated, %StartHotkey%
+Gui Add, Button, x304 y59 w50 h20, Pause
+Gui Add, Button, x360 y59 w40 h20 limit4 vPauseHotkey gPauseHotkeyUpdated, %PauseHotkey%
+Gui Add, Button, x304 y83 w50 h20, Stop
+Gui Add, Button, x360 y83 w40 h20 limit4 vStopHotkey gStopHotkeyUpdated, %StopHotkey%
+
+Hotkey, F1, Off
+Hotkey, %StartHotkey%, F1, On
+
+Gui Font, s11 Norm cBlack, Calibri
 Gui Add, GroupBox, x424 y8 w117 h266, Keybinds
 Gui Add, Text, x430 y27 w105 h2 0x10
 Gui Font
@@ -319,6 +342,24 @@ Gui Add, DropDownList, x100 y0 vAddToRotation gAddToRotationUpdated, %NonRotatio
 Gui Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
 
 Gui Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
+
+StartHotkeyUpdated() {
+    ; https://www.autohotkey.com/docs/commands/GuiControls.htm#Hotkey
+    While (StartInputHook.InProgress)
+    {
+        ToolTip, % "Current = " StartInputHook.Input
+    }
+    ToolTip, % "Current = " StartInputHook.Input
+    ToolTip, % StartInputHook.Input
+}
+
+PauseHotkeyUpdated() {
+
+}
+
+StopHotkeyUpdated() {
+
+}
 
 MovespeedUpdated() {
     global Movespeed
@@ -425,6 +466,7 @@ AddFieldRotation() {
     Global FieldRotationList
     Global AddToRotation
     Global NonRotationList
+    GuiControlGet, AddToRotation
     if (AddToRotation != "") {
         FieldRotationList .= AddToRotation "|"
         CurrentlySelectedField := AddToRotation
@@ -432,6 +474,8 @@ AddFieldRotation() {
         IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
         IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
         IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
+        GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+        GuiControl,, AddToRotation, % "|" NonRotationList
     }
 }
 
