@@ -15,28 +15,28 @@ CoordMode, Pixel, Screen
 ;=====================================
 ; RunWith(32)
 RunWith(version := 0) {
-    if (version == 0) {
+    if (version == 0){
         if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
             SplitPath, A_AhkPath,, ahk_directory
-            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
+            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe"))
                 MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
-            } else if (A_Is64bitOS) {
+            else if (A_Is64bitOS)
                 Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
-            } else {
+            else
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
-            }
+
             ExitApp
         }
     } else {
         if (A_PtrSize != (version == 32 ? 4 : 8)) {
             SplitPath, A_AhkPath,, ahk_directory
-            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe")) {
+            if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe"))
                 MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
-            } else if (version == 32){
+            else if (version == 32)
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
-            } else {
+            else
                 Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
-            }
+
             ExitApp
         }
     }
@@ -51,27 +51,26 @@ Unzip() {
     SplitPath, zip_folder,,, zip_extension
     downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
     if (zip_extension = "zip") {
-        if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro")) {
+        if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
-        }
-        if (ErrorLevel = "ERROR") {
+
+        if (ErrorLevel = "ERROR")
             FileRemoveDir, %macro_folder_directory%
-        } else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
+        else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
             FileCreateDir, %macro_folder_directory%
             psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory).items, 4|16 )
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
-        } else {
+        } else
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
-        }
+
         if (ErrorLevel = "ERROR") {
             FileRemoveDir, %macro_folder_directory%
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
         }
         ExitApp
     }
-    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
+    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
         FileDelete, %zip_directory%
-    }
 }
 ;=====================================
 ; Check for updates
@@ -106,10 +105,10 @@ CheckForUpdates() {
             ExitApp
         }
     }
-    ;if (FileExist("version.txt")) {
-    ;FileDelete, version.txt
-    ;MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
-    ;}
+    if (FileExist("version.txt")) {
+        FileDelete, version.txt
+        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
+    }
 }
 ;=====================================
 ; Check Resolution
@@ -131,9 +130,8 @@ CheckResolution() {
 ; Initialising
 ;=====================================
 CreateInit() {
-    if (FileExist("lib\init")) {
+    if (FileExist("lib\init"))
         FileRemoveDir, lib\init, 1
-    }
     FileCreateDir, lib\init
     CreateConfig()
     CreateFields()
@@ -141,9 +139,8 @@ CreateInit() {
 }
 
 CreateConfig() {
-    if (FileExist("lib\init\config.ini")) {
+    if (FileExist("lib\init\config.ini"))
         FileDelete, lib\init\config.ini
-    }
     FileAppend,
     (
         [Important]
@@ -197,9 +194,8 @@ CreateConfig() {
 }
 
 CreateFields() {
-    if (FileExist("lib\init\fields.ini")) {
+    if (FileExist("lib\init\fields.ini"))
         FileDelete, lib\init\fields.ini
-    }
     FileAppend,
     (
         [Config]
@@ -211,9 +207,8 @@ CreateFields() {
 }
 
 CreateStats() {
-    if (FileExist("lib\stats.ini")) {
+    if (FileExist("lib\stats.ini"))
         FileDelete, lib\stats.ini
-    }
     FileAppend,
     (
         [TEMP]
@@ -221,15 +216,13 @@ CreateStats() {
 
 }
 
-if (!FileExist("lib\init\")) {
+if (!FileExist("lib\init\"))
     CreateInit()
-}
 
 ReadFromAllInis()
 ;=====================================
 ; Creating GUI
 ;=====================================
-
 Gui, Main:-MaximizeBox
 Gui, Main:+Border
 
@@ -368,8 +361,18 @@ Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefau
 ; Tab: Fields
 Gui, Main:Tab, 2
 
-Gui, Main:Add, DropDownList, x0 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui, Main:Add, DropDownList, x100 y0 vAddToRotation gAddToRotationUpdated, %NonRotationList%
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui Main:Add, GroupBox, x8 y8 w220 h314, GroupBox
+Gui, Main:Add, Text, x14 y27 w208 h2 0x10
+Gui, Main:Font
+Gui, Main:Font, s8
+Gui Main:Add, ListBox, x16 y50 w80 h230, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui Main:Add, Text, x24 y30 w80 h20 +0x200, Field Rotation
+Gui Main:Add, ListBox, x136 y50 w80 h230, %NonRotationList%
+Gui Main:Add, Text, x144 y30 w80 h20 +0x200, Non-Rotation
+
+Gui, Main:Add, DropDownList, x424 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui, Main:Add, DropDownList, x424 y200 vAddToRotation gAddToRotationUpdated, %NonRotationList%
 Gui, Main:Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
@@ -459,13 +462,11 @@ MovespeedUpdated() {
     Global Movespeed
     GuiControlGet, MovespeedTemp,, Movespeed
     if MovespeedTemp is number
-    {
         if (MovespeedTemp > 0 && MovespeedTemp < 42){
             IniWrite, %MovespeedTemp%, % IniPaths[1], Important, Movespeed
             Movespeed := MovespeedTemp
             Return
         }
-    }
     GuiControl, Text, Movespeed, %Movespeed%
 }
 
@@ -562,7 +563,7 @@ KeybindsUpdated() {
 
 FieldSelectionUpdated() {
     Global CurrentlySelectedField
-    CurrentlySelectedField := StrReplace(CurrentlySelectedField, A_Space)
+    GuiControlGet, CurrentlySelectedField
     GuiToAllInis()
 }
 
@@ -572,6 +573,7 @@ AddToRotationUpdated() {
 }
 
 AddFieldRotation() {
+    ReadFromAllInis()
     Global FieldRotationList
     Global AddToRotation
     Global NonRotationList
@@ -580,9 +582,11 @@ AddFieldRotation() {
         FieldRotationList .= AddToRotation "|"
         CurrentlySelectedField := AddToRotation
         NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
+
         IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
         IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
         IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
+
         GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
         GuiControl,, AddToRotation, % "|" NonRotationList
     }

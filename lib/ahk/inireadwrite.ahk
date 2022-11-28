@@ -58,27 +58,31 @@ GuiToAllInis() {
 }
 
 GuiToIni(path := "lib\init\config.ini") {
-    FileRead, inicontent, %path%
-    if (ErrorLevel == 0) {
-        Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%
-        {
-            if (A_LoopField == "")
+    Global
+    {
+        Local inicontent
+        FileRead, inicontent, %path%
+        if (ErrorLevel == 0) {
+            Loop, Parse, inicontent, `n, `r%A_Tab%%A_Space%
             {
-            }
-            else if (SubStr(A_LoopField, 1, 1) == "[")
-            {
-                sectionname := SubStr(A_LoopField, 2, -1)
-            }
-            else
-            {
-                temparray := StrSplit(A_LoopField, "=")
-                varname := temparray[1]
-                GuiControlGet, %varname%
-                varvalue := % %varname%
-                if (%varname% != "" && varvalue != "")
-                    IniWrite, %varvalue%, %path%, %sectionname%, %varname%
+                if (A_LoopField == "")
+                {
+                }
+                else if (SubStr(A_LoopField, 1, 1) == "[")
+                {
+                    sectionname := SubStr(A_LoopField, 2, -1)
+                }
+                else
+                {
+                    Local temparray := StrSplit(A_LoopField, "=")
+                    varname := temparray[1]
+                    GuiControlGet, %varname%
+                    Local varvalue := % %varname%
+                    if (%varname% != "" && varvalue != "") {
+                        IniWrite, %varvalue%, %path%, %sectionname%, %varname%
+                    }
+                }
             }
         }
     }
 }
-
