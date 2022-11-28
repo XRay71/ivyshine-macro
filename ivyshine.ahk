@@ -362,7 +362,7 @@ Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefau
 Gui, Main:Tab, 2
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui Main:Add, GroupBox, x8 y8 w220 h314, GroupBox
+Gui Main:Add, GroupBox, x8 y8 w220 h306, GroupBox
 Gui, Main:Add, Text, x14 y27 w208 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
