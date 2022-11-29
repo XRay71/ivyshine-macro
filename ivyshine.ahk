@@ -372,8 +372,8 @@ Gui, Main:Add, ListBox, x136 y50 w80 h230 vAddToRotation gAddToRotationUpdated, 
 Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Non-Rotation
 Gui, Main:Add, Button, x104 y120 w24 h23 gAddFieldRotation, <-
 Gui, Main:Add, Button, x104 y144 w24 h23 gRemoveFieldRotation, ->
-Gui, Main:Add, Button, x104 y176 w24 h23, /\
-Gui, Main:Add, Button, x104 y200 w24 h23, \/
+Gui, Main:Add, Button, x104 y176 w24 h23 gMoveFieldRotationUp, /\
+Gui, Main:Add, Button, x104 y200 w24 h23 gMoveFieldRotationDown, \/
 Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
@@ -600,27 +600,42 @@ RemoveFieldRotation() {
     Global CurrentlySelectedField
     GuiControlGet, CurrentlySelectedField
     if (CurrentlySelectedField != "") {
-        NonRotationList := StrReplace(NonRotationList, "||", "|") CurrentlySelectedField
-        FieldRotationList := StrReplace(FieldRotationList, CurrentlySelectedField "||")
+        NonRotationList := StrReplace(NonRotationList, "||", "|") CurrentlySelectedField "|"
+        FieldRotationList := StrReplace(FieldRotationList, CurrentlySelectedField "|")
         CurrentlySelectedField := ""
+
+        Sort, NonRotationList, D|
 
         IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
         IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
         IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
 
-        GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-        GuiControl,, AddToRotation, % "|" NonRotationList
+        GuiControl, Main:Text, CurrentlySelectedField, % "|" FieldRotationList
+        GuiControl, Main:Text, AddToRotation, % "|" NonRotationList
+    }
+}
 
-        ; FieldRotationList .= AddToRotation "|"
-        ; CurrentlySelectedField := AddToRotation
-        ; NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
+MoveFieldRotationUp() {
+    ReadFromAllInis()
+    Global FieldRotationList
+    Global CurrentlySelectedField
+    GuiControlGet, CurrentlySelectedField
+    if (InStr(FieldRotationList, CurrentlySelectedField) != 1) {
+        FieldRotationList := SubStr(FieldRotationList, 1, InStr(SubStr(FieldRotationList, 1, InStr(FieldRotationList, CurrentlySelectedField "|") - 1), "|",, -1)) CurrentlySelectedField StrReplace(SubStr("|" FieldRotationList, InStr("|" SubStr(FieldRotationList, 1, InStr(FieldRotationList, CurrentlySelectedField "|") - 1), "|",, -1)), CurrentlySelectedField "|")
+        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        GuiControl, Main:Text, CurrentlySelectedField, % "|" StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
+    }
+}
 
-        ; IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
-        ; IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
-        ; IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
-
-        ; GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-        ; GuiControl,, AddToRotation, % "|" NonRotationList
+MoveFieldRotationDown() {
+    ReadFromAllInis()
+    Global FieldRotationList
+    Global CurrentlySelectedField
+    GuiControlGet, CurrentlySelectedField
+    if (InStr(FieldRotationList, CurrentlySelectedField,, 0) - 1 != StrLen(FixeldRotationList) - StrLen(CurrentlySelectedField "|")) {
+        FieldRotationList := StrReplace(SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|")) == "|" ? FieldRotationList : StrReplace(FieldRotationList, SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|"))) "|", CurrentlySelectedField "|") CurrentlySelectedField SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|"))
+        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        GuiControl, Main:Text, CurrentlySelectedField, % "|" StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
     }
 }
 
