@@ -362,18 +362,19 @@ Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefau
 Gui, Main:Tab, 2
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui Main:Add, GroupBox, x8 y8 w220 h306, GroupBox
+Gui, Main:Add, GroupBox, x8 y8 w220 h306, GroupBox
 Gui, Main:Add, Text, x14 y27 w208 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui Main:Add, ListBox, x16 y50 w80 h230, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui Main:Add, Text, x24 y30 w80 h20 +0x200, Field Rotation
-Gui Main:Add, ListBox, x136 y50 w80 h230, %NonRotationList%
-Gui Main:Add, Text, x144 y30 w80 h20 +0x200, Non-Rotation
-
-Gui, Main:Add, DropDownList, x424 y0 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui, Main:Add, DropDownList, x424 y200 vAddToRotation gAddToRotationUpdated, %NonRotationList%
-Gui, Main:Add, Button, x424 y280 w116 h34 gAddFieldRotation, Add to List
+Gui, Main:Add, ListBox, x16 y50 w80 h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+Gui, Main:Add, Text, x24 y30 w80 h20 +0x200, Field Rotation
+Gui, Main:Add, ListBox, x136 y50 w80 h230 vAddToRotation gAddToRotationUpdated, %NonRotationList%
+Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Non-Rotation
+Gui, Main:Add, Button, x104 y120 w24 h23 gAddFieldRotation, <-
+Gui, Main:Add, Button, x104 y144 w24 h23 gRemoveFieldRotation, ->
+Gui, Main:Add, Button, x104 y176 w24 h23, /\
+Gui, Main:Add, Button, x104 y200 w24 h23, \/
+Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
@@ -589,6 +590,37 @@ AddFieldRotation() {
 
         GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
         GuiControl,, AddToRotation, % "|" NonRotationList
+    }
+}
+
+RemoveFieldRotation() {
+    ReadFromAllInis()
+    Global FieldRotationList
+    Global NonRotationList
+    Global CurrentlySelectedField
+    GuiControlGet, CurrentlySelectedField
+    if (CurrentlySelectedField != "") {
+        NonRotationList := StrReplace(NonRotationList, "||", "|") CurrentlySelectedField
+        FieldRotationList := StrReplace(FieldRotationList, CurrentlySelectedField "||")
+        CurrentlySelectedField := ""
+
+        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
+        IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
+
+        GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+        GuiControl,, AddToRotation, % "|" NonRotationList
+
+        ; FieldRotationList .= AddToRotation "|"
+        ; CurrentlySelectedField := AddToRotation
+        ; NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
+
+        ; IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        ; IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
+        ; IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
+
+        ; GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
+        ; GuiControl,, AddToRotation, % "|" NonRotationList
     }
 }
 
