@@ -15,7 +15,7 @@ CoordMode, Pixel, Screen
 ;=====================================
 ; RunWith(32)
 RunWith(version := 0) {
-    if (version == 0){
+    if (version == 0) {
         if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
             SplitPath, A_AhkPath,, ahk_directory
             if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe"))
@@ -24,8 +24,6 @@ RunWith(version := 0) {
                 Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
             else
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
-
-            ExitApp
         }
     } else {
         if (A_PtrSize != (version == 32 ? 4 : 8)) {
@@ -36,10 +34,9 @@ RunWith(version := 0) {
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
             else
                 Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
-
-            ExitApp
         }
     }
+    ExitApp
 }
 ;=====================================
 ; Check if zipped
@@ -53,7 +50,7 @@ Unzip() {
     if (zip_extension = "zip") {
         if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
-
+        
         if (ErrorLevel = "ERROR")
             FileRemoveDir, %macro_folder_directory%
         else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
@@ -62,7 +59,7 @@ Unzip() {
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
         } else
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
-
+        
         if (ErrorLevel = "ERROR") {
             FileRemoveDir, %macro_folder_directory%
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
@@ -77,6 +74,7 @@ Unzip() {
 ;=====================================
 ;CheckForUpdates()
 MacroVersion := "001"
+SuccessfullyUpdated := 0
 CheckForUpdates() {
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
@@ -95,7 +93,7 @@ CheckForUpdates() {
                 FileMove, ivyshine.ahk, ivyshine_old.ahk
                 FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
                 FileMoveDir, ivyshine-macro-main\lib, %A_WorkingDir%, 1
-
+                
                 FileRemoveDir, ivyshine-macro-main
                 FileDelete, ivyshine_macro_new.zip
                 Run, "ivyshine.ahk"
@@ -107,6 +105,7 @@ CheckForUpdates() {
     }
     if (FileExist("version.txt")) {
         FileDelete, version.txt
+        SuccessfullyUpdated := 1
         MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
 }
@@ -129,102 +128,93 @@ CheckResolution() {
 ;=====================================
 ; Initialising
 ;=====================================
-CreateInit() {
-    if (FileExist("lib\init"))
-        FileRemoveDir, lib\init, 1
-    FileCreateDir, lib\init
-    CreateConfig()
-    CreateFields()
-    CreateStats()
+
+Global AllVars := {}
+
+AllVars["Config"] := {}
+
+AllVars["Config"]["Important"] := {"MoveSpeed":"28"
+    , "NumberOfSprinklers":"1"
+    , "NumberOfBees":"40"
+    , "SlotNumber":"1"
+    , "VIPLink":""
+    , "MoveMethod":"Glider"}
+
+AllVars["Config"]["Unlocks"] := {"HasRedCannon":"1"
+    , "HasParachute":"1"
+    , "HasGlider":"1"
+    , "HasBearBee":"1"
+    , "HasGiftedVicious":"1"}
+
+AllVars["Config"]["Keybinds"] := {"StartHotkey":"F1"
+    , "PauseHotkey":"F2"
+    , "StopHotkey":"F3"
+    , "Layout":"qwerty"
+    , "ForwardKey":"w"
+    , "BackwardKey":"s"
+    , "LeftKey":"a"
+    , "RightKey":"d"
+    , "CameraRightKey":"."
+    , "CameraLeftKey":","
+    , "CameraInKey":"i"
+    , "CameraOutKey":"o"
+    , "CameraUpKey":"PgDn"
+    , "CameraDownKey":"PgUp"
+    , "KeyDelay":"0"}
+
+AllVars["Config"]["Hotbar"] := {"SprinklerHotbar":"1"
+    , "BlueExtractHotbar":"0"
+    , "RedExtractHotbar":"0"
+    , "MicroConvertorHotbar":"0"
+    , "EnzymeHotbar":"0"
+    , "OilHotbar":"0"
+    , "GlueHotbar":"0"
+    , "GumdropsHotbar":"0"
+    , "WhirligigHotbar":"0"
+    , "StingerHotbar":"0"
+    , "DiceHotbar":"0"
+    , "GlitterHotbar":"0"}
+
+AllVars["Config"]["GUI"] := {"GuiX":"0"
+    , "GuiY":"340"
+    , "GuiFollowToggle":"0"
+    , "AlwaysOnTop":"0"}
+
+AllVars["FieldConfig"] := {}
+
+AllVars["FieldConfig"]["Config"] := {"FieldRotationList":"Pine Tree|"
+    , "CurrentlySelectedField":"Pine Tree"
+    , "NonRotationList":"Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower|"
+    , "DoGather":"1"}
+
+AllVars["Stats"] := {}
+
+if (FileExist("lib\init"))
+    ReadFromAllInis()
+
+CreateInit(!FileExist("lib\init"))
+;=====================================
+; Check Monitor
+;=====================================
+; CheckMonitor()
+CheckMonitor() {
+    SysGet, MonitorCount, MonitorCount
+    loop, %MonitorCount%
+    {
+        SysGet, CurrentMonitor, MonitorWorkArea, %A_Index%
+        if (GuiX < CurrentMonitorLeft || GuiX + 550 > CurrentMonitorRight)
+            GuiX := GuiX < CurrentMonitorLeft ? CurrentMonitorLeft : CurrentMonitorRight - 550
+        if (GuiY < CurrentMonitorTop || GuiY + 350 > CurrentMonitorBottom)
+            GuiY := GuiY < CurrentMonitorTop ? CurrentMonitorTop : CurrentMonitorBottom - 350
+    }
 }
-
-CreateConfig() {
-    if (FileExist("lib\init\config.ini"))
-        FileDelete, lib\init\config.ini
-    FileAppend,
-    (
-        [Important]
-        Movespeed=28
-        NumberOfSprinklers=1
-        NumberOfBees=40
-        SlotNumber=1
-        VIPLink=
-        MoveMethod=Glider
-        [Unlocks]
-        HasRedCannon=1
-        HasParachute=1
-        HasGlider=1
-        HasBearBee=1
-        HasGiftedVicious=1
-        [Keybinds]
-        StartHotkey=F1
-        PauseHotkey=F2
-        StopHotkey=F3
-        Layout=qwerty
-        ForwardKey=w
-        BackwardKey=s
-        LeftKey=a
-        RightKey=d
-        CameraRightKey=.
-        CameraLeftKey=,
-        CameraInKey=i
-        CameraOutKey=o
-        CameraUpKey=PgDn
-        CameraDownKey=PgUp
-        KeyDelay=0
-        [Hotbar]
-        SprinklerHotbar=1
-        BlueExtractHotbar=0
-        RedExtractHotbar=0
-        MicroConvertorHotbar=0
-        EnzymeHotbar=0
-        OilHotbar=0
-        GlueHotbar=0
-        GumdropsHotbar=0
-        WhirligigHotbar=0
-        StingerHotbar=0
-        DiceHotbar=0
-        GlitterHotbar=0
-        [GUI]
-        GuiX=0
-        GuiY=340
-        GuiFollowToggle=0
-        AlwaysOnTop=0
-    ), lib\init\config.ini
-}
-
-CreateFields() {
-    if (FileExist("lib\init\fields.ini"))
-        FileDelete, lib\init\fields.ini
-    FileAppend,
-    (
-        [Config]
-        FieldRotationList=Pine Tree|
-        CurrentlySelectedField=Pine Tree
-        NonRotationList=Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower|
-        DoGather=1
-    ), lib\init\fields.ini
-}
-
-CreateStats() {
-    if (FileExist("lib\stats.ini"))
-        FileDelete, lib\stats.ini
-    FileAppend,
-    (
-        [TEMP]
-    ), lib\stats.ini
-
-}
-
-if (!FileExist("lib\init\"))
-    CreateInit()
-
-ReadFromAllInis()
 ;=====================================
 ; Creating GUI
 ;=====================================
-Gui, Main:-MaximizeBox
-Gui, Main:+Border
+OnExit(MainGuiClose())
+Gui, Main:-MaximizeBox +Border
+if (AlwaysOnTop)
+    Gui, Main:+AlwaysOnTop
 
 if (StrLen(StartHotkey) < 5)
     Gui, Main:Font
@@ -241,6 +231,7 @@ if (StrLen(StopHotkey) < 5)
 else
     Gui, Main:Font, s6
 Gui, Main:Add, Button, x490 y329 w30 h20 vStopHotkeyButtonMain gStopMacro, %StopHotkey%
+
 Gui, Main:Font
 Gui, Main:Add, Text, x525 y335 h20, % "v" MacroVersion
 
@@ -386,76 +377,76 @@ SaveEditedHotkeys() {
     Global StartHotkey
     Global PauseHotkey
     Global StopHotkey
-
+    
     Hotkey, %StartHotkey%, Off
     Hotkey, %PauseHotkey%, Off
     Hotkey, %StopHotkey%, Off
-
+    
     GuiControlGet, StartHotkeyTemp
     GuiControlGet, PauseHotkeyTemp
     GuiControlGet, StopHotkeyTemp
-
+    
     GuiControlGet, StartWinKey
     GuiControlGet, PauseWinKey
     GuiControlGet, StopWinKey
-
+    
     if (StartHotkeyTemp == "" || PauseHotkeyTemp == "" || StopHotkeyTemp == ""){
         MsgBox, 4112, Error, Hotkeys cannot be blank!
         Return
     }
-
+    
     if (StartWinKey)
         StartHotkeyTemp := "#" StartHotkeyTemp
     if (PauseWinKey)
         PauseHotkeyTemp := "#" PauseHotkeyTemp
     if (StopWinKey)
         StopHotkeyTemp := "#" StopHotkeyTemp
-
+    
     if (StrLen(StartHotkeyTemp) == 1)
         StartHotkeyTemp := "~" StartHotkeyTemp
     if (StrLen(PauseHotkeyTemp) == 1)
         PauseHotkeyTemp := "~" PauseHotkeyTemp
     if (StrLen(StopHotkeyTemp) == 1)
         StopHotkeyTemp := "~" StopHotkeyTemp
-
+    
     Hotkey, %StartHotkeyTemp%, StartMacro, On
     Hotkey, %PauseHotkeyTemp%, PauseMacro, On
     Hotkey, %StopHotkeyTemp%, StopMacro, On
-
-    IniWrite, %StartHotkeyTemp%, % IniPaths[1], Keybinds, StartHotkey
-    IniWrite, %PauseHotkeyTemp%, % IniPaths[1], Keybinds, PauseHotkey
-    IniWrite, %StopHotkeyTemp%, % IniPaths[1], Keybinds, StopHotkey
-
+    
+    IniWrite, %StartHotkeyTemp%, % IniPaths["Config"], Keybinds, StartHotkey
+    IniWrite, %PauseHotkeyTemp%, % IniPaths["Config"], Keybinds, PauseHotkey
+    IniWrite, %StopHotkeyTemp%, % IniPaths["Config"], Keybinds, StopHotkey
+    
     if (StrLen(StartHotkeyTemp) < 5)
         Gui, Main:Font
     else
         Gui, Main:Font, s6
     GuiControl, Main:Font, StartHotkeyButtonMain
-
+    
     if (StrLen(PauseHotkeyTemp) < 5)
         Gui, Main:Font
     else
         Gui, Main:Font, s6
     GuiControl, Main:Font, PauseHotkeyButtonMain
-
+    
     if (StrLen(StopHotkeyTemp) < 5)
         Gui, Main:Font
     else
         Gui, Main:Font, s6
     GuiControl, Main:Font, StopHotkeyButtonMain
-
+    
     GuiControl, Main:Text, StartHotkeyButtonMain, %StartHotkeyTemp%
     GuiControl, Main:Text, PauseHotkeyButtonMain, %PauseHotkeyTemp%
     GuiControl, Main:Text, StopHotkeyButtonMain, %StopHotkeyTemp%
-
+    
     GuiControl, Main:Text, StartHotkeyButtonSettings, Start (%StartHotkeyTemp%)
     GuiControl, Main:Text, PauseHotkeyButtonSettings, Pause (%PauseHotkeyTemp%)
     GuiControl, Main:Text, StopHotkeyButtonSettings, Stop (%StopHotkeyTemp%)
-
+    
     StartHotkey := StartHotkeyTemp
     PauseHotkey := PauseHotkeyTemp
     StopHotkey := StopHotkeyTemp
-
+    
     Gui, EditHotkeys:Hide
 }
 
@@ -464,7 +455,7 @@ MovespeedUpdated() {
     GuiControlGet, MovespeedTemp,, Movespeed
     if MovespeedTemp is number
         if (MovespeedTemp > 0 && MovespeedTemp < 42){
-            IniWrite, %MovespeedTemp%, % IniPaths[1], Important, Movespeed
+            IniWrite, %MovespeedTemp%, % IniPaths["Config"], Important, Movespeed
             Movespeed := MovespeedTemp
             Return
         }
@@ -476,7 +467,7 @@ NumberOfBeesUpdated() {
     GuiControlGet, NumberOfBeesTemp,, NumberOfBees
     if NumberOfBeesTemp is number
         if (NumberOfBeesTemp > 0 && NumberOfBeesTemp < 51){
-            IniWrite, %NumberOfBeesTemp%, % IniPaths[1], Important, NumberOfBeesTemp
+            IniWrite, %NumberOfBeesTemp%, % IniPaths["Config"], Important, NumberOfBeesTemp
             NumberOfBees := NumberOfBeesTemp
             Return
         }
@@ -489,7 +480,7 @@ VIPLinkUpdated() {
     if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=\d{32}(\&[^\/]*)*$"))
     {
         Trim(VIPLinkTemp)
-        IniWrite, %VIPLinkTemp%, % IniPaths[1], Important, VIPLink
+        IniWrite, %VIPLinkTemp%, % IniPaths["Config"], Important, VIPLink
         VIPLink := VIPLinkTemp
     } else if (VIPLinkTemp != "")
         MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
@@ -583,11 +574,11 @@ AddFieldRotation() {
         FieldRotationList .= AddToRotation "|"
         CurrentlySelectedField := AddToRotation
         NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
-
-        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
-        IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
-        IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
-
+        
+        IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
+        IniWrite, %CurrentlySelectedField%, % IniPaths["FieldConfig"], Config, CurrentlySelectedField
+        IniWrite, %NonRotationList%, % IniPaths["FieldConfig"], Config, NonRotationList
+        
         GuiControl,, CurrentlySelectedField, % "|" StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
         GuiControl,, AddToRotation, % "|" NonRotationList
     }
@@ -603,19 +594,19 @@ RemoveFieldRotation() {
         NonRotationList := StrReplace(NonRotationList, "||", "|") CurrentlySelectedField "|"
         FieldRotationList := StrReplace(FieldRotationList, CurrentlySelectedField "|")
         CurrentlySelectedField := ""
-
+        
         if (FieldRotationList == "")
             DoGather := 0
         else
             DoGather := 1
-
+        
         Sort, NonRotationList, D|
-
-        IniWrite, %DoGather%, % IniPaths[2], Config, DoGather
-        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
-        IniWrite, %CurrentlySelectedField%, % IniPaths[2], Config, CurrentlySelectedField
-        IniWrite, %NonRotationList%, % IniPaths[2], Config, NonRotationList
-
+        
+        IniWrite, %DoGather%, % IniPaths["FieldConfig"], Config, DoGather
+        IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
+        IniWrite, %CurrentlySelectedField%, % IniPaths["FieldConfig"], Config, CurrentlySelectedField
+        IniWrite, %NonRotationList%, % IniPaths["FieldConfig"], Config, NonRotationList
+        
         GuiControl, Main:Text, CurrentlySelectedField, % "|" FieldRotationList
         GuiControl, Main:Text, AddToRotation, % "|" NonRotationList
     }
@@ -628,7 +619,7 @@ MoveFieldRotationUp() {
     GuiControlGet, CurrentlySelectedField
     if (CurrentlySelectedField != "" && InStr(FieldRotationList, CurrentlySelectedField) != 1) {
         FieldRotationList := SubStr(FieldRotationList, 1, InStr(SubStr(FieldRotationList, 1, InStr(FieldRotationList, CurrentlySelectedField "|") - 1), "|",, -1)) CurrentlySelectedField StrReplace(SubStr("|" FieldRotationList, InStr("|" SubStr(FieldRotationList, 1, InStr(FieldRotationList, CurrentlySelectedField "|") - 1), "|",, -1)), CurrentlySelectedField "|")
-        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
         GuiControl, Main:Text, CurrentlySelectedField, % "|" StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
     }
 }
@@ -640,7 +631,7 @@ MoveFieldRotationDown() {
     GuiControlGet, CurrentlySelectedField
     if (CurrentlySelectedField != "" && InStr(FieldRotationList, CurrentlySelectedField,, 0) - 1 != StrLen(FieldRotationList) - StrLen(CurrentlySelectedField "|") && StrLen(FieldRotationList) - StrLen(CurrentlySelectedField "|") > 0) {
         FieldRotationList := StrReplace(SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|")) == "|" ? FieldRotationList : StrReplace(FieldRotationList, SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|"))) "|", CurrentlySelectedField "|") CurrentlySelectedField SubStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], InStr(StrSplit(FieldRotationList, CurrentlySelectedField "|")[2], "|"))
-        IniWrite, %FieldRotationList%, % IniPaths[2], Config, FieldRotationList
+        IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
         GuiControl, Main:Text, CurrentlySelectedField, % "|" StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
     }
 }
@@ -649,8 +640,9 @@ ResetAllDefaults() {
     MsgBox, 305, Warning!, This will reset the entire macro to its default settings`, excluding stats.
     IfMsgBox, OK
     {
-        CreateConfig()
-        CreateFields()
+        for ini in AllVars
+            if (ini != "Stats")
+                CreateIni(ini)
         Reload
     }
 }
@@ -658,8 +650,8 @@ ResetAllDefaults() {
 GuiClosed() {
     GuiToAllInis()
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
-    IniWrite, %windowX%, % IniPaths[1], GUI, GuiX
-    IniWrite, %windowY%, % IniPaths[1], GUI, GuiY
+    IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
+    IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
 }
 
 StartMacro() {
@@ -683,11 +675,11 @@ EditHotkeysGuiClose() {
     Global StartHotkey
     Global PauseHotkey
     Global StopHotkey
-
+    
     GuiControl, EditHotkeys:Text, StartHotkeyTemp, %StartHotkey%
     GuiControl, EditHotkeys:Text, PauseHotkeyTemp, %PauseHotkey%
     GuiControl, EditHotkeys:Text, StopHotkeyTemp, %StopHotkey%
-
+    
     Hotkey, %StartHotkey%, StartMacro, On
     Hotkey, %PauseHotkey%, PauseMacro, On
     Hotkey, %StopHotkey%, StopMacro, On
