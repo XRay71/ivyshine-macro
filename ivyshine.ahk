@@ -366,14 +366,14 @@ Gui, Main:Add, GroupBox, x8 y8 w220 h306, Field Rotation
 Gui, Main:Add, Text, x14 y27 w208 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
+Gui, Main:Add, Text, x33 y30 w80 h20 +0x200, Selected
+Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Not Selected
 Gui, Main:Add, ListBox, x16 y50 w80 h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui, Main:Add, Text, x24 y30 w80 h20 +0x200, Field Rotation
 Gui, Main:Add, ListBox, x136 y50 w80 h230 vAddToRotation gAddToRotationUpdated, %NonRotationList%
-Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Non-Rotation
-Gui, Main:Add, Button, x104 y120 w24 h23 gAddFieldRotation, <-
-Gui, Main:Add, Button, x104 y144 w24 h23 gRemoveFieldRotation, ->
-Gui, Main:Add, Button, x104 y176 w24 h23 gMoveFieldRotationUp, /\
-Gui, Main:Add, Button, x104 y200 w24 h23 gMoveFieldRotationDown, \/
+Gui, Main:Add, Button, x104 y100 w24 h23 gAddFieldRotation, <-
+Gui, Main:Add, Button, x104 y124 w24 h23 gRemoveFieldRotation, ->
+Gui, Main:Add, Button, x104 y156 w24 h23 gMoveFieldRotationUp, /\
+Gui, Main:Add, Button, x104 y180 w24 h23 gMoveFieldRotationDown, \/
 Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
