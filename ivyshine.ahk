@@ -3,7 +3,6 @@
 #Include %A_ScriptDir%
 #Include lib\ahk\base.ahk
 #UseHook
-#Persistent
 
 SendMode, Input
 SetBatchLines, -1
@@ -197,8 +196,9 @@ CreateInit(!FileExist("lib\init"))
 ;=====================================
 ; Check Monitor
 ;=====================================
-; CheckMonitor()
+CheckMonitor()
 CheckMonitor() {
+    Global GuiX, GuiY
     SysGet, MonitorCount, MonitorCount
     loop, %MonitorCount%
     {
@@ -247,11 +247,11 @@ Gui, Main:Font, s8
 Gui, Main:Add, Text, x16 y35, Movespeed
 Gui, Main:Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
 Gui, Main:Add, Text, x16 y59, Move Method
-Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGUIUpdated, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
+Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGuiToAllInis, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
 Gui, Main:Add, Text, x16 y83, # of Sprinklers
-Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGUIUpdated, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToAllInis, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
 Gui, Main:Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
-Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGUIUpdated, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToAllInis, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
 Gui, Main:Add, Text, x16 y132, Private Server Link
 Gui, Main:Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
 
@@ -261,7 +261,7 @@ Gui, Main:Add, Text, x14 y203 w138 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Text, x16 y210 w69 h20, Red Cannon
-Gui, Main:Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGUIUpdated +Checked%HasRedCannon%
+Gui, Main:Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGuiToAllInis +Checked%HasRedCannon%
 Gui, Main:Add, Text, x16 y235 w69 h20, Parachute
 Gui, Main:Add, CheckBox, x96 y232 w20 h20 vHasParachute gHasParachuteUpdated +Checked%HasParachute%
 Gui, Main:Add, Text, x16 y259 h20, Mountain Glider
@@ -276,9 +276,9 @@ Gui, Main:Add, Text, x174 y27 w105 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Text, x176 y35 w75 h20, Bear Bee
-Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGUIUpdated +Checked%HasBearBee%
+Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGuiToAllInis +Checked%HasBearBee%
 Gui, Main:Add, Text, x176 y59 w75 h20, Gifted Vicious
-Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
+Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%
 
 Hotkey, %StartHotkey%, StartMacro, On
 Hotkey, %PauseHotkey%, PauseMacro, On
@@ -344,7 +344,7 @@ if (Layout == "custom") {
     Gui, Main:Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
     Gui, Main:Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
 }
-Gui, Main:Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGUIUpdated, %KeyDelay%
+Gui, Main:Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGuiToAllInis, %KeyDelay%
 
 Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
 
@@ -476,17 +476,14 @@ NumberOfBeesUpdated() {
 VIPLinkUpdated() {
     Global VIPLink
     GuiControlGet, VIPLinkTemp,, VIPLink
-    if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=\d{32}(\&[^\/]*)*$"))
+    VIPLinkTemp := Trim(VIPLinkTemp)
+    if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=.{32}(\&[^\/]*)*$"))
     {
         Trim(VIPLinkTemp)
         IniWrite, %VIPLinkTemp%, % IniPaths["Config"], Important, VIPLink
         VIPLink := VIPLinkTemp
     } else if (VIPLinkTemp != "")
         MsgBox, 16, Error, It appears that the link you provided is invalid. Please copy and paste it directly from the private server configuration page.
-}
-
-GUIUpdated() {
-    GuiToAllInis()
 }
 
 HasParachuteUpdated() {
@@ -564,7 +561,6 @@ AddToRotationUpdated() {
 }
 
 AddFieldRotation() {
-    ReadFromAllInis()
     Global FieldRotationList
     Global AddToRotation
     Global NonRotationList
@@ -574,6 +570,9 @@ AddFieldRotation() {
         CurrentlySelectedField := AddToRotation
         NonRotationList := StrReplace(NonRotationList, AddToRotation "|")
         
+        DoGather := 1
+        
+        IniWrite, %DoGather%, % IniPaths["FieldConfig"], Config, DoGather
         IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
         IniWrite, %CurrentlySelectedField%, % IniPaths["FieldConfig"], Config, CurrentlySelectedField
         IniWrite, %NonRotationList%, % IniPaths["FieldConfig"], Config, NonRotationList
@@ -584,7 +583,6 @@ AddFieldRotation() {
 }
 
 RemoveFieldRotation() {
-    ReadFromAllInis()
     Global FieldRotationList
     Global NonRotationList
     Global CurrentlySelectedField

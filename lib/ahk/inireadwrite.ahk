@@ -79,7 +79,7 @@ GuiToAllInis() {
 
 GuiToIni(path := "lib\init\config.ini") {
     Global
-    Local ini, content, ind, varname, header
+    Local ini, content, ind, varname, header, guicontent
     ini := FileOpen(path, "r"), content := ini.Read(), ini.Close()
     Loop, Parse, content, `r`n, %A_Space%%A_Tab%
     {
@@ -95,8 +95,11 @@ GuiToIni(path := "lib\init\config.ini") {
             if (ind := InStr(A_LoopField, "="))
             {
                 varname := SubStr(A_LoopField, 1, ind - 1)
-                IniWrite, % %varname%, %path%, %header%, %varname%
+                GuiControlGet, guicontent,, %varname%
+                if (guicontent != "")
+                    IniWrite, %guicontent%, %path%, %header%, %varname%
             }
         }
     }
+    
 }

@@ -11,26 +11,36 @@ Sleep(duration) {
     DllCall("Sleep", UInt, duration)
 }
 
-TimeSince(time) {
+TimeSinceSeconds(time) {
     dif := A_NowUTC
     EnvSub, dif, time, Seconds
     Return dif
 }
 
+TimeSinceMinutes(time) {
+    dif := A_NowUTC
+    EnvSub, dif, time, Minutes
+    Return dif
+}
+
 PressM(keys, duration := 20) {
+    Global KeyDelay
     SetKeyDelay, 5
     for i, key in keys
         Send {%key% Down}
     Sleep(duration)
     for i, key in keys
         Send {%key% Up}
+    Sleep(KeyDelay)
 }
 
 PressS(key, duration := 20) {
+    Global KeyDelay
     SetKeyDelay, 5
     Send {%key% Down}
     Sleep(duration)
     Send {%key% Up}
+    Sleep(KeyDelay)
 }
 
 Move(keys, duration := 100) {
@@ -49,7 +59,7 @@ Jump(duration := 200) {
 }
 
 MoveCamera(direction, num := 1) {
-    if (direction == "around") {
+    if (direction == "Around") {
         Loop, 4
         {
             PressS(CameraRightKey)
@@ -75,7 +85,7 @@ PlaceSprinklers(){
         }
         else
         {
-
+            
         }
     }
 }
