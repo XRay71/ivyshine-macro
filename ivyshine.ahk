@@ -3,6 +3,7 @@
 #Include %A_ScriptDir%
 #Include lib\ahk\base.ahk
 #UseHook
+#Persistent
 
 SendMode, Input
 SetBatchLines, -1
@@ -211,7 +212,7 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-; OnExit(MainGuiClose())
+OnExit("MainGuiClose")
 Gui, Main:-MaximizeBox +Border
 
 if (StrLen(StartHotkey) < 5)
