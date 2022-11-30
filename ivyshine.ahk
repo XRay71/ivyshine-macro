@@ -211,10 +211,8 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-OnExit(MainGuiClose())
+; OnExit(MainGuiClose())
 Gui, Main:-MaximizeBox +Border
-if (AlwaysOnTop)
-    Gui, Main:+AlwaysOnTop
 
 if (StrLen(StartHotkey) < 5)
     Gui, Main:Font
@@ -280,6 +278,10 @@ Gui, Main:Add, Text, x176 y35 w75 h20, Bear Bee
 Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGUIUpdated +Checked%HasBearBee%
 Gui, Main:Add, Text, x176 y59 w75 h20, Gifted Vicious
 Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGUIUpdated +Checked%HasGiftedVicious%
+
+Hotkey, %StartHotkey%, StartMacro, On
+Hotkey, %PauseHotkey%, PauseMacro, On
+Hotkey, %StopHotkey%, StopMacro, On
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x296 y8 w117 h125, Hotkeys
@@ -364,10 +366,6 @@ Gui, Main:Add, Button, x104 y180 w24 h23 gMoveFieldRotationDown, \/
 Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
-
-Hotkey, %StartHotkey%, StartMacro, On
-Hotkey, %PauseHotkey%, PauseMacro, On
-Hotkey, %StopHotkey%, StopMacro, On
 
 EditHotkeys() {
     Gui, EditHotkeys:Show,, Edit Hotkeys
