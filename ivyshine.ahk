@@ -372,7 +372,7 @@ Gui, Main:Add, GroupBox, x232 y8 w310 h306, Field Settings
 Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 ; Gui, Main:Font
 ; Gui, Main:Font, s6
-; tempx := 248
+; tempx := 248 
 ; tempy := 50
 ; tempw := 43 * 5 - 2
 ; Loop, 35
