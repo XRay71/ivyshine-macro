@@ -4,8 +4,11 @@ SetTitleMatchMode, 2
 CoordMode, Pixel, Screen
 
 #NoEnv
-#Include lib\ahk\constants.ahk
-#Include lib\ahk\inireadwrite.ahk
+#Include *i lib\ahk\constants.ahk
+#Include *i lib\ahk\inireadwrite.ahk
+
+if (!FileExist("lib\ahk\constants.ahk") || !FileExist("lib\ahk\inireadwrite.ahk"))
+    UnzipFailure()
 
 Sleep(duration) {
     DllCall("Sleep", UInt, duration)

@@ -1,8 +1,11 @@
 #NoEnv
 #SingleInstance, Force
 #Include %A_ScriptDir%
-#Include lib\ahk\base.ahk
+#Include *i lib\ahk\base.ahk
 #UseHook
+
+if (!FileExist("lib\ahk\base.ahk"))
+    UnzipFailure()
 
 SendMode, Input
 SetBatchLines, -1
@@ -372,7 +375,7 @@ Gui, Main:Add, GroupBox, x232 y8 w310 h306, Field Settings
 Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 ; Gui, Main:Font
 ; Gui, Main:Font, s6
-; tempx := 248 
+; tempx := 248
 ; tempy := 50
 ; tempw := 43 * 5 - 2
 ; Loop, 35
@@ -712,6 +715,11 @@ EditHotkeysGuiClose() {
     Hotkey, %StartHotkey%, StartMacro, On
     Hotkey, %PauseHotkey%, PauseMacro, On
     Hotkey, %StopHotkey%, StopMacro, On
+}
+
+UnzipFailure() {
+    MsgBox, 48, Error, Some files are missing from the macro! Please download a fresh copy from https://github.com/XRay71/ivyshine-macro.
+    ExitApp
 }
 
 ^r::Reload
