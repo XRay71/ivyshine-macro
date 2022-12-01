@@ -136,7 +136,6 @@ CheckResolution() {
 Global AllVars := {}
 
 AllVars["Config"] := {}
-
 AllVars["Config"]["Important"] := {"MoveSpeed":"28"
     , "NumberOfSprinklers":"1"
     , "NumberOfBees":"40"
@@ -186,12 +185,27 @@ AllVars["Config"]["GUI"] := {"GuiX":"0"
     , "CurrentTab":"Settings"}
 
 AllVars["FieldConfig"] := {}
-
 AllVars["FieldConfig"]["Config"] := {"FieldRotationList":"Pine Tree|"
     , "CurrentlySelectedField":"Pine Tree"
     , "NonRotationList":"Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower|"
     , "DoGather":"1"}
-
+AllVars["FieldConfig"]["Bamboo"] := {"FlowersX":"39", "FlowersY":"18"}
+AllVars["FieldConfig"]["Blue Flower"] := {"FlowersX":"43", "FlowersY":"17"}
+AllVars["FieldConfig"]["Cactus"] := {"FlowersX":"33", "FlowersY":"18"}
+AllVars["FieldConfig"]["Clover"] := {"FlowersX":"39", "FlowersY":"27"}
+AllVars["FieldConfig"]["Coconut"] := {"FlowersX":"30", "FlowersY":"21"}
+AllVars["FieldConfig"]["Dandelion"] := {"FlowersX":"36", "FlowersY":"18"}
+AllVars["FieldConfig"]["Mountain Top"] := {"FlowersX":"28", "FlowersY":"24"}
+AllVars["FieldConfig"]["Mushroom"] := {"FlowersX":"32", "FlowersY":"23"}
+AllVars["FieldConfig"]["Pepper"] := {"FlowersX":"27", "FlowersY":"21"}
+AllVars["FieldConfig"]["Pine Tree"] := {"FlowersX":"31", "FlowersY":"23"}
+AllVars["FieldConfig"]["Pineapple"] := {"FlowersX":"35", "FlowersY":"23"}
+AllVars["FieldConfig"]["Pumpkin"] := {"FlowersX":"33", "FlowersY":"17"}
+AllVars["FieldConfig"]["Rose"] := {"FlowersX":"31", "FlowersY":"20"}
+AllVars["FieldConfig"]["Spider"] := {"FlowersX":"28", "FlowersY":"25"}
+AllVars["FieldConfig"]["Strawberry"] := {"FlowersX":"22", "FlowersY":"26"}
+AllVars["FieldConfig"]["Stump"] := {}
+AllVars["FieldConfig"]["Sunflower"] := {"FlowersX":"20 ", "FlowersY":"33"}
 AllVars["Stats"] := {}
 
 if (FileExist("lib\init"))
@@ -283,10 +297,6 @@ Gui, Main:Add, Text, x176 y35 w75 h20, Bear Bee
 Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGuiToAllInis +Checked%HasBearBee%
 Gui, Main:Add, Text, x176 y59 w75 h20, Gifted Vicious
 Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%
-
-Hotkey, %StartHotkey%, StartMacro, On
-Hotkey, %PauseHotkey%, PauseMacro, On
-Hotkey, %StopHotkey%, StopMacro, On
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x296 y8 w117 h125, Hotkeys
@@ -392,9 +402,13 @@ Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 ; }
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Button, x240 y32 w290 h23 -Theme, Open Field View Editor
+Gui, Main:Add, Button, x240 y32 w290 h23 -Theme gGenerateFieldViewEditor, Open Field View Editor
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
+
+Hotkey, %StartHotkey%, StartMacro, On
+Hotkey, %PauseHotkey%, PauseMacro, On
+Hotkey, %StopHotkey%, StopMacro, On
 
 MainTabUpdated() {
     Global CurrentTab
@@ -485,6 +499,36 @@ SaveEditedHotkeys() {
     StopHotkey := StopHotkeyTemp
     
     Gui, EditHotkeys:Hide
+}
+
+GenerateFieldViewEditor() {
+    Gui, FieldViewEditor:Destroy
+    Global CurrentlySelectedField
+    Global AllVars
+    GuiControlGet, CurrentlySelectedField
+    if (CurrentlySelectedField && CurrentlySelectedField != "Stump") {
+        Gui, FieldViewEditor:+ownerMain
+        Gui, FieldViewEditor:+ToolWindow
+        LineX := 21
+        LineY := 21
+        LineW := AllVars["FieldConfig"][CurrentlySelectedField]["FlowersX"] * 6 - 1
+        LineH := AllVars["FieldConfig"][CurrentlySelectedField]["FlowersY"] * 6 - 1
+        Loop, % AllVars["FieldConfig"][CurrentlySelectedField]["FlowersY"]
+        {
+            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w%LineW% h1 0x10
+            LineY += 6
+        }
+        LineY := 21
+        Loop, % AllVars["FieldConfig"][CurrentlySelectedField]["FlowersX"]
+        {
+            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w1 h%LineH% +0x1 +0x10
+            LineX += 6
+        }
+        GuiW := 20 * 2 + LineW
+        GuiH := 20 * 2 + LineH
+        Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%
+        
+    }
 }
 
 MovespeedUpdated() {
