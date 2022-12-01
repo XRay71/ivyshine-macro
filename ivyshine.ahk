@@ -366,6 +366,29 @@ Gui, Main:Add, Button, x104 y156 w24 h23 gMoveFieldRotationUp, /\
 Gui, Main:Add, Button, x104 y180 w24 h23 gMoveFieldRotationDown, \/
 Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
 
+Gui, Main:Font, s11 Norm cBlack, Calibri
+Gui, Main:Add, GroupBox, x232 y8 w310 h306, Field Settings
+Gui, Main:Add, Text, x238 y27 w298 h2 0x10
+; Gui, Main:Font
+; Gui, Main:Font, s6
+; tempx := 248
+; tempy := 50
+; tempw := 43 * 5 - 2
+; Loop, 35
+; {
+;     Gui, Main:Add, Text, x%tempx% y%tempy% w%tempw% h1 0x10
+;     tempy += 5
+; }
+; tempy := 50
+; temph := 35 * 5 - 1
+; Loop, 43
+; {
+;     Gui, Main:Add, Text, x%tempx% y%tempy% w1 h%temph% +0x1 +0x10
+;     tempx += 5
+; }
+Gui, Main:Font
+Gui, Main:Font, s8
+
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
 EditHotkeys() {
