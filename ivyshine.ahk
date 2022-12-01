@@ -189,24 +189,26 @@ AllVars["FieldConfig"]["Config"] := {"FieldRotationList":"Pine Tree|"
     , "CurrentlySelectedField":"Pine Tree"
     , "NonRotationList":"Bamboo|Blue Flower|Cactus|Clover|Coconut|Dandelion|Mountain Top|Mushroom|Pepper|Pineapple|Pumpkin|Rose|Spider|Strawberry|Stump|Sunflower|"
     , "DoGather":"1"}
-AllVars["FieldConfig"]["Bamboo"] := {"FlowersX":"39", "FlowersY":"18"}
-AllVars["FieldConfig"]["Blue Flower"] := {"FlowersX":"43", "FlowersY":"17"}
-AllVars["FieldConfig"]["Cactus"] := {"FlowersX":"33", "FlowersY":"18"}
-AllVars["FieldConfig"]["Clover"] := {"FlowersX":"39", "FlowersY":"27"}
-AllVars["FieldConfig"]["Coconut"] := {"FlowersX":"30", "FlowersY":"21"}
-AllVars["FieldConfig"]["Dandelion"] := {"FlowersX":"36", "FlowersY":"18"}
-AllVars["FieldConfig"]["Mountain Top"] := {"FlowersX":"28", "FlowersY":"24"}
-AllVars["FieldConfig"]["Mushroom"] := {"FlowersX":"32", "FlowersY":"23"}
-AllVars["FieldConfig"]["Pepper"] := {"FlowersX":"27", "FlowersY":"21"}
-AllVars["FieldConfig"]["Pine Tree"] := {"FlowersX":"31", "FlowersY":"23"}
-AllVars["FieldConfig"]["Pineapple"] := {"FlowersX":"35", "FlowersY":"23"}
-AllVars["FieldConfig"]["Pumpkin"] := {"FlowersX":"33", "FlowersY":"17"}
-AllVars["FieldConfig"]["Rose"] := {"FlowersX":"31", "FlowersY":"20"}
-AllVars["FieldConfig"]["Spider"] := {"FlowersX":"28", "FlowersY":"25"}
-AllVars["FieldConfig"]["Strawberry"] := {"FlowersX":"22", "FlowersY":"26"}
-AllVars["FieldConfig"]["Stump"] := {}
-AllVars["FieldConfig"]["Sunflower"] := {"FlowersX":"20 ", "FlowersY":"33"}
 AllVars["Stats"] := {}
+
+FieldDefaults := {}
+FieldDefaults["Bamboo"] := {"FlowersX":"39", "FlowersY":"18", "NorthWall":"1", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Blue Flower"] := {"FlowersX":"43", "FlowersY":"17", "NorthWall":"1", "EastWall":"0", "WestWall":"0", "SouthWall":"1"}
+FieldDefaults["Cactus"] := {"FlowersX":"33", "FlowersY":"18", "NorthWall":"0", "EastWall":"1", "WestWall":"0", "SouthWall":"1"}
+FieldDefaults["Clover"] := {"FlowersX":"39", "FlowersY":"27", "NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"1"}
+FieldDefaults["Coconut"] := {"FlowersX":"30", "FlowersY":"21", "NorthWall":"0", "EastWall":"1", "WestWall":"1", "SouthWall":"1"}
+FieldDefaults["Dandelion"] := {"FlowersX":"36", "FlowersY":"18", "NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"1"}
+FieldDefaults["Mountain Top"] := {"FlowersX":"24", "FlowersY":"28", "NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Mushroom"] := {"FlowersX":"32", "FlowersY":"23", "NorthWall":"1", "EastWall":"1", "WestWall":"1", "SouthWall":"0"}
+FieldDefaults["Pepper"] := {"FlowersX":"21", "FlowersY":"27", "NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Pine Tree"] := {"FlowersX":"23", "FlowersY":"31", "NorthWall":"1", "EastWall":"0", "WestWall":"1", "SouthWall":"0"}
+FieldDefaults["Pineapple"] := {"FlowersX":"35", "FlowersY":"23", "NorthWall":"1", "EastWall":"1", "WestWall":"1", "SouthWall":"0"}
+FieldDefaults["Pumpkin"] := {"FlowersX":"33", "FlowersY":"17", "NorthWall":"1", "EastWall":"1", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Rose"] := {"FlowersX":"31", "FlowersY":"20", "NorthWall":"1", "EastWall":"1", "WestWall":"0", "SouthWall":"1"}
+FieldDefaults["Spider"] := {"FlowersX":"28", "FlowersY":"25", "NorthWall":"1", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Strawberry"] := {"FlowersX":"22", "FlowersY":"26", "NorthWall":"1", "EastWall":"0", "WestWall":"1", "SouthWall":"0"}
+FieldDefaults["Stump"] := {"NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
+FieldDefaults["Sunflower"] := {"FlowersX":"20 ", "FlowersY":"33", "NorthWall":"0", "EastWall":"0", "WestWall":"0", "SouthWall":"0"}
 
 if (FileExist("lib\init"))
     ReadFromAllInis()
@@ -308,8 +310,7 @@ Gui, Main:Add, Button, x302 y59 w101 h20 vPauseHotkeyButtonSettings gPauseMacro,
 Gui, Main:Add, Button, x302 y83 w101 h20 vStopHotkeyButtonSettings gStopMacro, Stop (%StopHotkey%)
 Gui, Main:Add, Button, x302 y107 w101 h20 gEditHotkeys, Edit Hotkeys
 
-Gui, EditHotkeys:+ownerMain
-Gui, EditHotkeys:+ToolWindow
+Gui, EditHotkeys:+ownerMain +ToolWindow
 Gui, EditHotkeys:Add, Text, x4 y7, Start
 Gui, EditHotkeys:Add, Hotkey, x40 y4 vStartHotkeyTemp, % StartHotkey == StrReplace(StartHotkey, "#") ? StartHotkey : SubStr(StartHotkey, 2)
 Gui, EditHotkeys:Add, CheckBox, x+5 y7 vStartWinKey, WinKey
@@ -403,6 +404,8 @@ Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Button, x240 y32 w290 h23 -Theme gGenerateFieldViewEditor, Open Field View Editor
+Gui, Main:Add, Text, x246 y60 w80 h20 +0x200, Gather Pattern
+Gui, Main:Add, ListBox, x240 y80 w80 h229, Pattern
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
@@ -416,7 +419,7 @@ MainTabUpdated() {
     if (CurrentTab != "Settings")
         Gui, EditHotkeys:Cancel
     else if (CurrentTab != "Fields")
-        Gui, FieldView:Cancel
+        Gui, FieldViewEditor:Destroy
     GuiToAllInis()
 }
 
@@ -502,30 +505,46 @@ SaveEditedHotkeys() {
 }
 
 GenerateFieldViewEditor() {
-    Gui, FieldViewEditor:Destroy
     Global CurrentlySelectedField
-    Global AllVars
+    Global FieldDefaults
     GuiControlGet, CurrentlySelectedField
+    Gui, FieldViewEditor:Destroy
+    Gui, FieldViewEditor:+ownerMain +ToolWindow
     if (CurrentlySelectedField && CurrentlySelectedField != "Stump") {
-        Gui, FieldViewEditor:+ownerMain
-        Gui, FieldViewEditor:+ToolWindow
-        LineX := 21
-        LineY := 21
-        LineW := AllVars["FieldConfig"][CurrentlySelectedField]["FlowersX"] * 6 - 1
-        LineH := AllVars["FieldConfig"][CurrentlySelectedField]["FlowersY"] * 6 - 1
-        Loop, % AllVars["FieldConfig"][CurrentlySelectedField]["FlowersY"]
+        SquareLength := 10
+        LineX := 20
+        LineY := 20
+        LineW := FieldDefaults[CurrentlySelectedField]["FlowersX"] * SquareLength - SquareLength / 2
+        LineH := FieldDefaults[CurrentlySelectedField]["FlowersY"] * SquareLength - Ceil(SquareLength / 2) - 1
+        Loop, % FieldDefaults[CurrentlySelectedField]["FlowersY"]
         {
-            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w%LineW% h1 0x10
-            LineY += 6
+            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w%LineW% 0x10
+            LineY += SquareLength
         }
-        LineY := 21
-        Loop, % AllVars["FieldConfig"][CurrentlySelectedField]["FlowersX"]
+        LineY := 20
+        Loop, % FieldDefaults[CurrentlySelectedField]["FlowersX"]
         {
-            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w1 h%LineH% +0x1 +0x10
-            LineX += 6
+            Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% h%LineH% 0x1 0x10
+            LineX += SquareLength
         }
+        
         GuiW := 20 * 2 + LineW
         GuiH := 20 * 2 + LineH
+        
+        LineX := GuiW - 15
+        LineY := GuiH - 15
+        LineW += 20
+        LineH += 19
+        
+        if (FieldDefaults[CurrentlySelectedField]["NorthWall"])
+            Gui, FieldViewEditor:Add, Text, x10 y10 w%LineW% 0x10
+        if (FieldDefaults[CurrentlySelectedField]["SouthWall"])
+            Gui, FieldViewEditor:Add, Text, x10 y%LineY% w%LineW% 0x10
+        if (FieldDefaults[CurrentlySelectedField]["WestWall"])
+            Gui, FieldViewEditor:Add, Text, x10 y10 h%LineH% 0x1 0x10
+        if (FieldDefaults[CurrentlySelectedField]["EastWall"])
+            Gui, FieldViewEditor:Add, Text, x%LineX% y10 h%LineH% 0x1 0x10
+        
         Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%
         
     }
