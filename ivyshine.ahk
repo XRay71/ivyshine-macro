@@ -13,7 +13,7 @@ CoordMode, Pixel, Screen
 ;=====================================
 ; AHK version swapping
 ;=====================================
-; RunWith(32)
+RunWith(32)
 RunWith(version := 0) {
     if (version == 0) {
         if (!A_IsUnicode || (A_PtrSize != 4 && !A_Is64bitOS) || (A_PtrSize != 8 && A_Is64bitOS)) {
@@ -25,6 +25,7 @@ RunWith(version := 0) {
             else
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
         }
+        ExitApp
     } else {
         if (A_PtrSize != (version == 32 ? 4 : 8)) {
             SplitPath, A_AhkPath,, ahk_directory
@@ -34,14 +35,14 @@ RunWith(version := 0) {
                 Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
             else
                 Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
+            ExitApp
         }
     }
-    ExitApp
 }
 ;=====================================
 ; Check if zipped
 ;=====================================
-;Unzip()
+Unzip()
 Unzip() {
     psh := ComObjCreate("Shell.Application")
     SplitPath, A_ScriptFullPath,, zip_folder
@@ -178,7 +179,8 @@ AllVars["Config"]["Hotbar"] := {"SprinklerHotbar":"1"
 AllVars["Config"]["GUI"] := {"GuiX":"0"
     , "GuiY":"340"
     , "GuiFollowToggle":"0"
-    , "AlwaysOnTop":"0"}
+    , "AlwaysOnTop":"0"
+    , "CurrentTab":"Settings"}
 
 AllVars["FieldConfig"] := {}
 
@@ -199,7 +201,6 @@ CreateInit(!FileExist("lib\init"))
 CheckMonitor()
 CheckMonitor() {
     Global GuiX, GuiY
-    SysGet, MonitorCount, MonitorCount
     loop, %MonitorCount%
     {
         SysGet, CurrentMonitor, MonitorWorkArea, %A_Index%
@@ -235,7 +236,7 @@ Gui, Main:Font
 Gui, Main:Add, Text, x525 y335 h20, % "v" MacroVersion
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 -Wrap +0x8 +Bottom, Settings|Fields|Boost|Mobs|Quests|Planters|Stats
+Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Stats|", CurrentTab, CurrentTab "|")
 
 ; Tab: Settings
 Gui, Main:Tab, 1
@@ -247,11 +248,11 @@ Gui, Main:Font, s8
 Gui, Main:Add, Text, x16 y35, Movespeed
 Gui, Main:Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
 Gui, Main:Add, Text, x16 y59, Move Method
-Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGuiToAllInis, % MoveMethod != "Cannon" ? StrSplit("Walk|Glider|Cannon", MoveMethod)[1] MoveMethod "|" StrSplit("Walk|Glider|Cannon", MoveMethod)[2] : "Walk|Glider|Cannon||"
+Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGuiToAllInis, % StrReplace("Walk|Glider|Cannon|", MoveMethod, MoveMethod "|")
 Gui, Main:Add, Text, x16 y83, # of Sprinklers
-Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToAllInis, % NumberOfSprinklers != 6 ? StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[1] NumberOfSprinklers "|" StrSplit("1|2|3|4|5|6", NumberOfSprinklers)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", NumberOfSprinklers, NumberOfSprinklers "|")
 Gui, Main:Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
-Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToAllInis, % SlotNumber != 6 ? StrSplit("1|2|3|4|5|6", SlotNumber)[1] SlotNumber "|" StrSplit("1|2|3|4|5|6", SlotNumber)[2] : "1|2|3|4|5|6||"
+Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", SlotNumber, SlotNumber "|")
 Gui, Main:Add, Text, x16 y132, Private Server Link
 Gui, Main:Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
 
@@ -315,7 +316,7 @@ Gui, Main:Add, GroupBox, x424 y8 w117 h266, Keybinds
 Gui, Main:Add, Text, x430 y27 w105 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, DropDownList, x430 y32 w98 vLayout gKeybindsUpdated, % Layout != "custom" ? StrSplit("qwerty|azerty|custom", Layout)[1] Layout "|" StrSplit("qwerty|azerty|custom", Layout)[2] : "qwerty|azerty|custom||"
+Gui, Main:Add, DropDownList, x430 y32 w98 vLayout gKeybindsUpdated, % StrReplace("qwerty|azerty|custom|", Layout, Layout "|")
 Gui, Main:Add, Text, x430 y59 w79 h20, Move Forward
 Gui, Main:Add, Text, x430 y107 w75 h20, Move Back
 Gui, Main:Add, Text, x430 y83 w75 h20, Move Left
@@ -358,8 +359,8 @@ Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Text, x33 y30 w80 h20 +0x200, Selected
 Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Not Selected
-Gui, Main:Add, ListBox, x16 y50 w80 h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrSplit(FieldRotationList, CurrentlySelectedField)[1] CurrentlySelectedField "|" StrSplit(FieldRotationList, CurrentlySelectedField)[2]
-Gui, Main:Add, ListBox, x136 y50 w80 h230 vAddToRotation gAddToRotationUpdated, %NonRotationList%
+Gui, Main:Add, ListBox, x16 y50 w80 h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
+Gui, Main:Add, ListBox, x136 y50 w80 h230 +Sort vAddToRotation gAddToRotationUpdated, %NonRotationList%
 Gui, Main:Add, Button, x104 y100 w24 h23 gAddFieldRotation, <-
 Gui, Main:Add, Button, x104 y124 w24 h23 gRemoveFieldRotation, ->
 Gui, Main:Add, Button, x104 y156 w24 h23 gMoveFieldRotationUp, /\
@@ -388,8 +389,19 @@ Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 ; }
 Gui, Main:Font
 Gui, Main:Font, s8
+Gui, Main:Add, Button, x240 y32 w290 h23 -Theme, Open Field View Editor
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
+
+MainTabUpdated() {
+    Global CurrentTab
+    GuiControlGet, CurrentTab
+    if (CurrentTab != "Settings")
+        Gui, EditHotkeys:Cancel
+    else if (CurrentTab != "Fields")
+        Gui, FieldView:Cancel
+    GuiToAllInis()
+}
 
 EditHotkeys() {
     Gui, EditHotkeys:Show,, Edit Hotkeys
@@ -618,8 +630,6 @@ RemoveFieldRotation() {
             DoGather := 0
         else
             DoGather := 1
-        
-        Sort, NonRotationList, D|
         
         IniWrite, %DoGather%, % IniPaths["FieldConfig"], Config, DoGather
         IniWrite, %FieldRotationList%, % IniPaths["FieldConfig"], Config, FieldRotationList
