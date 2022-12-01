@@ -466,7 +466,7 @@ NumberOfBeesUpdated() {
     GuiControlGet, NumberOfBeesTemp,, NumberOfBees
     if NumberOfBeesTemp is number
         if (NumberOfBeesTemp > 0 && NumberOfBeesTemp < 51){
-            IniWrite, %NumberOfBeesTemp%, % IniPaths["Config"], Important, NumberOfBeesTemp
+            IniWrite, %NumberOfBeesTemp%, % IniPaths["Config"], Important, NumberOfBees
             NumberOfBees := NumberOfBeesTemp
             Return
         }
@@ -477,9 +477,8 @@ VIPLinkUpdated() {
     Global VIPLink
     GuiControlGet, VIPLinkTemp,, VIPLink
     VIPLinkTemp := Trim(VIPLinkTemp)
-    if (RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=.{32}(\&[^\/]*)*$"))
+    if (VIPLinkTemp == "" || RegExMatch(VIPLinkTemp, "i)^((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/(1537690962|4189852503)\/?([^\/]*)\?privateServerLinkCode=.{32}(\&[^\/]*)*$"))
     {
-        Trim(VIPLinkTemp)
         IniWrite, %VIPLinkTemp%, % IniPaths["Config"], Important, VIPLink
         VIPLink := VIPLinkTemp
     } else if (VIPLinkTemp != "")
