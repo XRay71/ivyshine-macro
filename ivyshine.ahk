@@ -568,13 +568,13 @@ GenerateFieldViewEditor() {
         LineW += 31
         LineH += 29
         
-        if (FieldDefaults[CurrentlySelectedField]["NorthWall"] || 1)
+        if (FieldDefaults[CurrentlySelectedField]["NorthWall"])
             Gui, FieldViewEditor:Add, Text, x63 y25 w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["SouthWall"] || 1)
+        if (FieldDefaults[CurrentlySelectedField]["SouthWall"])
             Gui, FieldViewEditor:Add, Text, x63 y%LineY% w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["WestWall"] || 1)
+        if (FieldDefaults[CurrentlySelectedField]["WestWall"])
             Gui, FieldViewEditor:Add, Text, x63 y25 h%LineH% 0x1 0x10
-        if (FieldDefaults[CurrentlySelectedField]["EastWall"] || 1)
+        if (FieldDefaults[CurrentlySelectedField]["EastWall"])
             Gui, FieldViewEditor:Add, Text, x%LineX% y25 h%LineH% 0x1 0x10
         
         Gui, FieldViewEditor:Add, Text, x6 y10 +BackgroundTrans, North West
