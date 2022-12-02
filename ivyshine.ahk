@@ -4,7 +4,7 @@
 #Include *i lib\ahk\base.ahk
 #UseHook
 
-if (!FileExist("lib\ahk\base.ahk"))
+if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk"))
     UnzipFailure()
 
 SendMode, Input
@@ -24,9 +24,9 @@ RunWith(version := 0) {
             if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe"))
                 MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
             else if (A_Is64bitOS)
-                Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
+                Run, "%u64_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
             else
-                Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
+                Run, "%u32_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
         }
         ExitApp
     } else {
@@ -35,9 +35,9 @@ RunWith(version := 0) {
             if (!FileExist(u32_directory := ahk_directory "\AutoHotkeyU32.exe") || !FileExist(u64_directory := ahk_directory "\AutoHotkeyU64.exe"))
                 MsgBox, 48, Error, Could not find the Unicode versions of AutoHotkey. Please reinstall.
             else if (version == 32)
-                Run, "%u32_directory%" "%A_ScriptName%", %A_ScriptDir%
+                Run, "%u32_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
             else
-                Run, "%u64_directory%" "%A_ScriptName%", %A_ScriptDir%
+                Run, "%u64_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
             ExitApp
         }
     }
@@ -239,6 +239,9 @@ CheckMonitor() {
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
 ;=====================================
+for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHERE name like 'rbxfpsunlocker.exe%' ") {
+    OldrbxfpsunlockerDir := process.ExecutablePath
+}
 ; if (Runrbxfpsunlocker)
 ;     RunFPS(FPSLevel)
 ;=====================================
@@ -267,7 +270,12 @@ StopMacro() {
 }
 
 MainGuiClose() {
+    Global OldrbxfpsunlockerDir
     GuiClosed()
+    Process, Close, rbxfpsunlocker.exe
+    if (OldrbxfpsunlockerDir != "")
+        Run, "%OldrbxfpsunlockerDir%", % StrReplace(OldrbxfpsunlockerDir, "rbxfpsunlocker.exe"), Hide
+    Sleep(100)
     ExitApp
 }
 
@@ -290,7 +298,7 @@ UnzipFailure() {
     ExitApp
 }
 
-^r::Reload
+r::Reload
 
 ^+r::
     FileRemoveDir, lib\init, 1

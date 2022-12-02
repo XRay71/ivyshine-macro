@@ -5,7 +5,7 @@ Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Text, xp yp+6, rbxfpsunlocker
-Gui, Main:Add, CheckBox, x+10 w25 +Checked%Runrbxfpsunlocker% grbxfpsunlockerUpdated vRunrbxfpsunlocker
+Gui, Main:Add, CheckBox, x+10 w25 +Checked%Runrbxfpsunlocker% vRunrbxfpsunlocker grbxfpsunlockerUpdated
 
 rbxfpsunlockerUpdated() {
     Global Runrbxfpsunlocker
@@ -28,7 +28,10 @@ rbxfpsunlockerUpdated() {
 }
 
 Gui, Main:Add, Text, x302 yp+20, Run at
-Gui, Main:Add, Edit, x+4 yp-3 w30 h20 limit3 +Number vFPSLevel gFPSLevelUpdated, 30
+if (Runrbxfpsunlocker)
+    Gui, Main:Add, Edit, x+4 yp-3 w30 h20 limit3 +Number vFPSLevel gFPSLevelUpdated, 30
+else
+    Gui, Main:Add, Edit, x+4 yp-3 w30 h20 limit3 +Number Disabled vFPSLevel gFPSLevelUpdated, 30
 Gui, Main:Add, Text, x+4 yp+3, FPS
 
 FPSLevelUpdated() {
@@ -42,29 +45,37 @@ FPSLevelUpdated() {
         GuiToAllInis()
 }
 
-Gui, Main:Add, Button, x302 yp+20 w105 vSaveFPS gSaveFPS, Save FPS
+if (Runrbxfpsunlocker)
+    Gui, Main:Add, Button, x302 yp+20 w105 vSaveFPS gSaveFPS, Save FPS
+else
+    Gui, Main:Add, Button, x302 yp+20 w105 Disabled vSaveFPS gSaveFPS, Save FPS
 
 SaveFPS() {
     Global Runrbxfpsunlocker
     Global FPSLevel
     if (!FPSLevel) {
-        MsgBox, 48, Warning!, Are you sure you want to run Roblox at unlimited FPS? This will strain your computer.
+        MsgBox, 276, Warning!, Are you sure you want to run Roblox at unlimited FPS? This will strain your computer.
+        IfMsgBox, No
+        Return
     }
+    
     if (Runrbxfpsunlocker)
         RunFPS(FPSLevel)
 }
 
 RunFPS(FPS := 30) {
     Process, Close, rbxfpsunlocker.exe
-    Process, WaitClose, rbxfpsunlocker.exe, 2
-    
+    if (!FPS)
+        FPSCapSelection := 0
+    else
+        FPSCapSelection := 1
     FileDelete, lib\rbxfpsunlocker\settings
     FileAppend,
     (
 UnlockClient=true
 UnlockStudio=false
 FPSCapValues=[%FPS%]
-FPSCapSelection=1
+FPSCapSelection=%FPSCapSelection%
 FPSCap=%FPS%
 CheckForUpdates=false
 NonBlockingErrors=true
@@ -72,5 +83,4 @@ SilentErrors=true
 QuickStart=true
     ), lib\rbxfpsunlocker\settings
     Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker, Hide
-    Process, Wait, "rbxfpsunlocker.exe", 2
 }
