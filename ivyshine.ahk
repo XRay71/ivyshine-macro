@@ -234,7 +234,7 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-#Include lib\ahk\GUI\gui.ahk
+#Include *i lib\ahk\GUI\gui.ahk
 ;=====================================
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
@@ -300,6 +300,13 @@ UnzipFailure() {
 
 ^r::Reload
 
+^!r::
+    boo := "hello"
+    if boo in hello
+    {
+        MsgBox, hi
+    }
+Return
 ^+r::
     FileRemoveDir, lib\init, 1
     FileDelete, lib\stats.ini

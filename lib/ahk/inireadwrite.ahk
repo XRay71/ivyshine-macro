@@ -1,5 +1,3 @@
-#NoEnv
-
 Global IniPaths := {"Config":A_ScriptDir "\lib\init\config.ini"
     , "FieldConfig":A_ScriptDir "\lib\init\fields.ini"
     , "Stats":A_ScriptDir "\lib\stats.ini"}
@@ -101,5 +99,47 @@ GuiToIni(path := "lib\init\config.ini") {
             }
         }
     }
+}
+
+FieldSettingsToIni(path := "\lib\init\fields.ini") {
+    Global CurrentlySelectedField
+    Global GatherPattern
+    Global GatherSize
+    Global GatherWidth
+    Global GatherShiftLockEnabled
+    Global InvertFB
+    Global InvertRL
+    Global GatherTime
+    Global BagPercent
+    Global GatherStartPosition
+    Global GatherReturnMethod
+    Global GatherTurn
+    Global GatherTurnTimes
+    GuiControlGet, CurrentlySelectedField
+    GuiControlGet, GatherPattern
+    GuiControlGet, GatherSize
+    GuiControlGet, GatherWidth
+    GuiControlGet, GatherShiftLockEnabled
+    GuiControlGet, InvertFB
+    GuiControlGet, InvertRL
+    GuiControlGet, GatherTime
+    GuiControlGet, BagPercent
+    GuiControlGet, GatherStartPosition
+    GuiControlGet, GatherReturnMethod
+    GuiControlGet, GatherTurn
+    GuiControlGet, GatherTurnTimes
+    CurrentlySelectedFieldName := StrSplit(CurrentlySelectedField, " ")[1]
+    IniWrite, %GatherPattern%, %path%, %CurrentlySelectedFieldName%, % "GatherPattern" CurrentlySelectedFieldName
+    IniWrite, %GatherSize%, %path%, %CurrentlySelectedFieldName%, % "GatherSize" CurrentlySelectedFieldName
+    IniWrite, %GatherWidth%, %path%, %CurrentlySelectedFieldName%, % "GatherWidth" CurrentlySelectedFieldName
+    IniWrite, %GatherShiftLockEnabled%, %path%, %CurrentlySelectedFieldName%, % "GatherShiftLockEnabled" CurrentlySelectedFieldName
+    IniWrite, %InvertFB%, %path%, %CurrentlySelectedFieldName%, % "InvertFB" CurrentlySelectedFieldName
+    IniWrite, %InvertRL%, %path%, %CurrentlySelectedFieldName%, % "InvertRL" CurrentlySelectedFieldName
+    IniWrite, %GatherTime%, %path%, %CurrentlySelectedFieldName%, % "GatherTime" CurrentlySelectedFieldName
+    IniWrite, %BagPercent%, %path%, %CurrentlySelectedFieldName%, % "BagPercent" CurrentlySelectedFieldName
+    IniWrite, %GatherStartPosition%, %path%, %CurrentlySelectedFieldName%, % "GatherStartPosition" CurrentlySelectedFieldName
+    IniWrite, %GatherReturnMethod%, %path%, %CurrentlySelectedFieldName%, % "GatherReturnMethod" CurrentlySelectedFieldName
+    IniWrite, %GatherTurn%, %path%, %CurrentlySelectedFieldName%, % "GatherTurn" CurrentlySelectedFieldName
+    IniWrite, %GatherTurnTimes%, %path%, %CurrentlySelectedFieldName%, % "GatherTurnTimes" CurrentlySelectedFieldName
     
 }

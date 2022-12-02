@@ -1,11 +1,14 @@
 Gui, Main:Tab, 1
 
-#Include lib\ahk\GUI\Main\Settings\Basic Config.ahk
-#Include lib\ahk\GUI\Main\Settings\Unlocks.ahk
-#Include lib\ahk\GUI\Main\Settings\Bees.ahk
-#Include lib\ahk\GUI\Main\Settings\Hotkeys.ahk
-#Include lib\ahk\GUI\Main\Settings\rbxfpsunlocker.ahk
-#Include lib\ahk\GUI\Main\Settings\Keybinds.ahk
+#Include *i lib\ahk\GUI\Main\Settings\Basic Config.ahk
+#Include *i lib\ahk\GUI\Main\Settings\Unlocks.ahk
+#Include *i lib\ahk\GUI\Main\Settings\Bees.ahk
+#Include *i lib\ahk\GUI\Main\Settings\Hotkeys.ahk
+#Include *i lib\ahk\GUI\Main\Settings\rbxfpsunlocker.ahk
+#Include *i lib\ahk\GUI\Main\Settings\Keybinds.ahk
+
+if (!FileExist("lib\ahk\GUI\Main\Settings\Basic Config.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Unlocks.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Bees.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Hotkeys.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\rbxfpsunlocker.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Keybinds.ahk"))
+    UnzipFailure()
 
 Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h33 gResetAllDefaults, Restore Defaults
 

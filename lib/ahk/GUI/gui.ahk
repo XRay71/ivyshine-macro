@@ -25,8 +25,11 @@ Gui, Main:Add, Text, x520 y335 w28 Right, % "v" MacroVersion
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Stats|", CurrentTab, CurrentTab "|")
 
-#Include lib\ahk\GUI\Main\Settings.ahk
-#Include lib\ahk\GUI\Main\Fields.ahk
+if (!FileExist("lib\ahk\GUI\Main\Settings.ahk") || !FileExist("lib\ahk\GUI\Main\Fields.ahk"))
+    UnzipFailure()
+
+#Include *i lib\ahk\GUI\Main\Settings.ahk
+#Include *i lib\ahk\GUI\Main\Fields.ahk
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
