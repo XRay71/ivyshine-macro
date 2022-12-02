@@ -76,7 +76,7 @@ Unzip() {
 ;=====================================
 ; Check for updates
 ;=====================================
-;CheckForUpdates()
+;C heckForUpdates()
 MacroVersion := "001"
 SuccessfullyUpdated := 0
 CheckForUpdates() {
@@ -128,6 +128,29 @@ CheckResolution() {
         Reload
         WinClose, Settings
     }
+}
+;=====================================
+; Run rbxfpsunlocker
+; https://github.com/axstin/rbxfpsunlocker
+;=====================================
+; RunFPS()
+RunFPS(FPS := 30) {
+    Process, Close, rbxfpsunlocker.exe
+    Process, WaitClose, rbxfpsunlocker.exe, 2
+    FileDelete, lib\rbxfpsunlocker\settings
+    FileAppend,
+    (
+        UnlockClient=true
+        UnlockStudio=false
+        FPSCapValues=[%FPS%]
+        FPSCapSelection=1
+        FPSCap=%FPS%
+        CheckForUpdates=false
+        NonBlockingErrors=true
+        SilentErrors=true
+        QuickStart=true
+    ), lib\rbxfpsunlocker\settings
+    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
 }
 ;=====================================
 ; Initialising
@@ -404,7 +427,7 @@ Gui, Main:Add, Text, x238 y27 w298 h2 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Button, x240 y32 w290 h23 -Theme gGenerateFieldViewEditor, Open Field View Editor
-Gui, Main:Add, Text, x246 y60 w80 h20 +0x200, Gather Pattern
+Gui, Main:Add, Text, x245 y60 w80 h20 +0x200, Gather Pattern
 Gui, Main:Add, ListBox, x240 y80 w80 h229, Pattern
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
@@ -545,7 +568,7 @@ GenerateFieldViewEditor() {
         if (FieldDefaults[CurrentlySelectedField]["EastWall"])
             Gui, FieldViewEditor:Add, Text, x%LineX% y10 h%LineH% 0x1 0x10
         
-        Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%
+        Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%, Field View Editor
         
     }
 }
@@ -786,3 +809,8 @@ UnzipFailure() {
 }
 
 ^r::Reload
+
+^+r::
+    FileRemoveDir, lib\init, 1
+    FileDelete, lib\stats.ini
+    FileDelete, lib\rbxfpsunlocker\settings
