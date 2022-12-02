@@ -1,4 +1,4 @@
-#Include lib\ahk\GUI\FieldViewEditor\fieldvieweditor.ahk
+#Include lib\ahk\GUI\FieldViewEditor\FieldVieEeditor.ahk
 
 Gui, Main:Tab, 2
 

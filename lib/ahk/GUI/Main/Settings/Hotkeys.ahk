@@ -14,7 +14,7 @@ EditHotkeys() {
     Gui, EditHotkeys:Show,, Edit Hotkeys
 }
 
-#Include lib\ahk\GUI\EditHotkeys\edithotkeys.ahk
+#Include lib\ahk\GUI\EditHotkeys\EditHotkeys.ahk
 
 Hotkey, %StartHotkey%, StartMacro, On
 Hotkey, %PauseHotkey%, PauseMacro, On
