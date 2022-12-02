@@ -24,6 +24,7 @@ rbxfpsunlockerUpdated() {
         GuiControl, Main:Enable, SaveFPS
         RunFPS(FPSLevel)
     }
+    GuiToAllInis()
 }
 
 Gui, Main:Add, Text, x302 yp+20, Run at
@@ -33,9 +34,35 @@ Gui, Main:Add, Text, x+4 yp+3, FPS
 FPSLevelUpdated() {
     Global FPSLevel
     GuiControlGet, FPSLevel
+    GuiToAllInis()
 }
 
 Gui, Main:Add, Button, x302 yp+20 w105 vSaveFPS gSaveFPS, Save FPS
 
 SaveFPS() {
+    Global Runrbxfpsunlocker
+    Global FPSLevel
+    if (Runrbxfpsunlocker)
+        RunFPS(FPSLevel)
+    Process, Wait, "rbxfpsunlocker.exe"
 }
+
+RunFPS(FPS := 30) {
+    Process, Close, rbxfpsunlocker.exe
+    Process, WaitClose, rbxfpsunlocker.exe, 2
+    FileDelete, lib\rbxfpsunlocker\settings
+    FileAppend,
+    (
+        UnlockClient=true
+        UnlockStudio=false
+        FPSCapValues=[%FPS%]
+        FPSCapSelection=1
+        FPSCap=%FPS%
+        CheckForUpdates=false
+        NonBlockingErrors=true
+        SilentErrors=true
+        QuickStart=true
+    ), lib\rbxfpsunlocker\settings
+    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
+}
+

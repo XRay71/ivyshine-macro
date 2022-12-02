@@ -241,25 +241,6 @@ CheckMonitor() {
 ;=====================================
 ; if (Runrbxfpsunlocker)
 ; RunFPS(FPSLevel)
-RunFPS(FPS := 30) {
-    Process, Close, rbxfpsunlocker.exe
-    Process, WaitClose, rbxfpsunlocker.exe, 2
-    FileDelete, lib\rbxfpsunlocker\settings
-    FileAppend,
-    (
-        UnlockClient=true
-        UnlockStudio=false
-        FPSCapValues=[%FPS%]
-        FPSCapSelection=1
-        FPSCap=%FPS%
-        CheckForUpdates=false
-        NonBlockingErrors=true
-        SilentErrors=true
-        QuickStart=true
-    ), lib\rbxfpsunlocker\settings
-    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
-}
-
 GuiClosed() {
     GuiToAllInis()
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
