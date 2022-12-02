@@ -240,7 +240,10 @@ CheckMonitor() {
 ; https://github.com/axstin/rbxfpsunlocker
 ;=====================================
 ; if (Runrbxfpsunlocker)
-; RunFPS(FPSLevel)
+;     RunFPS(FPSLevel)
+;=====================================
+; Functions
+;=====================================
 GuiClosed() {
     GuiToAllInis()
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro

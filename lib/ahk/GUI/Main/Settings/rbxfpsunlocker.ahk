@@ -1,5 +1,5 @@
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, GroupBox, x296 y140 w117 h70, Hotkeys
+Gui, Main:Add, GroupBox, x296 y140 w117 h96, Hotkeys
 Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 
 Gui, Main:Font
@@ -34,7 +34,12 @@ Gui, Main:Add, Text, x+4 yp+3, FPS
 FPSLevelUpdated() {
     Global FPSLevel
     GuiControlGet, FPSLevel
-    GuiToAllInis()
+    if (!FPSLevel) {
+        FPSLevel := 0
+        GuiControl, Main:Text, FPSLevel, %FPSLevel%
+    }
+    if (FPSLevel)
+        GuiToAllInis()
 }
 
 Gui, Main:Add, Button, x302 yp+20 w105 vSaveFPS gSaveFPS, Save FPS
@@ -42,27 +47,30 @@ Gui, Main:Add, Button, x302 yp+20 w105 vSaveFPS gSaveFPS, Save FPS
 SaveFPS() {
     Global Runrbxfpsunlocker
     Global FPSLevel
+    if (!FPSLevel) {
+        MsgBox, 48, Warning!, Are you sure you want to run Roblox at unlimited FPS? This will strain your computer.
+    }
     if (Runrbxfpsunlocker)
         RunFPS(FPSLevel)
-    Process, Wait, "rbxfpsunlocker.exe"
 }
 
 RunFPS(FPS := 30) {
     Process, Close, rbxfpsunlocker.exe
     Process, WaitClose, rbxfpsunlocker.exe, 2
+    
     FileDelete, lib\rbxfpsunlocker\settings
     FileAppend,
     (
-        UnlockClient=true
-        UnlockStudio=false
-        FPSCapValues=[%FPS%]
-        FPSCapSelection=1
-        FPSCap=%FPS%
-        CheckForUpdates=false
-        NonBlockingErrors=true
-        SilentErrors=true
-        QuickStart=true
+UnlockClient=true
+UnlockStudio=false
+FPSCapValues=[%FPS%]
+FPSCapSelection=1
+FPSCap=%FPS%
+CheckForUpdates=false
+NonBlockingErrors=true
+SilentErrors=true
+QuickStart=true
     ), lib\rbxfpsunlocker\settings
-    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
+    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker, Hide
+    Process, Wait, "rbxfpsunlocker.exe", 2
 }
-
