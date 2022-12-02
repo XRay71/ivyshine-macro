@@ -76,7 +76,7 @@ Unzip() {
 ;=====================================
 ; Check for updates
 ;=====================================
-;C heckForUpdates()
+; CheckForUpdates()
 MacroVersion := "001"
 SuccessfullyUpdated := 0
 CheckForUpdates() {
@@ -130,32 +130,8 @@ CheckResolution() {
     }
 }
 ;=====================================
-; Run rbxfpsunlocker
-; https://github.com/axstin/rbxfpsunlocker
-;=====================================
-; RunFPS()
-RunFPS(FPS := 30) {
-    Process, Close, rbxfpsunlocker.exe
-    Process, WaitClose, rbxfpsunlocker.exe, 2
-    FileDelete, lib\rbxfpsunlocker\settings
-    FileAppend,
-    (
-        UnlockClient=true
-        UnlockStudio=false
-        FPSCapValues=[%FPS%]
-        FPSCapSelection=1
-        FPSCap=%FPS%
-        CheckForUpdates=false
-        NonBlockingErrors=true
-        SilentErrors=true
-        QuickStart=true
-    ), lib\rbxfpsunlocker\settings
-    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
-}
-;=====================================
 ; Initialising
 ;=====================================
-
 Global AllVars := {}
 
 AllVars["Config"] := {}
@@ -207,6 +183,9 @@ AllVars["Config"]["GUI"] := {"GuiX":"0"
     , "AlwaysOnTop":"0"
     , "CurrentTab":"Settings"}
 
+AllVars["Config"]["rbxfpsunlocker"] := {"Runrbxfpsunlocker":"1"
+    , "FPSLevel":"30"}
+
 AllVars["FieldConfig"] := {}
 AllVars["FieldConfig"]["Config"] := {"FieldRotationList":"Pine Tree|"
     , "CurrentlySelectedField":"Pine Tree"
@@ -256,6 +235,30 @@ CheckMonitor() {
 ; Creating GUI
 ;=====================================
 #Include lib\ahk\GUI\gui.ahk
+;=====================================
+; Run rbxfpsunlocker
+; https://github.com/axstin/rbxfpsunlocker
+;=====================================
+; if (Runrbxfpsunlocker)
+; RunFPS(FPSLevel)
+RunFPS(FPS := 30) {
+    Process, Close, rbxfpsunlocker.exe
+    Process, WaitClose, rbxfpsunlocker.exe, 2
+    FileDelete, lib\rbxfpsunlocker\settings
+    FileAppend,
+    (
+        UnlockClient=true
+        UnlockStudio=false
+        FPSCapValues=[%FPS%]
+        FPSCapSelection=1
+        FPSCap=%FPS%
+        CheckForUpdates=false
+        NonBlockingErrors=true
+        SilentErrors=true
+        QuickStart=true
+    ), lib\rbxfpsunlocker\settings
+    Run, lib\rbxfpsunlocker\rbxfpsunlocker.exe, lib\rbxfpsunlocker
+}
 
 GuiClosed() {
     GuiToAllInis()
