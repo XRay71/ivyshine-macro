@@ -262,20 +262,20 @@ if (StrLen(StartHotkey) < 5)
     Gui, Main:Font
 else
     Gui, Main:Font, s6
-Gui, Main:Add, Button, x430 y329 w30 h20 vStartHotkeyButtonMain gStartMacro, %StartHotkey%
+Gui, Main:Add, Button, x430 y326 w30 vStartHotkeyButtonMain gStartMacro, %StartHotkey%
 if (StrLen(PauseHotkey) < 5)
     Gui, Main:Font
 else
     Gui, Main:Font, s6
-Gui, Main:Add, Button, x460 y329 w30 h20 vPauseHotkeyButtonMain gPauseMacro, %PauseHotkey%
+Gui, Main:Add, Button, xp+30 yp wp vPauseHotkeyButtonMain gPauseMacro, %PauseHotkey%
 if (StrLen(StopHotkey) < 5)
     Gui, Main:Font
 else
     Gui, Main:Font, s6
-Gui, Main:Add, Button, x490 y329 w30 h20 vStopHotkeyButtonMain gStopMacro, %StopHotkey%
+Gui, Main:Add, Button, xp+30 yp wp vStopHotkeyButtonMain gStopMacro, %StopHotkey%
 
 Gui, Main:Font
-Gui, Main:Add, Text, x525 y335 h20, % "v" MacroVersion
+Gui, Main:Add, Text, x520 y335 w28 Right, % "v" MacroVersion
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Stats|", CurrentTab, CurrentTab "|")
@@ -284,103 +284,104 @@ Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap 
 Gui, Main:Tab, 1
 
 Gui, Main:Add, GroupBox, x8 y8 w150 h175, Basic Config
-Gui, Main:Add, Text, x14 y27 w138 h2 0x10
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
 Gui, Main:Add, Text, x16 y35, Movespeed
-Gui, Main:Add, Edit, x88 y32 w40 h20 vMovespeed gMovespeedUpdated, %Movespeed%
-Gui, Main:Add, Text, x16 y59, Move Method
-Gui, Main:Add, DropDownList, x88 y56 w61 vMoveMethod gGuiToAllInis, % StrReplace("Walk|Glider|Cannon|", MoveMethod, MoveMethod "|")
-Gui, Main:Add, Text, x16 y83, # of Sprinklers
-Gui, Main:Add, DropDownList, x88 y80 w61 vNumberOfSprinklers gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", NumberOfSprinklers, NumberOfSprinklers "|")
-Gui, Main:Add, Text, x16 y107, Hiveslot (6-5-4-3-2-1)
-Gui, Main:Add, DropDownList, x118 y104 w31 vSlotNumber gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", SlotNumber, SlotNumber "|")
-Gui, Main:Add, Text, x16 y132, Private Server Link
-Gui, Main:Add, Edit, x16 y150 w133 h25 vVIPLink gVIPLinkUpdated, %VIPLink%
+Gui, Main:Add, Edit, x88 yp-3 w40 vMovespeed gMovespeedUpdated, %Movespeed%
+Gui, Main:Add, Text, x16 yp+27, Move Method
+Gui, Main:Add, DropDownList, x88 yp-3 w61 vMoveMethod gGuiToAllInis, % StrReplace("Walk|Glider|Cannon|", MoveMethod, MoveMethod "|")
+Gui, Main:Add, Text, x16 yp+27, # of Sprinklers
+Gui, Main:Add, DropDownList, x88 yp-3 w61 vNumberOfSprinklers gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", NumberOfSprinklers, NumberOfSprinklers "|")
+Gui, Main:Add, Text, x16 yp+27, Hiveslot (6-5-4-3-2-1)
+Gui, Main:Add, DropDownList, x118 yp-3 w31 vSlotNumber gGuiToAllInis, % StrReplace("1|2|3|4|5|6|", SlotNumber, SlotNumber "|")
+Gui, Main:Add, Text, x16 yp+27, Private Server Link
+Gui, Main:Font, s7
+Gui, Main:Add, Edit, x16 yp+18 w133 h25 -VScroll vVIPLink gVIPLinkUpdated, %VIPLink%
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x8 y184 w150 h130, Unlocks
-Gui, Main:Add, Text, x14 y203 w138 h2 0x10
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Text, x16 y210 w69 h20, Red Cannon
-Gui, Main:Add, CheckBox, x96 y208 w20 h20 vHasRedCannon gGuiToAllInis +Checked%HasRedCannon%
-Gui, Main:Add, Text, x16 y235 w69 h20, Parachute
-Gui, Main:Add, CheckBox, x96 y232 w20 h20 vHasParachute gHasParachuteUpdated +Checked%HasParachute%
-Gui, Main:Add, Text, x16 y259 h20, Mountain Glider
-Gui, Main:Add, CheckBox, x96 y256 w20 h20 vHasGlider gHasGliderUpdated +Checked%HasGlider%
-Gui, Main:Add, Text, x16 y283 w69 h20, My hive has
-Gui, Main:Add, Edit, x88 y280 w30 h20 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
-Gui, Main:Add, Text, x125 y283 w31 h20, bees.
+Gui, Main:Add, Text, x16 y210, Red Cannon
+Gui, Main:Add, CheckBox, x96 yp w25 vHasRedCannon gGuiToAllInis +Checked%HasRedCannon%
+Gui, Main:Add, Text, x16 yp+24, Parachute
+Gui, Main:Add, CheckBox, x96 yp w25 vHasParachute gHasParachuteUpdated +Checked%HasParachute%
+Gui, Main:Add, Text, x16 yp+24, Mountain Glider
+Gui, Main:Add, CheckBox, x96 yp w25 vHasGlider gHasGliderUpdated +Checked%HasGlider%
+Gui, Main:Add, Text, x16 yp+24, My hive has
+Gui, Main:Add, Edit, x88 yp-3 w30 vNumberOfBees gNumberOfBeesUpdated -VScroll +Number, %NumberOfBees%
+Gui, Main:Add, Text, x125 yp+3, bees.
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x168 y8 w117 h75, Bees
-Gui, Main:Add, Text, x174 y27 w105 h2 0x10
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Text, x176 y35 w75 h20, Bear Bee
-Gui, Main:Add, CheckBox, x256 y32 w20 h20 vHasBearBee gGuiToAllInis +Checked%HasBearBee%
-Gui, Main:Add, Text, x176 y59 w75 h20, Gifted Vicious
-Gui, Main:Add, CheckBox, x256 y56 w20 h20 vHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%
+Gui, Main:Add, Text, x176 y35, Bear Bee
+Gui, Main:Add, Text, xp yp+24, Gifted Vicious
+Gui, Main:Add, CheckBox, x256 y32 w25 vHasBearBee gGuiToAllInis +Checked%HasBearBee%
+Gui, Main:Add, CheckBox, xp yp+24 wpvHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, GroupBox, x296 y8 w117 h125, Hotkeys
-Gui, Main:Add, Text, x302 y27 w105 h2 0x10
+Gui, Main:Add, GroupBox, x296 y8 w117 h130, Hotkeys
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Button, x302 y35 w101 h20 vStartHotkeyButtonSettings gStartMacro, Start (%StartHotkey%)
-Gui, Main:Add, Button, x302 y59 w101 h20 vPauseHotkeyButtonSettings gPauseMacro, Pause (%PauseHotkey%)
-Gui, Main:Add, Button, x302 y83 w101 h20 vStopHotkeyButtonSettings gStopMacro, Stop (%StopHotkey%)
-Gui, Main:Add, Button, x302 y107 w101 h20 gEditHotkeys, Edit Hotkeys
+Gui, Main:Add, Button, xp y35 w101 vStartHotkeyButtonSettings gStartMacro, Start (%StartHotkey%)
+Gui, Main:Add, Button, xp yp+24 wp vPauseHotkeyButtonSettings gPauseMacro, Pause (%PauseHotkey%)
+Gui, Main:Add, Button, xp yp+24 wp vStopHotkeyButtonSettings gStopMacro, Stop (%StopHotkey%)
+Gui, Main:Add, Button, xp yp+24 wp gEditHotkeys, Edit Hotkeys
 
 Gui, EditHotkeys:+ownerMain +ToolWindow
 Gui, EditHotkeys:Add, Text, x4 y7, Start
-Gui, EditHotkeys:Add, Hotkey, x40 y4 vStartHotkeyTemp, % StartHotkey == StrReplace(StartHotkey, "#") ? StartHotkey : SubStr(StartHotkey, 2)
-Gui, EditHotkeys:Add, CheckBox, x+5 y7 vStartWinKey, WinKey
+Gui, EditHotkeys:Add, Hotkey, x40 yp-3 vStartHotkeyTemp, % StartHotkey == StrReplace(StartHotkey, "#") ? StartHotkey : SubStr(StartHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 yp+3 vStartWinKey, WinKey
 GuiControl, EditHotkeys:, StartWinKey, % StartHotkey != StrReplace(StartHotkey, "#")
-Gui, EditHotkeys:Add, Text, x4 y33, Pause
-Gui, EditHotkeys:Add, Hotkey, x40 y30 vPauseHotkeyTemp, % PauseHotkey == StrReplace(PauseHotkey, "#") ? PauseHotkey : SubStr(PauseHotkey, 2)
-Gui, EditHotkeys:Add, CheckBox, x+5 y33 vPauseWinKey, WinKey
+Gui, EditHotkeys:Add, Text, x4 yp+24, Pause
+Gui, EditHotkeys:Add, Hotkey, x40 yp-3 vPauseHotkeyTemp, % PauseHotkey == StrReplace(PauseHotkey, "#") ? PauseHotkey : SubStr(PauseHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 yp+3 vPauseWinKey, WinKey
 GuiControl, EditHotkeys:, PauseWinKey, % PauseHotkey != StrReplace(PauseHotkey, "#")
-Gui, EditHotkeys:Add, Text, x4 y59, Stop
-Gui, EditHotkeys:Add, Hotkey, x40 y56 vStopHotkeyTemp, % StopHotkey == StrReplace(StopHotkey, "#") ? StopHotkey : SubStr(StopHotkey, 2)
-Gui, EditHotkeys:Add, CheckBox, x+5 y59 vStopWinKey, WinKey
+Gui, EditHotkeys:Add, Text, x4 yp+24, Stop
+Gui, EditHotkeys:Add, Hotkey, x40 yp-3 vStopHotkeyTemp, % StopHotkey == StrReplace(StopHotkey, "#") ? StopHotkey : SubStr(StopHotkey, 2)
+Gui, EditHotkeys:Add, CheckBox, x+5 yp+3 vStopWinKey, WinKey
 GuiControl, EditHotkeys:, StopWinKey, % Stophotkey != StrReplace(Stophotkey, "#")
-Gui, EditHotkeys:Add, Button, x10 y85 w215 gSaveEditedHotkeys, Save
+Gui, EditHotkeys:Add, Button, x10 yp+24 w215 gSaveEditedHotkeys, Save
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, GroupBox, x424 y8 w117 h266, Keybinds
-Gui, Main:Add, Text, x430 y27 w105 h2 0x10
+Gui, Main:Add, GroupBox, x424 y8 w117 h268, Keybinds
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, DropDownList, x430 y32 w98 vLayout gKeybindsUpdated, % StrReplace("qwerty|azerty|custom|", Layout, Layout "|")
-Gui, Main:Add, Text, x430 y59 w79 h20, Move Forward
-Gui, Main:Add, Text, x430 y107 w75 h20, Move Back
-Gui, Main:Add, Text, x430 y83 w75 h20, Move Left
-Gui, Main:Add, Text, x430 y131 w75 h20, Move Right
-Gui, Main:Add, Text, x430 y155 w75 h20, Camera Left
-Gui, Main:Add, Text, x430 y179 w75 h20, Camera Right
-Gui, Main:Add, Text, x430 y203 w75 h20, Zoom In
-Gui, Main:Add, Text, x430 y227 w75 h20, Zoom Out
-Gui, Main:Add, Text, x430 y251 w60 h20, Key Delay
+Gui, Main:Add, DropDownList, xp y32 wp-4 vLayout gKeybindsUpdated, % StrReplace("qwerty|azerty|custom|", Layout, Layout "|")
+Gui, Main:Add, Text, xp yp+27, Move Forward
+Gui, Main:Add, Text, xp yp+24, Move Left
+Gui, Main:Add, Text, xp yp+24, Move Back
+Gui, Main:Add, Text, xp yp+24, Move Right
+Gui, Main:Add, Text, xp yp+24, Camera Left
+Gui, Main:Add, Text, xp yp+24, Camera Right
+Gui, Main:Add, Text, xp yp+24, Zoom In
+Gui, Main:Add, Text, xp yp+24, Zoom Out
+Gui, Main:Add, Text, xp yp+24 w60, Key Delay
 if (Layout == "custom") {
-    Gui, Main:Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated, %ForwardKey%
-    Gui, Main:Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated, %LeftKey%
-    Gui, Main:Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated, %BackwardKey%
-    Gui, Main:Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated, %RightKey%
-    Gui, Main:Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
-    Gui, Main:Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
-    Gui, Main:Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated, %CameraInKey%
-    Gui, Main:Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
+    Gui, Main:Add, Edit, x512 y56 w20 limit1 vForwardKey gKeybindsUpdated, %ForwardKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vLeftKey gKeybindsUpdated, %LeftKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vBackwardKey gKeybindsUpdated, %BackwardKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vRightKey gKeybindsUpdated, %RightKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraLeftKey gKeybindsUpdated, %CameraLeftKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraRightKey gKeybindsUpdated, %CameraRightKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraInKey gKeybindsUpdated, %CameraInKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraOutKey gKeybindsUpdated, %CameraOutKey%
 } else {
-    Gui, Main:Add, Edit, x512 y56 w20 h20 limit1 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
-    Gui, Main:Add, Edit, x512 y80 w20 h20 limit1 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
-    Gui, Main:Add, Edit, x512 y104 w20 h20 limit1 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
-    Gui, Main:Add, Edit, x512 y128 w20 h20 limit1 vRightKey gKeybindsUpdated +Disabled, %RightKey%
-    Gui, Main:Add, Edit, x512 y152 w20 h20 limit1 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
-    Gui, Main:Add, Edit, x512 y176 w20 h20 limit1 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
-    Gui, Main:Add, Edit, x512 y200 w20 h20 limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
-    Gui, Main:Add, Edit, x512 y224 w20 h20 limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
+    Gui, Main:Add, Edit, x512 y56 w20 limit1 vForwardKey gKeybindsUpdated +Disabled, %ForwardKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vLeftKey gKeybindsUpdated +Disabled, %LeftKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vBackwardKey gKeybindsUpdated +Disabled, %BackwardKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vRightKey gKeybindsUpdated +Disabled, %RightKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraLeftKey gKeybindsUpdated +Disabled, %CameraLeftKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraRightKey gKeybindsUpdated +Disabled, %CameraRightKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraInKey gKeybindsUpdated +Disabled, %CameraInKey%
+    Gui, Main:Add, Edit, xp yp+24 wp limit1 vCameraOutKey gKeybindsUpdated +Disabled, %CameraOutKey%
 }
 Gui, Main:Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGuiToAllInis, %KeyDelay%
 
@@ -391,44 +392,52 @@ Gui, Main:Tab, 2
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x8 y8 w220 h306, Field Rotation
-Gui, Main:Add, Text, x14 y27 w208 h2 0x10
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Text, x33 y30 w80 h20 +0x200, Selected
-Gui, Main:Add, Text, x144 y30 w80 h20 +0x200, Not Selected
-Gui, Main:Add, ListBox, x16 y50 w80 h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
-Gui, Main:Add, ListBox, x136 y50 w80 h230 +Sort vAddToRotation gAddToRotationUpdated, %NonRotationList%
-Gui, Main:Add, Button, x104 y100 w24 h23 gAddFieldRotation, <-
-Gui, Main:Add, Button, x104 y124 w24 h23 gRemoveFieldRotation, ->
-Gui, Main:Add, Button, x104 y156 w24 h23 gMoveFieldRotationUp, /\
-Gui, Main:Add, Button, x104 y180 w24 h23 gMoveFieldRotationDown, \/
-Gui, Main:Add, Button, x16 y280 w200 h23, Reset Selected Field to Defaults
+Gui, Main:Add, Text, x16 y33 w80 Center, Selected
+Gui, Main:Add, Text, x136 yp wp Center, Not Selected
+Gui, Main:Add, ListBox, x16 y50 wp h230 vCurrentlySelectedField gFieldSelectionUpdated, % StrReplace(FieldRotationList, CurrentlySelectedField, CurrentlySelectedField "|")
+Gui, Main:Add, ListBox, x136 yp wp h230 +Sort vAddToRotation gAddToRotationUpdated, %NonRotationList%
+Gui, Main:Add, Button, x104 y100 w24 gAddFieldRotation, <-
+Gui, Main:Add, Button, xp yp+24 wp gRemoveFieldRotation, ->
+Gui, Main:Add, Button, xp y156 wp gMoveFieldRotationUp, /\
+Gui, Main:Add, Button, xp yp+24 wp gMoveFieldRotationDown, \/
+Gui, Main:Add, Button, x16 y280 w200, Reset Selected Field to Defaults
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, GroupBox, x232 y8 w310 h306, Field Settings
-Gui, Main:Add, Text, x238 y27 w298 h2 0x10
-; Gui, Main:Font
-; Gui, Main:Font, s6
-; tempx := 248
-; tempy := 50
-; tempw := 43 * 5 - 2
-; Loop, 35
-; {
-;     Gui, Main:Add, Text, x%tempx% y%tempy% w%tempw% h1 0x10
-;     tempy += 5
-; }
-; tempy := 50
-; temph := 35 * 5 - 1
-; Loop, 43
-; {
-;     Gui, Main:Add, Text, x%tempx% y%tempy% w1 h%temph% +0x1 +0x10
-;     tempx += 5
-; }
+Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
+Gui, Main:Add, Text, x384 y60 w2 h256 0x1 0x10
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Button, x240 y32 w290 h23 -Theme gGenerateFieldViewEditor, Open Field View Editor
-Gui, Main:Add, Text, x245 y60 w80 h20 +0x200, Gather Pattern
-Gui, Main:Add, ListBox, x240 y80 w80 h229, Pattern
+Gui, Main:Add, Button, x240 y32 w290 -Theme gGenerateFieldViewEditor, Open Field View Editor
+Gui, Main:Add, Text, xp y60 w136 Center, Gather Pattern List
+Gui, Main:Add, ListBox, xp y80 w136 h229, Pattern
+Gui, Main:Add, Text, x392 y60, Pattern Size
+Gui, Main:Add, DropDownList, x490 yp-3 w40, 1|2|3||4|5|
+Gui, Main:Add, Text, x392 y84, Pattern Width
+Gui, Main:Add, DropDownList, x490 yp-3 w40, 1|2|3||4|5|6|7|8|9|10|
+Gui, Main:Add, Text, x392 y108, Gather with ShiftLock
+Gui, Main:Add, CheckBox, x515 yp w25
+Gui, Main:Add, Text, x392 y132, Invert Forward/Back
+Gui, Main:Add, CheckBox, x515 yp w25
+Gui, Main:Add, Text, x392 y156, Invert Right/Left
+Gui, Main:Add, CheckBox, x515 yp w25
+Gui, Main:Add, Text, x392 y180, Gather for
+Gui, Main:Add, Edit, x+4 yp-3 w30 h20 limit3 -VScroll +Number, 20
+Gui, Main:Add, Text, x+4 yp+3, minutes`,
+Gui, Main:Add, Text, x392 y201, OR until bag is at
+Gui, Main:Add, Edit, x+4 yp-3 w20 h20 limit2 -VScroll +Number, 95
+Gui, Main:Add, Text, x+4 yp+3, `%
+Gui, Main:Add, Text, x392 y225, Start in the
+Gui, Main:Add, DropDownList, x+4 yp-3 w84, North West|North|North East|West|Center||East|South West|South|South East|
+Gui, Main:Add, DropDownList, xp y246 wp, Reset||Walk|Rejoin|Whirligig Walk|
+Gui, Main:Add, Text, x392 yp+3, Return via
+Gui, Main:Add, Text, xp yp+24, Turn the camera
+Gui, Main:Add, DropDownList, x+4 yp-3 w57, none||right|left|
+Gui, Main:Add, DropDownList, x394 yp+19 w30 h16 +Disabled, 0||1|2|3|
+Gui, Main:Add, Text, x+4 yp+3, times before gathering.
 
 Gui, Main:Show, x%GuiX% y%GuiY% w550 h350, Ivyshine Macro
 
@@ -535,8 +544,8 @@ GenerateFieldViewEditor() {
     Gui, FieldViewEditor:+ownerMain +ToolWindow
     if (CurrentlySelectedField && CurrentlySelectedField != "Stump") {
         SquareLength := 10
-        LineX := 20
-        LineY := 20
+        LineX := 80
+        LineY := 40
         LineW := FieldDefaults[CurrentlySelectedField]["FlowersX"] * SquareLength - SquareLength / 2
         LineH := FieldDefaults[CurrentlySelectedField]["FlowersY"] * SquareLength - Ceil(SquareLength / 2) - 1
         Loop, % FieldDefaults[CurrentlySelectedField]["FlowersY"]
@@ -544,29 +553,46 @@ GenerateFieldViewEditor() {
             Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w%LineW% 0x10
             LineY += SquareLength
         }
-        LineY := 20
+        LineY := 40
         Loop, % FieldDefaults[CurrentlySelectedField]["FlowersX"]
         {
             Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% h%LineH% 0x1 0x10
             LineX += SquareLength
         }
         
-        GuiW := 20 * 2 + LineW
-        GuiH := 20 * 2 + LineH
+        GuiW := 80 * 2 + LineW - 10
+        GuiH := 40 * 2 + LineH - 25
         
-        LineX := GuiW - 15
-        LineY := GuiH - 15
-        LineW += 20
-        LineH += 19
+        LineX := GuiW - 60
+        LineY := GuiH - 5
+        LineW += 31
+        LineH += 29
         
-        if (FieldDefaults[CurrentlySelectedField]["NorthWall"])
-            Gui, FieldViewEditor:Add, Text, x10 y10 w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["SouthWall"])
-            Gui, FieldViewEditor:Add, Text, x10 y%LineY% w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["WestWall"])
-            Gui, FieldViewEditor:Add, Text, x10 y10 h%LineH% 0x1 0x10
-        if (FieldDefaults[CurrentlySelectedField]["EastWall"])
-            Gui, FieldViewEditor:Add, Text, x%LineX% y10 h%LineH% 0x1 0x10
+        if (FieldDefaults[CurrentlySelectedField]["NorthWall"] || 1)
+            Gui, FieldViewEditor:Add, Text, x63 y25 w%LineW% 0x10
+        if (FieldDefaults[CurrentlySelectedField]["SouthWall"] || 1)
+            Gui, FieldViewEditor:Add, Text, x63 y%LineY% w%LineW% 0x10
+        if (FieldDefaults[CurrentlySelectedField]["WestWall"] || 1)
+            Gui, FieldViewEditor:Add, Text, x63 y25 h%LineH% 0x1 0x10
+        if (FieldDefaults[CurrentlySelectedField]["EastWall"] || 1)
+            Gui, FieldViewEditor:Add, Text, x%LineX% y25 h%LineH% 0x1 0x10
+        
+        Gui, FieldViewEditor:Add, Text, x6 y10 +BackgroundTrans, North West
+        Gui, FieldViewEditor:Add, Text, x0 yp w%GuiW% Center +BackgroundTrans, North
+        Gui, FieldViewEditor:Add, Text, xp yp wp-6 Right +BackgroundTrans, North East
+        
+        GuiH := (40 * 2 + LineH) / 2 - 20
+        
+        Gui, FieldViewEditor:Add, Text, x6 y%GuiH% w%GuiW% +BackgroundTrans, East
+        Gui, FieldViewEditor:Add, Text, x0 yp wp-6 Right +BackgroundTrans, West
+        
+        GuiH := 40 * 2 + LineH - 55
+        
+        Gui, FieldViewEditor:Add, Text, x6 y%GuiH% +BackgroundTrans, South West
+        Gui, FieldViewEditor:Add, Text, x0 yp w%GuiW% Center +BackgroundTrans, South
+        Gui, FieldViewEditor:Add, Text, xp yp wp-6 Right +BackgroundTrans, South East
+        
+        GuiH := 40 * 2 + LineH - 30
         
         Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%, Field View Editor
         
