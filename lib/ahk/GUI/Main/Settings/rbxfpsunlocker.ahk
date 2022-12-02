@@ -1,5 +1,5 @@
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, GroupBox, x296 y140 w117 h96, Hotkeys
+Gui, Main:Add, GroupBox, x296 y140 w117 h96, rbxfpsunlocker
 Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 
 Gui, Main:Font

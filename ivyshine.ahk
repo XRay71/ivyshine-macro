@@ -298,7 +298,7 @@ UnzipFailure() {
     ExitApp
 }
 
-r::Reload
+^r::Reload
 
 ^+r::
     FileRemoveDir, lib\init, 1
