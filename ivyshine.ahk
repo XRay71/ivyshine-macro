@@ -385,7 +385,7 @@ if (Layout == "custom") {
 }
 Gui, Main:Add, Edit, x502 y248 w30 h21 limit3 -VScroll +Number vKeyDelay gGuiToAllInis, %KeyDelay%
 
-Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h34 gResetAllDefaults, Restore Defaults
+Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h33 gResetAllDefaults, Restore Defaults
 
 ; Tab: Fields
 Gui, Main:Tab, 2
