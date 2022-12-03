@@ -1,22 +1,23 @@
 GenerateFieldViewEditor() {
     Global CurrentlySelectedField
-    Global FieldDefaults
+    Global AllVars
     GuiControlGet, CurrentlySelectedField
+    CurrentlySelectedFieldName := StrSplit(CurrentlySelectedField, " ")[1]
     Gui, FieldViewEditor:Destroy
     Gui, FieldViewEditor:+ownerMain +ToolWindow
     if (CurrentlySelectedField && CurrentlySelectedField != "Stump") {
         SquareLength := 10
         LineX := 80
         LineY := 40
-        LineW := FieldDefaults[CurrentlySelectedField]["FlowersX"] * SquareLength - SquareLength / 2
-        LineH := FieldDefaults[CurrentlySelectedField]["FlowersY"] * SquareLength - Ceil(SquareLength / 2) - 1
-        Loop, % FieldDefaults[CurrentlySelectedField]["FlowersY"]
+        LineW := AllVars["FieldConfig"][CurrentlySelectedFieldName]["FlowersX" CurrentlySelectedFieldName] * SquareLength - SquareLength / 2
+        LineH := AllVars["FieldConfig"][CurrentlySelectedFieldName]["FlowersY" CurrentlySelectedFieldName] * SquareLength - Ceil(SquareLength / 2) - 1
+        Loop, % AllVars["FieldConfig"][CurrentlySelectedFieldName]["FlowersY" CurrentlySelectedFieldName]
         {
             Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% w%LineW% 0x10
             LineY += SquareLength
         }
         LineY := 40
-        Loop, % FieldDefaults[CurrentlySelectedField]["FlowersX"]
+        Loop, % AllVars["FieldConfig"][CurrentlySelectedFieldName]["FlowersX" CurrentlySelectedFieldName]
         {
             Gui, FieldViewEditor:Add, Text, x%LineX% y%LineY% h%LineH% 0x1 0x10
             LineX += SquareLength
@@ -30,13 +31,13 @@ GenerateFieldViewEditor() {
         LineW += 31
         LineH += 29
         
-        if (FieldDefaults[CurrentlySelectedField]["NorthWall"])
+        if (AllVars["FieldConfig"][CurrentlySelectedFieldName]["NorthWall" CurrentlySelectedFieldName])
             Gui, FieldViewEditor:Add, Text, x63 y25 w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["SouthWall"])
+        if (AllVars["FieldConfig"][CurrentlySelectedFieldName]["SouthWall" CurrentlySelectedFieldName])
             Gui, FieldViewEditor:Add, Text, x63 y%LineY% w%LineW% 0x10
-        if (FieldDefaults[CurrentlySelectedField]["WestWall"])
+        if (AllVars["FieldConfig"][CurrentlySelectedFieldName]["WestWall" CurrentlySelectedFieldName])
             Gui, FieldViewEditor:Add, Text, x63 y25 h%LineH% 0x1 0x10
-        if (FieldDefaults[CurrentlySelectedField]["EastWall"])
+        if (AllVars["FieldConfig"][CurrentlySelectedFieldName]["EastWall" CurrentlySelectedFieldName])
             Gui, FieldViewEditor:Add, Text, x%LineX% y25 h%LineH% 0x1 0x10
         
         Gui, FieldViewEditor:Add, Text, x6 y10 +BackgroundTrans, North West

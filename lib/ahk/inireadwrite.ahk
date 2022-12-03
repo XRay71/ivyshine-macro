@@ -2,7 +2,7 @@ Global IniPaths := {"Config":A_ScriptDir "\lib\init\config.ini"
     , "FieldConfig":A_ScriptDir "\lib\init\fields.ini"
     , "Stats":A_ScriptDir "\lib\stats.ini"}
 
-CreateInit(Replace := 1){
+CreateInit(Replace := 1) {
     if (!FileExist("lib\init"))
         FileCreateDir, lib\init
     if (Replace)
@@ -101,45 +101,45 @@ GuiToIni(path := "lib\init\config.ini") {
     }
 }
 
-FieldSettingsToIni(path := "\lib\init\fields.ini") {
-    Global CurrentlySelectedField
-    Global GatherPattern
-    Global GatherSize
-    Global GatherWidth
-    Global GatherShiftLockEnabled
-    Global InvertFB
-    Global InvertRL
-    Global GatherTime
-    Global BagPercent
-    Global GatherStartPosition
-    Global GatherReturnMethod
-    Global GatherTurn
-    Global GatherTurnTimes
+FieldSettingsToIni(path := "lib\init\fields.ini") {
+    Global
     GuiControlGet, CurrentlySelectedField
-    GuiControlGet, GatherPattern
-    GuiControlGet, GatherSize
-    GuiControlGet, GatherWidth
-    GuiControlGet, GatherShiftLockEnabled
-    GuiControlGet, InvertFB
-    GuiControlGet, InvertRL
-    GuiControlGet, GatherTime
-    GuiControlGet, BagPercent
-    GuiControlGet, GatherStartPosition
-    GuiControlGet, GatherReturnMethod
-    GuiControlGet, GatherTurn
-    GuiControlGet, GatherTurnTimes
     CurrentlySelectedFieldName := StrSplit(CurrentlySelectedField, " ")[1]
-    IniWrite, %GatherPattern%, %path%, %CurrentlySelectedFieldName%, % "GatherPattern" CurrentlySelectedFieldName
-    IniWrite, %GatherSize%, %path%, %CurrentlySelectedFieldName%, % "GatherSize" CurrentlySelectedFieldName
-    IniWrite, %GatherWidth%, %path%, %CurrentlySelectedFieldName%, % "GatherWidth" CurrentlySelectedFieldName
-    IniWrite, %GatherShiftLockEnabled%, %path%, %CurrentlySelectedFieldName%, % "GatherShiftLockEnabled" CurrentlySelectedFieldName
-    IniWrite, %InvertFB%, %path%, %CurrentlySelectedFieldName%, % "InvertFB" CurrentlySelectedFieldName
-    IniWrite, %InvertRL%, %path%, %CurrentlySelectedFieldName%, % "InvertRL" CurrentlySelectedFieldName
-    IniWrite, %GatherTime%, %path%, %CurrentlySelectedFieldName%, % "GatherTime" CurrentlySelectedFieldName
-    IniWrite, %BagPercent%, %path%, %CurrentlySelectedFieldName%, % "BagPercent" CurrentlySelectedFieldName
-    IniWrite, %GatherStartPosition%, %path%, %CurrentlySelectedFieldName%, % "GatherStartPosition" CurrentlySelectedFieldName
-    IniWrite, %GatherReturnMethod%, %path%, %CurrentlySelectedFieldName%, % "GatherReturnMethod" CurrentlySelectedFieldName
-    IniWrite, %GatherTurn%, %path%, %CurrentlySelectedFieldName%, % "GatherTurn" CurrentlySelectedFieldName
-    IniWrite, %GatherTurnTimes%, %path%, %CurrentlySelectedFieldName%, % "GatherTurnTimes" CurrentlySelectedFieldName
+    GuiControlGet, GatherPattern%CurrentlySelectedFieldName%,, GatherPattern
+    GuiControlGet, GatherSize%CurrentlySelectedFieldName%,, GatherSize
+    GuiControlGet, GatherWidth%CurrentlySelectedFieldName%,, GatherWidth
+    GuiControlGet, GatherShiftLockEnabled%CurrentlySelectedFieldName%,, GatherShiftLockEnabled
+    GuiControlGet, InvertFB%CurrentlySelectedFieldName%,, InvertFB
+    GuiControlGet, InvertRL%CurrentlySelectedFieldName%,, InvertRL
+    GuiControlGet, GatherTime%CurrentlySelectedFieldName%,, GatherTime
+    GuiControlGet, BagPercent%CurrentlySelectedFieldName%,, BagPercent
+    GuiControlGet, GatherStartPosition%CurrentlySelectedFieldName%,, GatherStartPosition
+    GuiControlGet, GatherReturnMethod%CurrentlySelectedFieldName%,, GatherReturnMethod
+    GuiControlGet, GatherTurn%CurrentlySelectedFieldName%,, GatherTurn
+    GuiControlGet, GatherTurnTimes%CurrentlySelectedFieldName%,, GatherTurnTimes
+    if (GatherPattern%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherPattern%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherPattern" CurrentlySelectedFieldName
+    if (GatherSize%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherSize%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherSize" CurrentlySelectedFieldName
+    if (GatherWidth%CurrentlySelectedFieldName%%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherWidth%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherWidth" CurrentlySelectedFieldName
+    if (GatherShiftLockEnabled%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherShiftLockEnabled%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherShiftLockEnabled" CurrentlySelectedFieldName
+    if (InvertFB%CurrentlySelectedFieldName% != "")
+        IniWrite, % InvertFB%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "InvertFB" CurrentlySelectedFieldName
+    if (InvertRL%CurrentlySelectedFieldName% != "")
+        IniWrite, % InvertRL%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "InvertRL" CurrentlySelectedFieldName
+    if (GatherTime%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherTime%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherTime" CurrentlySelectedFieldName
+    if (BagPercent%CurrentlySelectedFieldName% != "")
+        IniWrite, % BagPercent%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "BagPercent" CurrentlySelectedFieldName
+    if (GatherStartPosition%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherStartPosition%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherStartPosition" CurrentlySelectedFieldName
+    if (GatherReturnMethod%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherReturnMethod%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherReturnMethod" CurrentlySelectedFieldName
+    if (GatherTurn%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherTurn%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherTurn" CurrentlySelectedFieldName
+    if (GatherTurnTimes%CurrentlySelectedFieldName% != "")
+        IniWrite, % GatherTurnTimes%CurrentlySelectedFieldName%, %path%, %CurrentlySelectedFieldName%, % "GatherTurnTimes" CurrentlySelectedFieldName
     
 }

@@ -37,7 +37,7 @@ Gui, Main:Add, Text, x+4 yp+3, FPS
 FPSLevelUpdated() {
     Global FPSLevel
     GuiControlGet, FPSLevel
-    if (!FPSLevel) {
+    if (!FPSLevel && FPSLevel != 0) {
         FPSLevel := 0
         GuiControl, Main:Text, FPSLevel, %FPSLevel%
     }
