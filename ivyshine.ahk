@@ -49,13 +49,15 @@ Unzip()
 Unzip() {
     psh := ComObjCreate("Shell.Application")
     SplitPath, A_ScriptFullPath,, zip_folder
-    SplitPath, zip_folder,,, zip_extension
+    SplitPath, zip_folder,,, zip_extension1
+    SplitPath, zip_folder,, zip_folder1
+    SplitPath, zip_folder1,,, zip_extension1
     downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
-    if (zip_extension = "zip") {
+    if (zip_extension == "zip" || zip_extension1 == "zip") {
         if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
         
-        if (ErrorLevel = "ERROR")
+        if (ErrorLevel == "ERROR")
             FileRemoveDir, %macro_folder_directory%
         else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
             FileCreateDir, %macro_folder_directory%
@@ -64,7 +66,7 @@ Unzip() {
         } else
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
         
-        if (ErrorLevel = "ERROR") {
+        if (ErrorLevel == "ERROR") {
             FileRemoveDir, %macro_folder_directory%
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
         }
