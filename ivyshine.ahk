@@ -15,11 +15,12 @@ Unzip()
 Unzip() {
     psh := ComObjCreate("Shell.Application")
     SplitPath, A_ScriptFullPath,, zip_folder
-    SplitPath, zip_folder,,, zip_extension1
+    SplitPath, zip_folder,,, zip_extension
     SplitPath, zip_folder,, zip_folder1
     SplitPath, zip_folder1,,, zip_extension1
     downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
     if (zip_extension == "zip" || zip_extension1 == "zip") {
+        MsgBox, boo
         if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
         
@@ -31,7 +32,6 @@ Unzip() {
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory).items, 4|16 )
                 Run, "%macro_folder_directory%\ivyshine.ahk", %macro_folder_directory%, UseErrorLevel
             } else {
-                FileCreateDir, %macro_folder_directory%
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory_git).items, 4|16 )
                 FileMove, %macro_folder_directory%\ivyshine-macro-main\*.*, %macro_folder_directory%, 1
                 FileMoveDir, %macro_folder_directory%\ivyshine-macro-main\lib, %macro_folder_directory%, 1
