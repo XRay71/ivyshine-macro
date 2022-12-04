@@ -88,6 +88,7 @@ RunWith(version := 0) {
 MacroVersion := "001"
 SuccessfullyUpdated := 0
 CheckForUpdates() {
+    psh := ComObjCreate("Shell.Application")
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     whr.Open("GET", "https://raw.githubusercontent.com/XRay71/ivyshine-macro/main/version.txt", true)
     whr.Send()
@@ -101,8 +102,8 @@ CheckForUpdates() {
             if (ErrorLevel == "1")
                 MsgBox, 0x10, Error, There was an error in updating the macro. Nothing has been changed.
             else if (ErrorLevel == "0") {
-                psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
                 FileMove, ivyshine.ahk, ivyshine_old.ahk
+                psh.Namespace(A_WorkingDir).CopyHere(psh.Namespace(A_WorkingDir "\ivyshine_macro_new.zip").items, 4|16 )
                 FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
                 FileMoveDir, ivyshine-macro-main\lib, %A_WorkingDir%, 1
                 
@@ -113,7 +114,8 @@ CheckForUpdates() {
             } else
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
-        }
+        } else
+            Return
     }
     if (FileExist("version.txt")) {
         FileDelete, version.txt
