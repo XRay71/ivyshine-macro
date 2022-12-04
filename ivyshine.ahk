@@ -117,11 +117,18 @@ CheckForUpdates() {
         } else
             Return
     }
-    Sleep, 250
-    if (FileExist("version.txt")) {
-        FileDelete, version.txt
-        SuccessfullyUpdated := 1
-        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
+    Counter := 0
+    while (!FileExist("version.txt"))
+    {
+        if (FileExist("version.txt")) {
+            FileDelete, version.txt
+            SuccessfullyUpdated := 1
+            MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
+        }
+        Sleep, 250
+        Counter++
+        if (Counter == 8)
+            Return
     }
 }
 ;=====================================
