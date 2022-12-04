@@ -4,15 +4,54 @@
 #Include *i lib\ahk\base.ahk
 #UseHook
 
-if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk"))
-    UnzipFailure()
-
 SendMode, Input
 SetBatchLines, -1
 SetTitleMatchMode, 2
 SetWorkingDir, %A_ScriptDir%
 CoordMode, Pixel, Screen
 
+;=====================================
+; Check if zipped
+;=====================================
+Unzip()
+Unzip() {
+    psh := ComObjCreate("Shell.Application")
+    SplitPath, A_ScriptFullPath,, zip_folder
+    SplitPath, zip_folder,,, zip_extension1
+    SplitPath, zip_folder,, zip_folder1
+    SplitPath, zip_folder1,,, zip_extension1
+    downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
+    if (zip_extension == "zip" || zip_extension1 == "zip") {
+        if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
+            Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
+        
+        if (ErrorLevel == "ERROR")
+            FileRemoveDir, %macro_folder_directory%
+        else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip") || FileExist(zip_directory_git := downloads_directory "\ivyshine-macro-main.zip")) {
+            FileCreateDir, %macro_folder_directory%
+            if (FileExist(zip_directory)) {
+                psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory).items, 4|16 )
+                Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
+            } else {
+                FileCreateDir, %macro_folder_directory%
+                psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory_git).items, 4|16 )
+                FileRemoveDir, "%macro_folder_directory%\ivyshine-macro-main"
+                Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
+            }
+        } else
+            MsgBox, 48, Error, You have not unzipped the folder! Please do so.
+        
+        ; if (ErrorLevel == "ERROR") {
+        ;     FileRemoveDir, %macro_folder_directory%
+        ;     MsgBox, 48, Error, You have not unzipped the folder! Please do so.
+        ; }
+        ExitApp
+    }
+    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
+        FileDelete, %zip_directory%
+}
+if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk"))
+    UnzipFailure()
 ;=====================================
 ; AHK version swapping
 ;=====================================
@@ -41,39 +80,6 @@ RunWith(version := 0) {
             ExitApp
         }
     }
-}
-;=====================================
-; Check if zipped
-;=====================================
-Unzip()
-Unzip() {
-    psh := ComObjCreate("Shell.Application")
-    SplitPath, A_ScriptFullPath,, zip_folder
-    SplitPath, zip_folder,,, zip_extension1
-    SplitPath, zip_folder,, zip_folder1
-    SplitPath, zip_folder1,,, zip_extension1
-    downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
-    if (zip_extension == "zip" || zip_extension1 == "zip") {
-        if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
-            Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
-        
-        if (ErrorLevel == "ERROR")
-            FileRemoveDir, %macro_folder_directory%
-        else if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip")) {
-            FileCreateDir, %macro_folder_directory%
-            psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory).items, 4|16 )
-            Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
-        } else
-            MsgBox, 48, Error, You have not unzipped the folder! Please do so.
-        
-        if (ErrorLevel == "ERROR") {
-            FileRemoveDir, %macro_folder_directory%
-            MsgBox, 48, Error, You have not unzipped the folder! Please do so.
-        }
-        ExitApp
-    }
-    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
-        FileDelete, %zip_directory%
 }
 ;=====================================
 ; Check for updates
@@ -559,7 +565,7 @@ MainGuiClose() {
     Process, Close, rbxfpsunlocker.exe
     if (OldrbxfpsunlockerDir != "")
         Run, "%OldrbxfpsunlockerDir%", % StrReplace(OldrbxfpsunlockerDir, "rbxfpsunlocker.exe"), Hide
-    Sleep(100)
+    Sleep, 100
     ExitApp
 }
 
