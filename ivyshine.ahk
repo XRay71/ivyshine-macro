@@ -107,7 +107,7 @@ CheckForUpdates() {
                 FileMove, ivyshine-macro-main\*.*, %A_WorkingDir%, 1
                 FileMoveDir, ivyshine-macro-main\lib, %A_WorkingDir%, 1
                 
-                FileRemoveDir, ivyshine-macro-main
+                FileRemoveDir, ivyshine-macro-main, 1
                 FileDelete, ivyshine_macro_new.zip
                 Run, "ivyshine.ahk"
                 FileDelete, ivyshine_old.ahk
@@ -117,6 +117,7 @@ CheckForUpdates() {
         } else
             Return
     }
+    Sleep, 250
     if (FileExist("version.txt")) {
         FileDelete, version.txt
         SuccessfullyUpdated := 1
