@@ -35,6 +35,11 @@ Unzip() {
             } else {
                 FileCreateDir, %macro_folder_directory%
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory_git).items, 4|16 )
+                FileMove, %macro_folder_directory%\ivyshine-macro-main\*.*, %macro_folder_directory%, 1
+                FileMoveDir, %macro_folder_directory%\ivyshine-macro-main\lib, %macro_folder_directory%, 1
+                
+                FileRemoveDir, %macro_folder_directory%\ivyshine-macro-main\, 1
+                Sleep, 1000
                 Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
             }
         } else
@@ -46,9 +51,12 @@ Unzip() {
         ; }
         ExitApp
     }
-    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
-        FileDelete, %zip_directory%
+    ; if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
+    ;     FileDelete, %zip_directory%
+    ; else if (FileExist(zip_directory_git := downloads_directory "\ivyshine-macro-main.zip"))
+    ;     FileDelete, %zip_directory_git%
 }
+
 if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk"))
     UnzipFailure()
 ;=====================================
@@ -108,15 +116,13 @@ CheckForUpdates() {
                 FileRemoveDir, ivyshine-macro-main, 1
                 FileDelete, ivyshine_macro_new.zip
                 Run, "ivyshine.ahk", %A_WorkingDir%
+                FileDelete, version.txt
+                MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
                 FileDelete, ivyshine_old.ahk
             } else
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
         }
-    }
-    if (FileExist("version.txt")) {
-        FileDelete, version.txt
-        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
 }
 ;=====================================
