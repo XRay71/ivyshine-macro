@@ -114,8 +114,7 @@ CheckForUpdates() {
             } else
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
-        } else
-            Return
+        }
     }
     Counter := 0
     while (!FileExist("version.txt"))
