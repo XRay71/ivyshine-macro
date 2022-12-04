@@ -10,7 +10,7 @@ Gui, Main:Tab, 1
 if (!FileExist("lib\ahk\GUI\Main\Settings\Basic Config.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Unlocks.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Bees.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Hotkeys.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\rbxfpsunlocker.ahk") || !FileExist("lib\ahk\GUI\Main\Settings\Keybinds.ahk"))
     UnzipFailure()
 
-Gui, Main:Add, Button, hWndhBtnRestoreDefaults x424 y280 w116 h33 gResetAllDefaults, Restore Defaults
+Gui, Main:Add, Button, vRestoreDefaultSettings x424 y280 w116 h33 gResetAllDefaults, Restore Defaults
 
 ResetAllDefaults() {
     MsgBox, 305, Warning!, This will reset the entire macro to its default settings`, excluding stats.

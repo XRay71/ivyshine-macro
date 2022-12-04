@@ -65,7 +65,7 @@ AddToRotationUpdated() {
     GuiControlGet, AddToRotation
 }
 
-Gui, Main:Add, Button, x104 y100 w24 gAddFieldRotation, <-
+Gui, Main:Add, Button, x104 y100 w24 vAddFieldRotationButton gAddFieldRotation, <-
 
 AddFieldRotation() {
     Global FieldRotationList
@@ -90,7 +90,7 @@ AddFieldRotation() {
     }
 }
 
-Gui, Main:Add, Button, xp yp+24 wp gRemoveFieldRotation, ->
+Gui, Main:Add, Button, xp yp+24 wp vRemoveFieldRotationButton gRemoveFieldRotation, ->
 
 RemoveFieldRotation() {
     Global FieldRotationList
@@ -118,7 +118,7 @@ RemoveFieldRotation() {
     }
 }
 
-Gui, Main:Add, Button, xp y156 wp gMoveFieldRotationUp, /\
+Gui, Main:Add, Button, xp y156 wp vMoveFieldUpButton gMoveFieldRotationUp, /\
 
 MoveFieldRotationUp() {
     ReadFromAllInis()
@@ -132,7 +132,7 @@ MoveFieldRotationUp() {
     }
 }
 
-Gui, Main:Add, Button, xp yp+24 wp gMoveFieldRotationDown, \/
+Gui, Main:Add, Button, xp yp+24 wp vMoveFieldDownButton gMoveFieldRotationDown, \/
 
 MoveFieldRotationDown() {
     ReadFromAllInis()
@@ -146,7 +146,7 @@ MoveFieldRotationDown() {
     }
 }
 
-Gui, Main:Add, Button, x16 y280 w200 h26 gResetCurrentField, Reset Selected Field to Defaults
+Gui, Main:Add, Button, x16 y280 w200 h26 vResetCurrentFieldButton gResetCurrentField, Reset Selected Field to Defaults
 
 ResetCurrentField() {
     Global

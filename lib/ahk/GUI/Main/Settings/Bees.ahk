@@ -7,4 +7,4 @@ Gui, Main:Font, s8
 Gui, Main:Add, Text, x176 y35, Bear Bee
 Gui, Main:Add, Text, xp yp+24, Gifted Vicious
 Gui, Main:Add, CheckBox, x256 y32 w25 vHasBearBee gGuiToAllInis +Checked%HasBearBee%
-Gui, Main:Add, CheckBox, xp yp+24 wpvHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%
+Gui, Main:Add, CheckBox, xp yp+24 wp vHasGiftedVicious gGuiToAllInis +Checked%HasGiftedVicious%

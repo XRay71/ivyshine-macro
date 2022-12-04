@@ -7,7 +7,7 @@ Gui, Main:Add, Text, x384 y60 w2 h256 0x1 0x10
 
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Button, x240 y32 w290 -Theme gGenerateFieldViewEditor, Open Field View Editor
+Gui, Main:Add, Button, x240 y32 w290 -Theme vFieldViewButton gGenerateFieldViewEditor, Open Field View Editor
 
 Gui, Main:Add, Text, xp y60 w136 Center, Gather Pattern List
 Gui, Main:Add, ListBox, xp y80 w136 h230 vGatherPattern gFieldSettingsUpdated, % StrReplace("Pattern|", GatherPattern%CurrentlySelectedFieldName%, GatherPattern%CurrentlySelectedFieldName% "|")
@@ -84,7 +84,10 @@ GatherTurnUpdated() {
     FieldSettingsToIni()
 }
 
-Gui, Main:Add, DropDownList, x394 yp+21 w30 +Disabled vGatherTurnTimes gFieldSettingsUpdated, % StrReplace("0|1|2|3|4|", GatherTurnTimes%CurrentlySelectedFieldName%, GatherTurnTimes%CurrentlySelectedFieldName% "|")
+if (GatherTurn == "None")
+    Gui, Main:Add, DropDownList, x394 yp+21 w30 +Disabled vGatherTurnTimes gFieldSettingsUpdated, % StrReplace("0|1|2|3|4|", GatherTurnTimes%CurrentlySelectedFieldName%, GatherTurnTimes%CurrentlySelectedFieldName% "|")
+else
+    Gui, Main:Add, DropDownList, x394 yp+21 w30 vGatherTurnTimes gFieldSettingsUpdated, % StrReplace("0|1|2|3|4|", GatherTurnTimes%CurrentlySelectedFieldName%, GatherTurnTimes%CurrentlySelectedFieldName% "|")
 Gui, Main:Add, Text, x+4 yp+3, times before gathering.
 
 FieldSelectionUpdated()

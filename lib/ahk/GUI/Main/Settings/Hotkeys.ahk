@@ -8,7 +8,7 @@ Gui, Main:Add, Button, xp y35 w101 vStartHotkeyButtonSettings gStartMacro, Start
 Gui, Main:Add, Button, xp yp+24 wp vPauseHotkeyButtonSettings gPauseMacro, Pause (%PauseHotkey%)
 Gui, Main:Add, Button, xp yp+24 wp vStopHotkeyButtonSettings gStopMacro, Stop (%StopHotkey%)
 
-Gui, Main:Add, Button, xp yp+24 wp gEditHotkeys, Edit Hotkeys
+Gui, Main:Add, Button, xp yp+24 wp vEditHotkeysButton gEditHotkeys, Edit Hotkeys
 
 EditHotkeys() {
     Gui, EditHotkeys:Show,, Edit Hotkeys

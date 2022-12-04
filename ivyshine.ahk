@@ -20,7 +20,6 @@ Unzip() {
     SplitPath, zip_folder1,,, zip_extension1
     downloads_directory := ComObjCreate("Shell.Application").NameSpace("shell:downloads").self.path
     if (zip_extension == "zip" || zip_extension1 == "zip") {
-        MsgBox, boo
         if (FileExist(macro_folder_directory := downloads_directory "\ivyshine_macro"))
             Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
         
@@ -514,6 +513,8 @@ AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
     , "GatherTurnTimesSunflower":"2"}
 AllVars["Stats"] := {}
 
+SettingsTurnedOn := FieldsTurnedOn := BoostTurnedOn := MobsTurnedOn := QuestsTurnedOn := PlantersTurnedOn := StatsTurnedOn := 1
+
 if (!IncludeFailure)
     #Include *i lib\ahk\main\CreateInit.ahk
 ;=====================================
@@ -534,8 +535,10 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-if (!IncludeFailure)
+if (!IncludeFailure) {
     #Include *i lib\ahk\GUI\gui.ahk
+    #Include *i lib\ahk\main\TabSwitches.ahk
+}
 ;=====================================
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
@@ -543,18 +546,11 @@ if (!IncludeFailure)
 for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHERE name like 'rbxfpsunlocker.exe%' ") {
     OldrbxfpsunlockerDir := process.ExecutablePath
 }
-; if (Runrbxfpsunlocker)
-;     RunFPS(FPSLevel)
+if (Runrbxfpsunlocker)
+    RunFPS(FPSLevel)
 ;=====================================
 ; Functions
 ;=====================================
-GuiClosed() {
-    if (!IncludeFailure)
-        #Include *i lib\ahk\main\SaveGui.ahk
-    WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
-    IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
-    IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
-}
 
 StartMacro() {
     MsgBox, Start
@@ -581,18 +577,12 @@ MainGuiClose() {
     ExitApp
 }
 
-EditHotkeysGuiClose() {
-    Global StartHotkey
-    Global PauseHotkey
-    Global StopHotkey
-    
-    GuiControl, EditHotkeys:Text, StartHotkeyTemp, %StartHotkey%
-    GuiControl, EditHotkeys:Text, PauseHotkeyTemp, %PauseHotkey%
-    GuiControl, EditHotkeys:Text, StopHotkeyTemp, %StopHotkey%
-    
-    Hotkey, %StartHotkey%, StartMacro, On
-    Hotkey, %PauseHotkey%, PauseMacro, On
-    Hotkey, %StopHotkey%, StopMacro, On
+GuiClosed() {
+    if (!IncludeFailure)
+        #Include *i lib\ahk\main\SaveGui.ahk
+    WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
+    IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
+    IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
 }
 
 UnzipFailure() {

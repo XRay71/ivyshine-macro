@@ -19,13 +19,18 @@ else
     Gui, Main:Font, s6
 Gui, Main:Add, Button, xp+30 yp wp vStopHotkeyButtonMain gStopMacro, %StopHotkey%
 
-Gui, Main:Font
-Gui, Main:Add, Text, x520 y335 w28 Right, % "v" MacroVersion
+Gui, Main:Font, s7
+Gui, Main:Add, Button, xp+30 yp wp hp Right vShowMacroInfoButton gShowMacroInfo, % "v" MacroVersion
+
+ShowMacroInfo() {
+    #Include *i lib\ahk\GUI\MacroInfo\MacroInfo.ahk
+    Gui, MacroInfo:Show, w320, Ivyshine Info
+}
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
 Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Stats|", CurrentTab, CurrentTab "|")
 
-if (!FileExist("lib\ahk\GUI\Main\Settings.ahk") || !FileExist("lib\ahk\GUI\Main\Fields.ahk"))
+if (!FileExist("lib\ahk\GUI\Main\Settings.ahk") || !FileExist("lib\ahk\GUI\Main\Fields.ahk") || !FileExist("lib\ahk\GUI\MacroInfo\MacroInfo.ahk"))
     UnzipFailure()
 
 #Include *i lib\ahk\GUI\Main\Settings.ahk

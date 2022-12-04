@@ -89,3 +89,17 @@ SaveEditedHotkeys() {
     
     Gui, EditHotkeys:Hide
 }
+
+EditHotkeysGuiClose() {
+    Global StartHotkey
+    Global PauseHotkey
+    Global StopHotkey
+    
+    GuiControl, EditHotkeys:Text, StartHotkeyTemp, %StartHotkey%
+    GuiControl, EditHotkeys:Text, PauseHotkeyTemp, %PauseHotkey%
+    GuiControl, EditHotkeys:Text, StopHotkeyTemp, %StopHotkey%
+    
+    Hotkey, %StartHotkey%, StartMacro, On
+    Hotkey, %PauseHotkey%, PauseMacro, On
+    Hotkey, %StopHotkey%, StopMacro, On
+}
