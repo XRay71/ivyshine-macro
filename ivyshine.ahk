@@ -1,7 +1,5 @@
 #NoEnv
 #SingleInstance, Force
-#Include %A_ScriptDir%
-#Include *i lib\ahk\base.ahk
 #UseHook
 
 SendMode, Input
@@ -31,7 +29,7 @@ Unzip() {
             FileCreateDir, %macro_folder_directory%
             if (FileExist(zip_directory)) {
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory).items, 4|16 )
-                Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
+                Run, "%macro_folder_directory%\ivyshine.ahk", %macro_folder_directory%, UseErrorLevel
             } else {
                 FileCreateDir, %macro_folder_directory%
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory_git).items, 4|16 )
@@ -39,26 +37,28 @@ Unzip() {
                 FileMoveDir, %macro_folder_directory%\ivyshine-macro-main\lib, %macro_folder_directory%, 1
                 
                 FileRemoveDir, %macro_folder_directory%\ivyshine-macro-main\, 1
-                Sleep, 1000
-                Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
+                Run, "%macro_folder_directory%\ivyshine.ahk", %macro_folder_directory%, UseErrorLevel
             }
         } else
             MsgBox, 48, Error, You have not unzipped the folder! Please do so.
         
-        ; if (ErrorLevel == "ERROR") {
-        ;     FileRemoveDir, %macro_folder_directory%
-        ;     MsgBox, 48, Error, You have not unzipped the folder! Please do so.
-        ; }
+        if (ErrorLevel == "ERROR") {
+            FileRemoveDir, %macro_folder_directory%
+            MsgBox, 48, Error, You have not unzipped the folder! Please do so.
+        }
         ExitApp
     }
-    ; if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
-    ;     FileDelete, %zip_directory%
-    ; else if (FileExist(zip_directory_git := downloads_directory "\ivyshine-macro-main.zip"))
-    ;     FileDelete, %zip_directory_git%
+    if (FileExist(zip_directory := downloads_directory "\ivyshine_macro.zip"))
+        FileDelete, %zip_directory%
+    else if (FileExist(zip_directory_git := downloads_directory "\ivyshine-macro-main.zip"))
+        FileDelete, %zip_directory_git%
 }
-
-if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk"))
+if (IncludeFailure := (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk")))
     UnzipFailure()
+else {
+    #Include %A_ScriptDir%
+    #Include *i lib\ahk\base.ahk
+}
 ;=====================================
 ; AHK version swapping
 ;=====================================
@@ -116,13 +116,15 @@ CheckForUpdates() {
                 FileRemoveDir, ivyshine-macro-main, 1
                 FileDelete, ivyshine_macro_new.zip
                 Run, "ivyshine.ahk", %A_WorkingDir%
-                FileDelete, version.txt
-                MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
                 FileDelete, ivyshine_old.ahk
             } else
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
         }
+    }
+    if (Global SuccessfullyUpdated := FileExist("version.txt")) {
+        FileDelete, version.txt
+        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
 }
 ;=====================================
@@ -509,7 +511,8 @@ AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
     , "GatherTurnTimesSunflower":"2"}
 AllVars["Stats"] := {}
 
-#Include *i lib\ahk\main\CreateInit.ahk
+if (!IncludeFailure)
+    #Include *i lib\ahk\main\CreateInit.ahk
 ;=====================================
 ; Check Monitor
 ;=====================================
@@ -528,7 +531,8 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-#Include *i lib\ahk\GUI\gui.ahks
+if (!IncludeFailure)
+    #Include *i lib\ahk\GUI\gui.ahk
 ;=====================================
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
@@ -542,7 +546,8 @@ for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHE
 ; Functions
 ;=====================================
 GuiClosed() {
-    #Include *i lib\ahk\main\SaveGui.ahk
+    if (!IncludeFailure)
+        #Include *i lib\ahk\main\SaveGui.ahk
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
     IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
     IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
