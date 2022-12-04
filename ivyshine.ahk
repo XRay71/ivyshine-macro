@@ -547,7 +547,7 @@ for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHE
     OldrbxfpsunlockerDir := process.ExecutablePath
 }
 if (Runrbxfpsunlocker)
-    RunFPS(FPSLevel)
+    #Include *i lib\ahk\main\RunFPS.ahk
 ;=====================================
 ; Functions
 ;=====================================
