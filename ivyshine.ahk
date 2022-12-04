@@ -86,7 +86,6 @@ RunWith(version := 0) {
 ;=====================================
 ; CheckForUpdates()
 MacroVersion := "001"
-SuccessfullyUpdated := 0
 CheckForUpdates() {
     psh := ComObjCreate("Shell.Application")
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
@@ -115,24 +114,6 @@ CheckForUpdates() {
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
         }
-    }
-    Counter := 0
-    while (!FileExist("version.txt"))
-    {
-        if (FileExist("version.txt")) {
-            FileDelete, version.txt
-            SuccessfullyUpdated := 1
-            MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
-        }
-        Sleep, 250
-        Counter++
-        if (Counter == 8)
-            Return
-    }
-    if (FileExist("version.txt")) {
-        FileDelete, version.txt
-        SuccessfullyUpdated := 1
-        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
 }
 ;=====================================
@@ -539,6 +520,12 @@ CheckMonitor() {
 ; Creating GUI
 ;=====================================
 #Include *i lib\ahk\GUI\gui.ahk
+
+if (FileExist("version.txt")) {
+    FileDelete, version.txt
+    MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
+}
+
 ;=====================================
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
