@@ -522,13 +522,7 @@ CheckMonitor() {
 ;=====================================
 ; Creating GUI
 ;=====================================
-#Include *i lib\ahk\GUI\gui.ahk
-
-if (FileExist("version.txt")) {
-    FileDelete, version.txt
-    MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
-}
-
+#Include *i lib\ahk\GUI\gui.ahks
 ;=====================================
 ; Run rbxfpsunlocker
 ; https://github.com/axstin/rbxfpsunlocker
