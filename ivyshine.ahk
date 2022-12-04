@@ -4,7 +4,7 @@
 #Include *i lib\ahk\base.ahk
 #UseHook
 
-if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk"))
+if (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk"))
     UnzipFailure()
 
 SendMode, Input
@@ -499,10 +499,7 @@ AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
     , "GatherTurnTimesSunflower":"2"}
 AllVars["Stats"] := {}
 
-if (FileExist("lib\init"))
-    ReadFromAllInis()
-
-CreateInit(!FileExist("lib\init"))
+#Include *i lib\ahk\main\CreateInit.ahk
 ;=====================================
 ; Check Monitor
 ;=====================================
@@ -535,8 +532,7 @@ for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHE
 ; Functions
 ;=====================================
 GuiClosed() {
-    GuiToAllInis()
-    FieldSettingsToIni()
+    #Include *i lib\ahk\main\SaveGui.ahk
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
     IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
     IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
@@ -587,9 +583,6 @@ UnzipFailure() {
 }
 
 ^r::Reload
-^!r::
-    FieldSettingsToIni()
-Return
 ^+r::
     FileRemoveDir, lib\init, 1
     FileDelete, lib\stats.ini
