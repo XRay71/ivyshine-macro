@@ -125,8 +125,7 @@ CheckForUpdates() {
             ExitApp
         }
     }
-    MsgBox, % A_ScriptDir "\version.txt"
-    if (FileExist(A_ScriptDir "\version.txt")) {
+    if (FileExist("version.txt")) {
         FileDelete, version.txt
         MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
