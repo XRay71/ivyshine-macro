@@ -109,7 +109,7 @@ CheckForUpdates() {
                 
                 FileRemoveDir, ivyshine-macro-main, 1
                 FileDelete, ivyshine_macro_new.zip
-                Run, "ivyshine.ahk"
+                Run, "ivyshine.ahk", %A_WorkingDir%
                 FileDelete, ivyshine_old.ahk
             } else
                 MsgBox, 0x10, Error, Tbh idk how you got here.
