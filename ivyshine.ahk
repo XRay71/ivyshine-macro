@@ -35,7 +35,6 @@ Unzip() {
             } else {
                 FileCreateDir, %macro_folder_directory%
                 psh.Namespace(macro_folder_directory).CopyHere(psh.Namespace(zip_directory_git).items, 4|16 )
-                FileRemoveDir, "%macro_folder_directory%\ivyshine-macro-main"
                 Run, "%macro_folder_directory%\ivyshine.ahk",, UseErrorLevel
             }
         } else
@@ -114,6 +113,10 @@ CheckForUpdates() {
                 MsgBox, 0x10, Error, Tbh idk how you got here.
             ExitApp
         }
+    }
+    if (FileExist("version.txt")) {
+        FileDelete, version.txt
+        MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
 }
 ;=====================================
