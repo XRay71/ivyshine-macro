@@ -53,6 +53,9 @@ Unzip() {
     else if (FileExist(zip_directory_git := downloads_directory "\ivyshine-macro-main.zip"))
         FileDelete, %zip_directory_git%
 }
+;=====================================
+; Start Includes
+;=====================================
 if (IncludeFailure := (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk")))
     UnzipFailure()
 else {
@@ -122,7 +125,8 @@ CheckForUpdates() {
             ExitApp
         }
     }
-    if (Global SuccessfullyUpdated := FileExist("version.txt")) {
+    MsgBox, % A_ScriptDir "\version.txt"
+    if (FileExist(A_ScriptDir "\version.txt")) {
         FileDelete, version.txt
         MsgBox, 0, Success!, The macro was updated successfully to version v%MacroVersion%!
     }
