@@ -1,5 +1,6 @@
 Global IniPaths := {"Config":A_ScriptDir "\lib\init\config.ini"
     , "FieldConfig":A_ScriptDir "\lib\init\fields.ini"
+    , "Boost":A_ScriptDir "\lib\init\boost.ini"
     , "Stats":A_ScriptDir "\lib\stats.ini"}
 
 CreateInit(Replace := 1) {

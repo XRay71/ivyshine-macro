@@ -53,15 +53,6 @@ Unzip() {
         FileDelete, %zip_directory_git%
 }
 ;=====================================
-; Start Includes
-;=====================================
-if (IncludeFailure := (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk")))
-    UnzipFailure()
-else {
-    #Include %A_ScriptDir%
-    #Include *i lib\ahk\base.ahk
-}
-;=====================================
 ; AHK version swapping
 ;=====================================
 RunWith(32)
@@ -144,6 +135,15 @@ CheckResolution() {
         Reload
         WinClose, Settings
     }
+}
+;=====================================
+; Start Includes
+;=====================================
+if (IncludeFailure := (!FileExist("lib\ahk\base.ahk") || !FileExist("lib\ahk\GUI\gui.ahk") || !FileExist("lib\ahk\main\CreateInit.ahk") || !FileExist("lib\ahk\main\SaveGui.ahk")))
+    UnzipFailure()
+else {
+    #Include %A_ScriptDir%
+    #Include *i lib\ahk\base.ahk
 }
 ;=====================================
 ; Initialising
@@ -511,6 +511,10 @@ AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
     , "GatherReturnMethodSunflower":"Reset"
     , "GatherTurnSunflower":"Left"
     , "GatherTurnTimesSunflower":"2"}
+AllVars["BoostConfig"] := {}
+AllVars["BoostConfig"]["Config"] := {"BoostRotationList":""
+    , "CurrentlySelectedBoost":""
+    , "NonBoostRotationList":"Gumdrops|Coconut|Stinger|Microconvertor|Honeysuckle|Whirligig|Field Dice|Jellybeans|Red Extract|Blue Extract|Glitter|Glue|Oil|Enzymes|Tropical Drink|"}
 AllVars["Stats"] := {}
 
 SettingsTurnedOn := FieldsTurnedOn := BoostTurnedOn := MobsTurnedOn := QuestsTurnedOn := PlantersTurnedOn := StatsTurnedOn := 1
