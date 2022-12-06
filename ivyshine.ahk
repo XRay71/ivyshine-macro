@@ -493,7 +493,7 @@ AllVars["FieldConfig"]["Stump"] := {"NorthWallStump":"1"
     , "GatherReturnMethodStump":"Reset"
     , "GatherTurnStump":"Right"
     , "GatherTurnTimesStump":"2"}
-AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
+AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"s
     , "FlowersYSunflower":"33"
     , "NorthWallSunflower":"0"
     , "EastWallSunflower":"0"
@@ -512,9 +512,10 @@ AllVars["FieldConfig"]["Sunflower"] := {"FlowersXSunflower":"20"
     , "GatherTurnSunflower":"Left"
     , "GatherTurnTimesSunflower":"2"}
 AllVars["BoostConfig"] := {}
-AllVars["BoostConfig"]["Config"] := {"BoostRotationList":""
-    , "CurrentlySelectedBoost":""
-    , "NonBoostRotationList":"Gumdrops|Coconut|Stinger|Microconvertor|Honeysuckle|Whirligig|Field Dice|Jellybeans|Red Extract|Blue Extract|Glitter|Glue|Oil|Enzymes|Tropical Drink|"}
+AllVars["BoostConfig"]["Config"] := {"BoostRotationList":"Sprinkler|"
+    , "CurrentlySelectedBoost":"Sprinkler"
+    , "NonBoostRotationList":"Gumdrops|Coconut|Stinger|Microconvertor|Honeysuckle|Whirligig|Field Dice|Jellybeans|Red Extract|Blue Extract|Glitter|Glue|Oil|Enzymes|Tropical Drink|"
+    , "DoBoost":"0"}
 AllVars["Stats"] := {}
 
 SettingsTurnedOn := FieldsTurnedOn := BoostTurnedOn := MobsTurnedOn := QuestsTurnedOn := PlantersTurnedOn := StatsTurnedOn := 1

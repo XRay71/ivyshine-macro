@@ -20,7 +20,7 @@ else
 Gui, Main:Add, Button, xp+30 yp wp vStopHotkeyButtonMain gStopMacro, %StopHotkey%
 
 Gui, Main:Font, s7
-Gui, Main:Add, Button, xp+30 yp wp hp Right vShowMacroInfoButton gShowMacroInfo, % "v" MacroVersion
+Gui, Main:Add, Button, xp+30 yp wp hp vShowMacroInfoButton gShowMacroInfo, % "v" MacroVersion
 
 ShowMacroInfo() {
     #Include *i lib\ahk\GUI\MacroInfo\MacroInfo.ahk

@@ -71,6 +71,7 @@ AddFieldRotation() {
     Global FieldRotationList
     Global AddToRotation
     Global NonRotationList
+    Global DoGather
     GuiControlGet, AddToRotation
     if (AddToRotation != "") {
         FieldRotationList .= AddToRotation "|"
@@ -96,6 +97,7 @@ RemoveFieldRotation() {
     Global FieldRotationList
     Global NonRotationList
     Global CurrentlySelectedField
+    Global DoGather
     GuiControlGet, CurrentlySelectedField
     if (CurrentlySelectedField != "") {
         NonRotationList := StrReplace(NonRotationList, "||", "|") CurrentlySelectedField "|"
