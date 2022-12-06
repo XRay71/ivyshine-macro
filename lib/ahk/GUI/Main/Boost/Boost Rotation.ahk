@@ -65,7 +65,7 @@ AddToBoostRotationUpdated() {
     GuiControlGet, AddToBoostRotation
 }
 
-Gui, Main:Add, Button, x104 y143 w24 vAddBoostRotationButton gAddBoostRotation, <-
+Gui, Main:Add, Button, x104 y142 w24 vAddBoostRotationButton gAddBoostRotation, <-
 
 AddBoostRotation() {
     Global BoostRotationList

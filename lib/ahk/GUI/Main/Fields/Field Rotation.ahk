@@ -65,7 +65,7 @@ AddToRotationUpdated() {
     GuiControlGet, AddToRotation
 }
 
-Gui, Main:Add, Button, x104 y100 w24 vAddFieldRotationButton gAddFieldRotation, <-
+Gui, Main:Add, Button, x104 y112 w24 vAddFieldRotationButton gAddFieldRotation, <-
 
 AddFieldRotation() {
     Global FieldRotationList
@@ -120,7 +120,7 @@ RemoveFieldRotation() {
     }
 }
 
-Gui, Main:Add, Button, xp y156 wp vMoveFieldUpButton gMoveFieldRotationUp, /\
+Gui, Main:Add, Button, xp yp+36 wp vMoveFieldUpButton gMoveFieldRotationUp, /\
 
 MoveFieldRotationUp() {
     ReadFromAllInis()
