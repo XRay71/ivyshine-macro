@@ -44,7 +44,9 @@ MainTabUpdated() {
     GuiControlGet, CurrentTab
     if (CurrentTab != "Settings")
         Gui, EditHotkeys:Cancel
-    else if (CurrentTab != "Fields")
+    if (CurrentTab != "Fields")
         Gui, FieldViewEditor:Destroy
+    if (CurrentTab != "Boost")
+        Gui, EditHotbar:Destroy
     GuiToAllInis()
 }

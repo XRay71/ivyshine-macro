@@ -72,9 +72,11 @@ AddBoostRotation() {
     Global AddToBoostRotation
     Global NonBoostRotationList
     Global DoBoost
+    Global HotbarList
     GuiControlGet, AddToBoostRotation
     if (AddToBoostRotation != "") {
         BoostRotationList .= AddToBoostRotation "|"
+        HotbarList := HotbarList AddToBoostRotation "|"
         CurrentlySelectedBoost := AddToBoostRotation
         NonBoostRotationList := StrReplace(NonBoostRotationList, AddToBoostRotation "|")
         
@@ -84,6 +86,7 @@ AddBoostRotation() {
         IniWrite, %BoostRotationList%, % IniPaths["BoostConfig"], Config, BoostRotationList
         IniWrite, %CurrentlySelectedBoost%, % IniPaths["BoostConfig"], Config, CurrentlySelectedBoost
         IniWrite, %NonBoostRotationList%, % IniPaths["BoostConfig"], Config, NonBoostRotationList
+        IniWrite, %HotbarList%, % IniPaths["BoostConfig"], Config, HotbarList
         
         GuiControl,, CurrentlySelectedBoost, % "|" StrReplace(BoostRotationList, CurrentlySelectedBoost, CurrentlySelectedBoost "|")
         GuiControl,, AddToBoostRotation, % "|" NonBoostRotationList
@@ -98,10 +101,27 @@ RemoveBoostRotation() {
     Global NonBoostRotationList
     Global CurrentlySelectedBoost
     Global DoBoost
+    Global HotbarList
+    Global Hotbar1, Hotbar2, Hotbar3, Hotbar4, Hotbar5, Hotbar6, Hotbar7
     GuiControlGet, CurrentlySelectedBoost
     if (CurrentlySelectedBoost != "") {
         NonBoostRotationList := StrReplace(NonBoostRotationList, "||", "|") CurrentlySelectedBoost "|"
         BoostRotationList := StrReplace(BoostRotationList, CurrentlySelectedBoost "|")
+        HotbarList := StrReplace(HotbarList, CurrentlySelectedBoost "|")
+        if (Hotbar1 == CurrentlySelectedBoost)
+            Hotbar1 := ""
+        else if (Hotbar2 == CurrentlySelectedBoost)
+            Hotbar2 := ""
+        else if (Hotbar3 == CurrentlySelectedBoost)
+            Hotbar3 := ""
+        else if (Hotbar4 == CurrentlySelectedBoost)
+            Hotbar4 := ""
+        else if (Hotbar5 == CurrentlySelectedBoost)
+            Hotbar5 := ""
+        else if (Hotbar6 == CurrentlySelectedBoost)
+            Hotbar6 := ""
+        else if (Hotbar7 == CurrentlySelectedBoost)
+            Hotbar7 := ""
         CurrentlySelectedBoost := ""
         
         if (BoostRotationList == "")
@@ -113,6 +133,14 @@ RemoveBoostRotation() {
         IniWrite, %BoostRotationList%, % IniPaths["BoostConfig"], Config, BoostRotationList
         IniWrite, %CurrentlySelectedBoost%, % IniPaths["BoostConfig"], Config, CurrentlySelectedBoost
         IniWrite, %NonBoostRotationList%, % IniPaths["BoostConfig"], Config, NonBoostRotationList
+        IniWrite, %HotbarList%, % IniPaths["BoostConfig"], Config, HotbarList
+        IniWrite, %Hotbar1%, % IniPaths["BoostConfig"], Config, Hotbar1
+        IniWrite, %Hotbar2%, % IniPaths["BoostConfig"], Config, Hotbar2
+        IniWrite, %Hotbar3%, % IniPaths["BoostConfig"], Config, Hotbar3
+        IniWrite, %Hotbar4%, % IniPaths["BoostConfig"], Config, Hotbar4
+        IniWrite, %Hotbar5%, % IniPaths["BoostConfig"], Config, Hotbar5
+        IniWrite, %Hotbar6%, % IniPaths["BoostConfig"], Config, Hotbar6
+        IniWrite, %Hotbar7%, % IniPaths["BoostConfig"], Config, Hotbar7
         
         GuiControl, Main:Text, CurrentlySelectedBoost, % "|" BoostRotationList
         GuiControl, Main:Text, AddToboostRotation, % "|" NonBoostRotationList

@@ -515,7 +515,22 @@ AllVars["BoostConfig"] := {}
 AllVars["BoostConfig"]["Config"] := {"BoostRotationList":"Sprinkler|"
     , "CurrentlySelectedBoost":"Sprinkler"
     , "NonBoostRotationList":"Gumdrops|Coconut|Stinger|Microconvertor|Honeysuckle|Whirligig|Field Dice|Jellybeans|Red Extract|Blue Extract|Glitter|Glue|Oil|Enzymes|Tropical Drink|"
-    , "DoBoost":"0"}
+    , "DoBoost":"0"
+    , "HotbarList":"None|"
+    , "Hotbar1":"Sprinkler"
+    , "Hotbar2":""
+    , "Hotbar3":""
+    , "Hotbar4":""
+    , "Hotbar5":""
+    , "Hotbar6":""
+    , "Hotbar7":""
+    , "Hotbar1Auto":"2"
+    , "Hotbar2Auto":"2"
+    , "Hotbar3Auto":"2"
+    , "Hotbar4Auto":"2"
+    , "Hotbar5Auto":"2"
+    , "Hotbar6Auto":"2"
+    , "Hotbar7Auto":"2"}
 AllVars["Stats"] := {}
 
 SettingsTurnedOn := FieldsTurnedOn := BoostTurnedOn := MobsTurnedOn := QuestsTurnedOn := PlantersTurnedOn := StatsTurnedOn := 1
