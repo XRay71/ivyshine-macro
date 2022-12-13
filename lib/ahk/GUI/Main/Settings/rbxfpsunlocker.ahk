@@ -4,8 +4,8 @@ Gui, Main:Add, Text, xp+6 yp+19 wp-12 0x10
 
 Gui, Main:Font
 Gui, Main:Font, s8
-Gui, Main:Add, Text, xp yp+6, rbxfpsunlocker
-Gui, Main:Add, CheckBox, x+10 w25 +Checked%Runrbxfpsunlocker% vRunrbxfpsunlocker grbxfpsunlockerUpdated
+Gui, Main:Add, Text, xp yp+6, Rbxfpsunlocker
+Gui, Main:Add, CheckBox, x+6 w25 +Checked%Runrbxfpsunlocker% vRunrbxfpsunlocker grbxfpsunlockerUpdated
 
 rbxfpsunlockerUpdated() {
     Global Runrbxfpsunlocker

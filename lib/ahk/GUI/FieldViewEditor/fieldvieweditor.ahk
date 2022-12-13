@@ -59,5 +59,6 @@ GenerateFieldViewEditor() {
         
         Gui, FieldViewEditor:Show, w%GuiW% h%GuiH%, Field View Editor
         
-    }
+    } else if (CurrentlySelectedField == "Stump")
+        MsgBox, Sorry`, Stump field is currently not implemented!
 }

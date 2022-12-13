@@ -11,7 +11,7 @@ CreateEditHotbar(ButtonHWND) {
     else if (ButtonHWND == HotBarSlot3DisplayHWND)
         ButtonNum := 3
     else if (ButtonHWND == HotBarSlot4DisplayHWND)
-        ButtonNum := 4
+        ButtonNum := 4  
     else if (ButtonHWND == HotBarSlot5DisplayHWND)
         ButtonNum := 5
     else if (ButtonHWND == HotBarSlot6DisplayHWND)

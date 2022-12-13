@@ -66,8 +66,8 @@ RunWith(version := 0) {
                 Run, "%u64_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
             else
                 Run, "%u32_directory%" "%A_ScriptName%" /restart, %A_ScriptDir%
+            ExitApp
         }
-        ExitApp
     } else {
         if (A_PtrSize != (version == 32 ? 4 : 8)) {
             SplitPath, A_AhkPath,, ahk_directory
@@ -543,6 +543,11 @@ if (!IncludeFailure)
 CheckMonitor()
 CheckMonitor() {
     Global GuiX, GuiY
+    if (!GuiX || !GuiY) {
+        GuiX := 0
+        GuiY := 350
+        Return
+    }
     loop, %MonitorCount%
     {
         SysGet, CurrentMonitor, MonitorWorkArea, %A_Index%
@@ -594,8 +599,9 @@ MainGuiClose() {
     Global OldrbxfpsunlockerDir
     GuiClosed()
     Process, Close, rbxfpsunlocker.exe
-    if (OldrbxfpsunlockerDir != "")
+    if (OldrbxfpsunlockerDir)
         Run, "%OldrbxfpsunlockerDir%", % StrReplace(OldrbxfpsunlockerDir, "rbxfpsunlocker.exe"), Hide
+    ; Run, ms-settings:display
     Sleep, 100
     ExitApp
 }
@@ -604,8 +610,10 @@ GuiClosed() {
     if (!IncludeFailure)
         #Include *i lib\ahk\main\SaveGui.ahk
     WinGetPos, windowX, windowY, windowWidth, windowHeight, Ivyshine Macro
-    IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
-    IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
+    if (WindowX && WindowY) {
+        IniWrite, %windowX%, % IniPaths["Config"], GUI, GuiX
+        IniWrite, %windowY%, % IniPaths["Config"], GUI, GuiY
+    }
 }
 
 UnzipFailure() {

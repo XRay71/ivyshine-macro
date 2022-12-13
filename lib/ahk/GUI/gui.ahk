@@ -28,7 +28,7 @@ ShowMacroInfo() {
 }
 
 Gui, Main:Font, s11 Norm cBlack, Calibri
-Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Stats|", CurrentTab, CurrentTab "|")
+Gui, Main:Add, Tab3, hWndhTab x0 y0 w550 h350 vCurrentTab gMainTabUpdated -Wrap +0x8 +Bottom, % StrReplace("Settings|Fields|Boost|Mobs|Quests|Planters|Status|", CurrentTab, CurrentTab "|")
 
 if (!FileExist("lib\ahk\GUI\Main\Settings.ahk") || !FileExist("lib\ahk\GUI\Main\Fields.ahk") || !FileExist("lib\ahk\GUI\Main\Boost.ahk") || !FileExist("lib\ahk\GUI\MacroInfo\MacroInfo.ahk"))
     UnzipFailure()

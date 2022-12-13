@@ -4,8 +4,13 @@ Global IniPaths := {"Config":A_ScriptDir "\lib\init\config.ini"
     , "Stats":A_ScriptDir "\lib\stats.ini"}
 
 CreateInit(Replace := 1) {
-    if (!FileExist("lib\init"))
+    if (!FileExist("lib\init")) {
         FileCreateDir, lib\init
+        if (ErrorLevel) {
+            MsgBox, 48, Error, The macro could not created the required directories! Please either run the macro as an administrator or move the macro folder to a non-elevated folder!
+            ExitApp
+        }
+    }
     if (Replace)
         for ini in AllVars
             CreateIni(ini)
